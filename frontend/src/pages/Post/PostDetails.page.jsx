@@ -8,7 +8,9 @@ import {
   rem,
   Container,
 } from "@mantine/core";
-import { Link, useLoaderData } from "react-router-dom";
+import axios from "axios";
+import { Link, useLoaderData, useNavigate } from "react-router-dom";
+import DOMAIN from "../../services/endpoint";
 // import image from "./image.svg";
 
 const useStyles = createStyles((theme) => ({
@@ -55,6 +57,7 @@ const useStyles = createStyles((theme) => ({
 
   controls: {
     display: "flex",
+    justifyContent: "space-around",
     marginTop: theme.spacing.xl,
   },
 
@@ -80,6 +83,15 @@ export default function PostDetailsPage() {
 
   const { id, userId, title, category, content, image, author } =
     useLoaderData();
+  const navigate = useNavigate();
+  const handleDelete = async () => {
+    await axios
+      .post(`${DOMAIN}/api/posts/delete/${id}`)
+      .then((res) => {
+        navigate("/posts");
+      })
+      .catch((err) => console.log(err));
+  };
 
   return (
     <Container size="50%" my={40}>
@@ -97,6 +109,7 @@ export default function PostDetailsPage() {
             <Button radius="md">
               <Link to={`create/${id}`}>Edit</Link>
             </Button>
+            <Button onClick={handleDelete}>Delete</Button>
           </div>
         </div>
         <Image src={image} className={classes.image} />

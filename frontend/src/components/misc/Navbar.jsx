@@ -140,9 +140,14 @@ export default function Navbar({ links }) {
               Logout
             </h4>
           ) : (
-            <NavLink to="login">
-              <h4>Login</h4>
-            </NavLink>
+            <Group spacing={5} className={classes.links}>
+              <NavLink className={classes.link} to="login">
+                <h4>Login</h4>
+              </NavLink>
+              <NavLink className={classes.link} to="signup">
+                <h4>SignUp</h4>
+              </NavLink>
+            </Group>
           )}
         </Group>
         <LightDark />

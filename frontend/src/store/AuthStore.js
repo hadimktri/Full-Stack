@@ -3,6 +3,7 @@ import axios from "axios";
 import { setSession } from "../services/jwt.service";
 
 const createAuthStore = (set, get) => ({
+
   user: null,
   authLoading: false,
   tokenLoading: true,
@@ -39,6 +40,26 @@ const createAuthStore = (set, get) => ({
     }
   },
 
+  signUpService: async (name,
+    email,
+    password) => {
+    set({ authLoading: true });
+    try {
+      const res = await axios.post(`${DOMAIN}/api/user/signup`, {
+        name,
+        email,
+        password,
+      })
+      if (res.data.success) {
+        console.log("first")
+      } else {
+        set({ authLoading: false, user: null });
+      }
+    } catch (error) {
+      console.log(error);
+      set({ authLoading: false });
+    }
+  },
 
   loginWithToken: async () => {
     try {
@@ -53,7 +74,7 @@ const createAuthStore = (set, get) => ({
       }
     } catch (error) {
       console.log(error);
-      get().logoutService();    
+      get().logoutService();
     }
   },
 });

@@ -1,5 +1,6 @@
 import Layout from "./components/misc/Layout";
 import LoginPage from "./pages/Auth/Login.page";
+import SignUpPage from "./pages/Auth/SignUp.page";
 import Landing from "./pages/Landing/Landing.page";
 import NotFound from "./pages/Notfound/NotFound.page";
 import CreatePostPage from "./pages/Post/CreatePost.page";
@@ -62,6 +63,7 @@ export const Router = () => {
     createRoutesFromElements(
       <Route element={<Layout />} errorElement={<NotFound />}>
         <Route path="login" element={<LoginPage />} />
+        <Route path="signup" element={<SignUpPage />} />
         <Route
           path="posts"
           element={

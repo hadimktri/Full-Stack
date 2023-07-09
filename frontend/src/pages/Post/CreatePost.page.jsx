@@ -12,7 +12,7 @@ import DOMAIN from "../../services/endpoint";
 import axios from "axios";
 import { useForm } from "@mantine/form";
 import { useLoaderData, useNavigate, useParams } from "react-router-dom";
-
+import useBoundStore from "../../store/Store";
 const useStyles = createStyles((theme) => ({
   wrapper: {
     padding: `calc(${theme.spacing.xl} * 2)`,
@@ -30,6 +30,7 @@ function CreatePostPage() {
   // redirects
   const navigate = useNavigate();
 
+  const { user } = useBoundStore((state) => state);
   // gets id as a parameter from url
   const { postId } = useParams();
 
@@ -73,7 +74,7 @@ function CreatePostPage() {
       }
     } else {
       //add
-      const res = await axios.post(`${DOMAIN}/api/posts`, values);
+      const res = await axios.post(`${DOMAIN}/api/posts/${user.id}`, values);
       if (res?.data.success) {
         navigate("/posts");
       }

@@ -1,9 +1,7 @@
+import { NextFunction, Request, Response } from "express";
 import jwt from "jsonwebtoken";
 import jwtDecode from "jwt-decode";
-import { parseToken } from "../fakedb";
-import { NextFunction, Request, Response } from "express";
-import * as dotenv from "dotenv";
-dotenv.config();
+import { parseToken } from "../services/authService";
 import { Secret } from "jsonwebtoken";
 const secret = process.env.JWT_SECRET as Secret;
 
