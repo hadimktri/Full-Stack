@@ -1,9 +1,10 @@
 import { NextFunction, Request, Response } from "express";
 import jwt from "jsonwebtoken";
+import bcrypt from "bcryptjs";
 import { Secret } from "jsonwebtoken";
 const secret = process.env.JWT_SECRET as Secret;
 import { parseToken } from "../services/authService";
-import { IDecodedUser } from "../utils/interface";
+import { IDecodedUser } from "../utils/types";
 import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
@@ -18,20 +19,20 @@ export const authControllers = {
   postUserLogin: async (req: Request, res: Response) => {
     try {
       const { email, password } = req.body;
-      prisma.user
-        .findFirst({
-          where: {
-            email: email,
-          },
-        })
-        .then((user) => {
-          if (password === user?.password) {
-            const token = jwt.sign({ id: user?.id }, secret, {
-              expiresIn: "2 days",
-            });
-            res.json({ result: { user, token } });
-          }
-        });
+      const user = await prisma.user.findFirst({
+        where: {
+          email: email,
+        },
+      });
+      if (user) {
+        const verifyPassword = await bcrypt.compare(password, user?.password);
+        if (verifyPassword) {
+          const token = jwt.sign({ id: user?.id }, secret, {
+            expiresIn: "2 days",
+          });
+          res.json({ result: { user, token } });
+        }
+      }
     } catch (error) {
       res.status(401).json({ error });
     }
@@ -59,19 +60,23 @@ export const authControllers = {
   postUserSignUp: async (req: Request, res: Response) => {
     try {
       const { name, email, password } = req.body;
-      console.log(name);
-      await prisma.user.create({
+      const hashedPassword = await bcrypt.hash(password, 12);
+      const signup = await prisma.user.create({
         data: {
           name: name,
           email: email,
-          password: password,
+          password: hashedPassword,
         },
       });
-      console.log(email);
+      if (signup) console.log("user saved");
       res.json({ success: true });
     } catch (error) {
       res.status(401).json({ error });
     }
+  },
+
+  googleLogin: (req: Request, res: Response) => {
+    console.log("logged with google");
   },
 };
 export default authControllers;

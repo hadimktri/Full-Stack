@@ -22,3 +22,6 @@ https://www.prisma.io/docs/guides/upgrade-guides/upgrade-from-prisma-1/upgrading
 $ npn i --save-dev nodemon
 $ "dev": "nodemon app.ts"
 $ npm run dev
+
+
+

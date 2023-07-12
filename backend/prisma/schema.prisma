@@ -16,62 +16,27 @@ model User {
   name          String
   email         String  @unique
   password      String
-<<<<<<< HEAD
   profileImage  String?
-=======
-  age           Int
-  profileImage  String
->>>>>>> 97ae8c9f2acccdcedebc05ed57455bdaa729aa17
   role          Role    @default(BASIC)
   writtenPosts  Post[]  @relation("writtenPosts")
   favoritePosts Post[]  @relation("favoritePosts")
 
-<<<<<<< HEAD
-=======
-  @@unique([age, name])
->>>>>>> 97ae8c9f2acccdcedebc05ed57455bdaa729aa17
   @@index([email])
 }
 
 model Post {
-<<<<<<< HEAD
-  id            String     @id @default(uuid())
-  title         String
-  content       String
-  averageRating Float?
-  image         String
-  createdAt     DateTime   @default(now())
-  updatedAt     DateTime   @updatedAt
-  categories    Category[]
-  author        User       @relation("writtenPosts", fields: [authorId], references: [id])
-  authorId      String
-  favoratedBy   User?      @relation("favoritePosts", fields: [favoratedById], references: [id])
-=======
   id            String   @id @default(uuid())
   title         String
-  content       String
-  averageRating Float
+  content       String?
+  averageRating Float?
+  image         String
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
-  category      Category @relation(fields: [categoryId], references: [id])
-  categoryId    String
+  category      String
   author        User     @relation("writtenPosts", fields: [authorId], references: [id])
   authorId      String
   favoratedBy   User?    @relation("favoritePosts", fields: [favoratedById], references: [id])
->>>>>>> 97ae8c9f2acccdcedebc05ed57455bdaa729aa17
   favoratedById String?
-}
-
-model Category {
-<<<<<<< HEAD
-  id   String @id @default(uuid())
-  name String @unique
-  Post Post[]
-=======
-  id    String @id @default(uuid())
-  name  String @unique
-  Posts Post[]
->>>>>>> 97ae8c9f2acccdcedebc05ed57455bdaa729aa17
 }
 
 enum Role {

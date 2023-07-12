@@ -3,7 +3,7 @@ import jwt from "jsonwebtoken";
 import { Secret } from "jsonwebtoken";
 const secret = process.env.JWT_SECRET as Secret;
 import { parseToken } from "../services/authService";
-import { IDecodedUser } from "../utils/interface";
+import { IDecodedUser } from "../utils/types";
 import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 

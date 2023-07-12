@@ -30,6 +30,7 @@ export const postControllers = {
             title: req.body.title,
             content: req.body.content,
             image: req.body.image,
+            category: req.body.category,
             authorId: userId,
           },
         });
@@ -49,6 +50,7 @@ export const postControllers = {
         data: {
           title: req.body.title,
           content: req.body.content,
+          category: req.body.category,
           image: req.body.image,
         },
       });
@@ -65,6 +67,26 @@ export const postControllers = {
           id: req.params.id,
         },
       });
+      res.status(200).json({ success: true });
+    } catch (error) {
+      res.status(401).json({ error });
+    }
+  },
+
+  postFavoratePost: async (req: Request, res: Response) => {
+    const postId = req.params.id;
+    const userId = req.body.userId;
+
+    try {
+      const post = await prisma.post.update({
+        where: {
+          id:postId
+        },
+        data: {
+          
+        },
+      });
+
       res.status(200).json({ success: true });
     } catch (error) {
       res.status(401).json({ error });

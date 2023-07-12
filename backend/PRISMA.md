@@ -1,11 +1,11 @@
 # prisma
 
 $ npm i --save-dev prisma
-$ npx prisma init --datasource provider postgresql
+$ npx prisma init --datasource-provider postgresql
 $ npx prisma format
 $ npx prisma migrate dev --name init
 $ npm i @prisma/client
-$ npx prisma generate
+$ npx prisma generate OR npx prisma db push
 $ npx prisma studio
 
 # code
