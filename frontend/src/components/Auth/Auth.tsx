@@ -12,7 +12,8 @@ const Auth = ({ children }: { children: React.ReactNode }) => {
 
   //checks first if token exist? then cheks if is valid and still have time
   const handleAuthentication = () => {
-    const token = getAccessToken();
+    const query = new URLSearchParams(window.location.search);
+    const token = getAccessToken() || query.get("token");
     if (!token) {
       logoutService();
       return;

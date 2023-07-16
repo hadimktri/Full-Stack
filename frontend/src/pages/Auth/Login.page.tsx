@@ -11,12 +11,20 @@ import {
   Button,
   createStyles,
 } from "@mantine/core";
-import { useForm, isNotEmpty, isEmail, isInRange, hasLength, matches } from '@mantine/form';
+import {
+  useForm,
+  isNotEmpty,
+  isEmail,
+  isInRange,
+  hasLength,
+  matches,
+} from "@mantine/form";
 import { useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import useBoundStore from "../../store/Store";
 import { FcGoogle } from "react-icons/fc";
-
+//*** */
+import { getGoogleUrl } from "../../utils/getGoogleUrl";
 const useStyles = createStyles(() => ({
   button: {
     display: "flex",
@@ -42,10 +50,12 @@ interface Ivalues {
   terms: boolean;
 }
 export default function LoginPage() {
+  //**** */
+  const location = useLocation();
   const navigate = useNavigate();
-  const { loginService, authLoading, googleLogin, user } = useBoundStore(
-    (state) => state
-  );
+  const { loginService, authLoading, user } = useBoundStore((state) => state);
+  //**** */
+  const from = ((location.state as any)?.from.pathname as string) || "/profile";
 
   // firt of all checks if there is any user already in the system redirects to /posts
   useEffect(() => {
@@ -65,8 +75,11 @@ export default function LoginPage() {
     },
     // cheks the validity of entry in the useForm hook
     validate: {
-      email: isEmail('Invalid email'),
-      password: hasLength({ min: 8, max: 20 }, 'Name must be 8-20 characters long'),
+      email: isEmail("Invalid email"),
+      password: hasLength(
+        { min: 8, max: 20 },
+        "Name must be 8-20 characters long"
+      ),
     },
   });
 
@@ -117,10 +130,10 @@ export default function LoginPage() {
             </Anchor>
           </Group>
 
-          <Button onClick={googleLogin} className={classes.button}>
+          <a href={getGoogleUrl(from)} className={classes.button}>
             <FcGoogle size={25} />
             <Text ml="sm">Continue with Google</Text>
-          </Button>
+          </a>
 
           <Button fullWidth mt="xl" type="submit">
             Sign in

@@ -80,8 +80,17 @@ export default function PostDetailsPage() {
   const { deletePost } = useBoundStore((state) => state);
   const { classes } = useStyles();
 
-  const { id, userId, title, category, content, image, author } =
-    useLoaderData();
+  const {
+    id,
+    title,
+    category,
+    content,
+    image,
+    author,
+    averageRating,
+    createdAt,
+    updatedAt,
+  }: any = useLoaderData();
   const navigate = useNavigate();
 
   const handleDelete = () => {
@@ -97,8 +106,20 @@ export default function PostDetailsPage() {
           <Text fw={500} fz="lg" mb={5}>
             {category}
           </Text>
-          <Text fz="sm" c="dimmed">
+          <Text fw={500} fz="lg" mb={5}>
+            {averageRating}
+          </Text>
+          <Text fw={500} fz="lg" mb={5}>
+            {author}
+          </Text>
+          <Text fz="lg" c="dimmed">
             {content}
+          </Text>
+          <Text fw={500} fz="xs" c="dimmed" mb={5}>
+            {createdAt}
+          </Text>
+          <Text fw={500} fz="xs" c="dimmed" mb={5}>
+            {updatedAt}
           </Text>
 
           <div className={classes.controls}>

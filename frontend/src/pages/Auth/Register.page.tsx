@@ -23,8 +23,8 @@ interface Ivalues {
   email: string;
   password: string;
   name: string;
-  confirmPassword?: any;
-  terms: boolean;
+  confirmPassword?: string;
+  profilePicture: string;
 }
 
 export default function RegisterPage() {
@@ -45,6 +45,7 @@ export default function RegisterPage() {
       name: "",
       password: "",
       terms: true,
+      profilePicture: "",
     },
     // cheks the validity of entry in the useForm hook
     validate: {
@@ -54,7 +55,7 @@ export default function RegisterPage() {
         "Name must be 8-20 characters long"
       ),
       confirmPassword: (value: string, values: Ivalues) =>
-        value !== values.password ? "Passwords did not match" : null,
+        value !== values.password ? "Passwords did not match" : false,
     },
   });
 
@@ -63,11 +64,17 @@ export default function RegisterPage() {
     if (
       !values.email ||
       !values.password ||
+      !values.confirmPassword ||
       !values.name ||
       values.password !== values.confirmPassword
     )
       return;
-    signUpService(values.name, values.email, values.password);
+    signUpService(
+      values.name,
+      values.email,
+      values.password,
+      values.profilePicture
+    );
   };
 
   return (
@@ -114,8 +121,13 @@ export default function RegisterPage() {
             required
             {...form.getInputProps("confirmPassword")}
           />
+          <TextInput
+            label="Profile Picture"
+            placeholder="Profile Picture"
+            {...form.getInputProps("profilePicture")}
+          />
           <Button fullWidth mt="xl" type="submit">
-            Sign Up
+            Sign UpProfilePicture
           </Button>
           {authLoading ? <h2>Loading...</h2> : null}
         </form>

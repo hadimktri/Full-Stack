@@ -8,8 +8,11 @@ export interface IUser {
   name: string;
   email: string;
   password: string;
-  profileImage?: string;
-  role?: any;
+  profilePicture: string;
+  role: any;
   writtenPosts?: any;
   favoritePosts?: any;
+  verified: boolean;
+  createdAt: Date;
+  updatedAt: Date;
 }

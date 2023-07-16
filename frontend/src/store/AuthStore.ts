@@ -47,13 +47,14 @@ const createAuthStore: StateCreator<
     }
   },
 
-  signUpService: async (name, email, password) => {
+  signUpService: async (name, email, password, profilePicture) => {
     set({ authLoading: true });
     try {
       const res = await axios.post(`${DOMAIN}/api/auth/signup`, {
         name,
         email,
         password,
+        profilePicture,
       });
       if (res.data.success) {
         console.log("first");
@@ -77,15 +78,6 @@ const createAuthStore: StateCreator<
         // in falsy result
         set({ tokenLoading: false, user: null });
       }
-    } catch (error) {
-      console.log(error);
-      get().logoutService();
-    }
-  },
-
-  googleLogin: () => {
-    try {
-      window.open(`${DOMAIN}/api/auth/google`, "_self");
     } catch (error) {
       console.log(error);
       get().logoutService();

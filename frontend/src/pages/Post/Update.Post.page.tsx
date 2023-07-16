@@ -37,7 +37,6 @@ function UpdatePostPage() {
       image: image,
     },
   });
-  console.log(form);
 
   const handleSubmit = (values: any) => {
     updatePost(values, postId as string);

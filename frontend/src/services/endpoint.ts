@@ -1,4 +1,4 @@
-const DOMAIN = import.meta.env.VITE_ENDPOINT
+const DOMAIN: unknown | string = import.meta.env.VITE_ENDPOINT
   ? import.meta.env.VITE_ENDPOINT
   : "http://localhost:8085";
 

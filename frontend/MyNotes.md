@@ -1,0 +1,1 @@
+1- open the package.json file and replace the dev script with "dev": "vite --port 3000" . This will start the Vite development server on port 3000 instead of the default port 5173.

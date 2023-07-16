@@ -1,9 +1,9 @@
 import { NextFunction, Request, Response } from "express";
 import jwt from "jsonwebtoken";
 import jwtDecode from "jwt-decode";
-import { parseToken } from "../services/authService";
+import { parseToken } from "../services/auth.Service";
 import { Secret } from "jsonwebtoken";
-const secret = process.env.JWT_SECRET as Secret;
+const JWT_TOKEN_SECRET = process.env.JWT_TOKEN_SECRET as Secret;
 
 export const checkAuth = (
   req: Request | any,
@@ -26,7 +26,7 @@ export const checkAuth = (
       }
     }
     // checks token if is valid
-    jwt.verify(token, secret, (err: any, userId: any) => {
+    jwt.verify(token, JWT_TOKEN_SECRET, (err: any, userId: any) => {
       if (err) {
         return res.status(403).json("invalid token");
       } else {

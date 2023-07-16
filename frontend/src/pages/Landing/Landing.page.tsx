@@ -3,13 +3,12 @@ import useBoundStore from "../../store/Store";
 
 const Landing = () => {
   const { user } = useBoundStore((state) => state);
-
   return (
     <Container>
       {user ? (
         <h1>
-          {" "}
-          Welcome {user.name}.<img src={user.profileImage} />{" "}
+          Welcome {user.name}.
+          <img className="landingProfilePicture" src={user.profilePicture} />{" "}
         </h1>
       ) : (
         <>

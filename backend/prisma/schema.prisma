@@ -11,15 +11,18 @@ datasource db {
 }
 
 model User {
-  id            String  @id @default(uuid())
-  googleId      String?
-  name          String
-  email         String  @unique
-  password      String
-  profileImage  String?
-  role          Role    @default(BASIC)
-  writtenPosts  Post[]  @relation("writtenPosts")
-  favoritePosts Post[]  @relation("favoritePosts")
+  id             String   @id @default(uuid())
+  googleId       String?   @unique
+  name           String
+  email          String   @unique
+  password       String
+  profilePicture String   @default("https://cdn.vectorstock.com/i/1000x1000/70/84/default-avatar-profile-icon-symbol-for-website-vector-46547084.webp")
+  role           Role     @default(USER)
+  writtenPosts   Post[]   @relation("writtenPosts")
+  favoritePosts  Post[]   @relation("favoritePosts")
+  verified       Boolean  @default(false)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
 
   @@index([email])
 }
@@ -27,7 +30,7 @@ model User {
 model Post {
   id            String   @id @default(uuid())
   title         String
-  content       String?
+  content       String
   averageRating Float?
   image         String
   createdAt     DateTime @default(now())
@@ -40,6 +43,6 @@ model Post {
 }
 
 enum Role {
-  BASIC
+  USER
   ADMIN
 }

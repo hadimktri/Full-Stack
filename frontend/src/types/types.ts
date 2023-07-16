@@ -1,13 +1,16 @@
 export interface IUser {
   id: string;
-  googleId?: string;
+  googleId: string;
   name: string;
   email: string;
   password: string;
-  profileImage?: string;
-  role?: any;
-  writtenPosts?: any;
-  favoritePosts?: any;
+  profilePicture: string;
+  role: any;
+  favoritePosts?: IPost[];
+  verified: boolean;
+  provider: string;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface IAuthStore {
@@ -17,9 +20,13 @@ export interface IAuthStore {
   setUser: (user: IUser | null) => void;
   logoutService: () => void;
   loginService: (email: string, password: string) => void;
-  signUpService: (name: string, email: string, password: string) => void;
+  signUpService: (
+    name: string,
+    email: string,
+    password: string,
+    profilePicture: string
+  ) => void;
   loginWithToken: () => void;
-  googleLogin: () => void;
 }
 export interface IPostStore {
   postsLoading: boolean;
@@ -37,14 +44,14 @@ export interface IToken {
 export interface IPost {
   id: string;
   title: string;
-  content?: string;
-  averageRating?: number;
+  content: string;
+  averageRating: number;
   image: string;
-  createdAt?: string;
-  updatedAt?: string;
+  createdAt: string;
+  updatedAt: string;
   category: string;
   author: string;
-  authorId?: string;
+  authorId: string;
   favoratedBy?: IUser;
   favoratedById?: string;
 }

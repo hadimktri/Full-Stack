@@ -1,8 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import jwt from "jsonwebtoken";
-import { Secret } from "jsonwebtoken";
-const secret = process.env.JWT_SECRET as Secret;
-import { parseToken } from "../services/authService";
+import { parseToken } from "../services/auth.Service";
 import { IDecodedUser } from "../utils/types";
 import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();

@@ -2,8 +2,7 @@ import { createStyles, Paper, Text, Title, Button, rem } from "@mantine/core";
 import { Link } from "react-router-dom";
 import { TbHeartFilled } from "react-icons/tb";
 import useBoundStore from "../../store/Store";
-import { IUser } from "../../types/types";
-// nothing special
+
 const useStyles = createStyles((theme) => ({
   card: {
     height: rem(440),
@@ -56,12 +55,12 @@ export function ArticleCardImage({ title, category, image, id }: IProps) {
       className={classes.card}
     >
       <div>
-        <Text className={classes.category} size="xs">
-          {category}
-        </Text>
         <Title order={3} className={classes.title}>
           {title}
         </Title>
+        <Text className={classes.category} size="sm">
+          {category}
+        </Text>
       </div>
       <Button variant="white" color="dark">
         <Link to={id}>View</Link>
