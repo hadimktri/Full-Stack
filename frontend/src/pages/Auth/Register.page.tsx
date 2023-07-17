@@ -6,18 +6,15 @@ import {
   Text,
   Container,
   Button,
+  Anchor,
+  createStyles,
 } from "@mantine/core";
-import {
-  useForm,
-  isNotEmpty,
-  isEmail,
-  isInRange,
-  hasLength,
-  matches,
-} from "@mantine/form";
+import { useForm, isEmail, hasLength } from "@mantine/form";
 import { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import useBoundStore from "../../store/Store";
+import { getGoogleUrl } from "../../utils/getGoogleUrl";
+import { FcGoogle } from "react-icons/fc";
 
 interface Ivalues {
   email: string;
@@ -30,7 +27,7 @@ interface Ivalues {
 export default function RegisterPage() {
   const navigate = useNavigate();
   const { signUpService, authLoading, user } = useBoundStore((state) => state);
-  // firt of all checks if there is any user already in the system redirects to /posts
+
   useEffect(() => {
     if (user) {
       navigate("/posts");
@@ -77,6 +74,21 @@ export default function RegisterPage() {
     );
   };
 
+  const useStyles = createStyles(() => ({
+    button: {
+      display: "flex",
+      color: "lightgray",
+      borderBottom: "2px solid gray",
+      paddingBottom: "5px",
+      paddingTop: "5px",
+      marginTop: "20px",
+      backgroundColor: "transparent",
+    },
+    
+  }));
+
+  const from = ((location.state as any)?.from.pathname as string) || "/profile";
+  const { classes } = useStyles();
   return (
     <Container size={420} my={40}>
       <Title
@@ -129,6 +141,10 @@ export default function RegisterPage() {
           <Button fullWidth mt="xl" type="submit">
             Sign UpProfilePicture
           </Button>
+          <Anchor href={getGoogleUrl(from)} className={classes.button}>
+            <FcGoogle size={25} />
+            <Text ml="sm">or Sign Up with Google</Text>
+          </Anchor>
           {authLoading ? <h2>Loading...</h2> : null}
         </form>
       </Paper>

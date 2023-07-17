@@ -2,6 +2,8 @@ import { createStyles, Paper, Text, Title, Button, rem } from "@mantine/core";
 import { Link } from "react-router-dom";
 import { TbHeartFilled } from "react-icons/tb";
 import useBoundStore from "../../store/Store";
+import { IUser } from "../../types/types";
+import { useEffect, useState } from "react";
 
 const useStyles = createStyles((theme) => ({
   card: {
@@ -36,11 +38,26 @@ interface IProps {
   category: string;
   image: string;
   id: string;
+  favoratedBy: IUser[];
 }
 
-export function ArticleCardImage({ title, category, image, id }: IProps) {
+export function ArticleCardImage({
+  title,
+  category,
+  image,
+  id,
+  favoratedBy,
+}: IProps) {
   const { userFavorate, user } = useBoundStore((state) => state);
   const { classes } = useStyles();
+
+  const [faved, setFaved] = useState<boolean>();
+
+  useEffect(() => {
+    setFaved(
+      favoratedBy.map((favUser) => favUser.id).includes(user?.id as string)
+    );
+  }, [favoratedBy, user?.id]);
 
   const handleFavorate = () => {
     userFavorate(id, user?.id as string);
@@ -60,6 +77,9 @@ export function ArticleCardImage({ title, category, image, id }: IProps) {
         </Title>
         <Text className={classes.category} size="sm">
           {category}
+        </Text>
+        <Text className={classes.category} size="sm">
+          {faved ? "faved" : "not"}
         </Text>
       </div>
       <Button variant="white" color="dark">

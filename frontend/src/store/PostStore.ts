@@ -33,6 +33,7 @@ const PostStore: StateCreator<IAuthStore & IPostStore, [], [], IPostStore> = (
       );
       if (res?.data.success) {
         set({ postsLoading: true });
+        
       }
     } catch (error) {
       console.log(error);

@@ -18,6 +18,9 @@ export const authControllers = {
         where: {
           email: email,
         },
+        include: {
+          favoritePosts: true,
+        },
       });
       if (!user) {
         return res.status(401).json({
@@ -128,6 +131,9 @@ export const authControllers = {
           profilePicture: picture,
           verified: verified_email,
         },
+        include: {
+          favoritePosts: true,
+        },
         update: {
           googleId: id,
           name,
@@ -141,10 +147,23 @@ export const authControllers = {
       const token = jwt.sign({ id: user?.id }, JWT_TOKEN_SECRET, {
         expiresIn: JWT_TOKEN_EXPIRES_IN,
       });
-      res.redirect(`http://localhost:3000?token=${token}`);
+      res.redirect(`http://localhost:3000/posts?token=${token}`);
     } catch (error) {
       console.log("Failed to authorize Google User", error);
       return res.redirect(`${FRONTEND_ORIGIN}/oauth/error`);
+    }
+  },
+
+  postUserDelete: async (req: Request, res: Response) => {
+    try {
+      await prisma.user.delete({
+        where: {
+          id: req.params.id,
+        },
+      });
+      res.status(200).json({ success: true });
+    } catch (error) {
+      res.status(401).json({ error });
     }
   },
 };

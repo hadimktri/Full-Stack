@@ -8,7 +8,7 @@ import {
   Textarea,
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
-import { useLoaderData, useNavigate, useParams } from "react-router-dom";
+import { useLoaderData, useNavigate } from "react-router-dom";
 import { IPost } from "../../types/types";
 import useBoundStore from "../../store/Store";
 const useStyles = createStyles((theme) => ({
@@ -27,8 +27,7 @@ function UpdatePostPage() {
   const { updatePost } = useBoundStore((state) => state);
   const { classes } = useStyles();
   const navigate = useNavigate();
-  const { postId } = useParams();
-  const { title, category, content, image } = useLoaderData() as IPost;
+  const { id, title, category, content, image } = useLoaderData() as IPost;
   const form = useForm({
     initialValues: {
       title: title,
@@ -39,8 +38,8 @@ function UpdatePostPage() {
   });
 
   const handleSubmit = (values: any) => {
-    updatePost(values, postId as string);
-    navigate("/posts");
+    updatePost(values, id);
+    navigate(`/posts`);
   };
 
   return (
@@ -73,7 +72,7 @@ function UpdatePostPage() {
             withAsterisk
           />
           <Group position="right" mt="md">
-            <Button type="submit">{!postId ? "Create" : "Edit"}</Button>
+            <Button type="submit">Edit</Button>
           </Group>
         </form>
       </div>

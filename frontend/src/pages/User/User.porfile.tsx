@@ -7,7 +7,7 @@ import {
   rem,
   Container,
 } from "@mantine/core";
-import { Link, useLoaderData, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import useBoundStore from "../../store/Store";
 
 const useStyles = createStyles((theme) => ({
@@ -76,60 +76,31 @@ const useStyles = createStyles((theme) => ({
   },
 }));
 
-export default function PostDetailsPage() {
-  const { deletePost } = useBoundStore((state) => state);
+export default function UserProfile() {
+  const { user, deleteUser } = useBoundStore((state) => state);
+
   const { classes } = useStyles();
 
-  const {
-    id,
-    title,
-    category,
-    content,
-    image,
-    author,
-    averageRating,
-    createdAt,
-    updatedAt,
-  }: any = useLoaderData();
-  const navigate = useNavigate();
-
   const handleDelete = () => {
-    deletePost(id as string);
-    navigate("/posts");
+    deleteUser(user?.id as string);
   };
 
   return (
     <Container size="50%" my={40}>
       <div className={classes.wrapper}>
         <div className={classes.body}>
-          <Title className={classes.title}>{title}</Title>
+          <Title className={classes.title}>{user?.name}</Title>
           <Text fw={500} fz="lg" mb={5}>
-            {category}
+            {user?.email}
           </Text>
-          <Text fw={500} fz="lg" mb={5}>
-            {averageRating}
-          </Text>
-          <Text fw={500} fz="lg" mb={5}>
-            {author}
-          </Text>
-          <Text fz="lg" c="dimmed">
-            {content}
-          </Text>
-          <Text fw={500} fz="xs" c="dimmed" mb={5}>
-            {createdAt}
-          </Text>
-          <Text fw={500} fz="xs" c="dimmed" mb={5}>
-            {updatedAt}
-          </Text>
-
           <div className={classes.controls}>
             <Button radius="sm">
-              <Link to={`/post/update/${id as string}`}>Edit</Link>
+              <Link to={`/user/update/${user?.id as string}`}>Edit</Link>
             </Button>
             <Button onClick={handleDelete}>Delete</Button>
           </div>
         </div>
-        <Image src={image as string} className={classes.image} />
+        <Image src={user?.profilePicture as string} className={classes.image} />
       </div>
     </Container>
   );

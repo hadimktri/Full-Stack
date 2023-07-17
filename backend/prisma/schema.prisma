@@ -12,14 +12,14 @@ datasource db {
 
 model User {
   id             String   @id @default(uuid())
-  googleId       String?   @unique
+  googleId       String?  @unique
   name           String
   email          String   @unique
   password       String
   profilePicture String   @default("https://cdn.vectorstock.com/i/1000x1000/70/84/default-avatar-profile-icon-symbol-for-website-vector-46547084.webp")
   role           Role     @default(USER)
   writtenPosts   Post[]   @relation("writtenPosts")
-  favoritePosts  Post[]   @relation("favoritePosts")
+  favoritePosts  Post[]
   verified       Boolean  @default(false)
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
@@ -36,10 +36,9 @@ model Post {
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
   category      String
-  author        User     @relation("writtenPosts", fields: [authorId], references: [id])
+  author        User     @relation("writtenPosts", fields: [authorId], references: [id], onDelete: Cascade)
   authorId      String
-  favoratedBy   User?    @relation("favoritePosts", fields: [favoratedById], references: [id])
-  favoratedById String?
+  favoratedBy   User[]
 }
 
 enum Role {

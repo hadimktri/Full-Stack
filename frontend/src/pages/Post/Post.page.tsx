@@ -1,4 +1,3 @@
-
 import { Suspense } from "react";
 import { ArticleCardImage } from "../../components/misc/ArticleCardImage";
 import { SimpleGrid, Container } from "@mantine/core";
@@ -7,6 +6,7 @@ import { Loader } from "@mantine/core";
 
 const PostPage = () => {
   const dataPromise = useLoaderData();
+
   return (
     <Container>
       <SimpleGrid cols={3}>

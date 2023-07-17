@@ -11,19 +11,12 @@ import {
   Button,
   createStyles,
 } from "@mantine/core";
-import {
-  useForm,
-  isNotEmpty,
-  isEmail,
-  isInRange,
-  hasLength,
-  matches,
-} from "@mantine/form";
+import { useForm, isEmail, hasLength } from "@mantine/form";
 import { useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import useBoundStore from "../../store/Store";
 import { FcGoogle } from "react-icons/fc";
-//*** */
+
 import { getGoogleUrl } from "../../utils/getGoogleUrl";
 const useStyles = createStyles(() => ({
   button: {
@@ -50,11 +43,10 @@ interface Ivalues {
   terms: boolean;
 }
 export default function LoginPage() {
-  //**** */
   const location = useLocation();
   const navigate = useNavigate();
   const { loginService, authLoading, user } = useBoundStore((state) => state);
-  //**** */
+
   const from = ((location.state as any)?.from.pathname as string) || "/profile";
 
   // firt of all checks if there is any user already in the system redirects to /posts
@@ -83,7 +75,6 @@ export default function LoginPage() {
     },
   });
 
-  //check the exsistance of both entry if no stops with return if yes fires the (loginService())
   const onLogin = (values: Ivalues) => {
     if (!values.email || !values.password) return;
     loginService(values.email, values.password);
@@ -129,16 +120,13 @@ export default function LoginPage() {
               Forgot password?
             </Anchor>
           </Group>
-
-          <a href={getGoogleUrl(from)} className={classes.button}>
-            <FcGoogle size={25} />
-            <Text ml="sm">Continue with Google</Text>
-          </a>
-
           <Button fullWidth mt="xl" type="submit">
             Sign in
           </Button>
-
+          <Anchor href={getGoogleUrl(from)} className={classes.button}>
+            <FcGoogle size={25} />
+            <Text ml="sm">or Login with Google</Text>
+          </Anchor>
           {authLoading ? <h2>Loading...</h2> : null}
         </form>
       </Paper>

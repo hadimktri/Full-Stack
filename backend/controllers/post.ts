@@ -5,8 +5,12 @@ import { sleep } from "../utils/utils";
 
 export const postControllers = {
   getPosts: async (req: Request, res: Response) => {
-    await sleep(500);
-    const posts = await prisma.post.findMany();
+    await sleep(2500);
+    const posts = await prisma.post.findMany({
+      include: {
+        favoratedBy: true,
+      },
+    });
     return res.json(posts);
   },
 
@@ -76,16 +80,43 @@ export const postControllers = {
   postFavoratePost: async (req: Request, res: Response) => {
     const postId = req.params.id;
     const userId = req.body.userId;
-
     try {
-      const post = await prisma.post.update({
+      const favedId = await prisma.post.findFirst({
         where: {
-          id:postId
+          id: postId,
         },
-        data: {
-          
+        select: {
+          favoratedBy: { select: { id: true } },
         },
       });
+
+      const isFaved = favedId?.favoratedBy
+        .map((faved) => faved.id)
+        .includes(userId);
+
+      if (isFaved) {
+        await prisma.post.update({
+          where: {
+            id: postId,
+          },
+          data: {
+            favoratedBy: {
+              disconnect: { id: userId },
+            },
+          },
+        });
+      } else {
+        await prisma.post.update({
+          where: {
+            id: postId,
+          },
+          data: {
+            favoratedBy: {
+              connect: { id: userId },
+            },
+          },
+        });
+      }
 
       res.status(200).json({ success: true });
     } catch (error) {
@@ -95,3 +126,4 @@ export const postControllers = {
 };
 
 export default postControllers;
+

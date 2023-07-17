@@ -83,5 +83,19 @@ const createAuthStore: StateCreator<
       get().logoutService();
     }
   },
+
+  deleteUser: async (id) => {
+    try {
+      const res = await axios.post(`${DOMAIN}/api/auth/delete/${id}`);
+      if (res?.data.success) {
+        console.log("deleted")
+        get().logoutService();
+      }
+    } catch (error) {
+      console.log(error);
+      set({ postsLoading: false });
+    }
+  },
 });
+
 export default createAuthStore;

@@ -8,6 +8,7 @@ import {
   Paper,
   Transition,
   rem,
+  Avatar,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { GiPlantsAndAnimals } from "react-icons/gi";
@@ -51,7 +52,9 @@ const useStyles = createStyles((theme) => ({
       display: "none",
     },
   },
-
+  navUser: {
+    borderRadius: "50%",
+  },
   burger: {
     [theme.fn.largerThan("sm")]: {
       display: "none",
@@ -59,7 +62,7 @@ const useStyles = createStyles((theme) => ({
   },
 
   link: {
-    // color:'blue',
+    cursor: "pointer",
     display: "block",
     lineHeight: 1,
     padding: `${rem(8)} ${rem(12)}`,
@@ -95,13 +98,12 @@ const useStyles = createStyles((theme) => ({
         .color,
     },
   },
+  logout: {
+    cursor: "pointer",
+  },
 }));
 
 const navbarLinks = [
-  {
-    link: "/",
-    label: "Home",
-  },
   {
     link: "posts",
     label: "Posts",
@@ -117,7 +119,7 @@ export default function Navbar() {
   const navigate = useNavigate();
   const onLogout = () => {
     logoutService();
-    navigate("/");
+    navigate("posts");
   };
 
   const [opened, { toggle, close }] = useDisclosure(false);
@@ -143,7 +145,7 @@ export default function Navbar() {
   return (
     <Header height={HEADER_HEIGHT} mb={120} className={classes.root}>
       <Container className={classes.header}>
-        <NavLink to="/">
+        <NavLink to="posts">
           <GiPlantsAndAnimals size={40} style={{ color: "green" }} />
         </NavLink>
         {!!user && (
@@ -153,9 +155,21 @@ export default function Navbar() {
         )}
         <Group spacing={5} className={classes.links}>
           {user ? (
-            <h4 className="logout" onClick={onLogout}>
-              Logout
-            </h4>
+            <>
+              {" "}
+              <NavLink className={classes.link} to="#">
+                <h4 className={classes.links} onClick={onLogout}>
+                  Logout
+                </h4>
+              </NavLink>
+              <NavLink className={classes.link} to="/user/profile">
+                <Avatar
+                  className={classes.navUser}
+                  src={user.profilePicture}
+                  alt="it's me"
+                />
+              </NavLink>
+            </>
           ) : (
             <Group spacing={5} className={classes.links}>
               <NavLink className={classes.link} to="login">
@@ -168,7 +182,6 @@ export default function Navbar() {
           )}
         </Group>
         <LightDark />
-
         <Burger
           opened={opened}
           onClick={toggle}
@@ -179,7 +192,7 @@ export default function Navbar() {
         <Transition transition="pop-top-right" duration={200} mounted={opened}>
           {(styles) => (
             <Paper className={classes.dropdown} withBorder style={styles}>
-              <NavLink to="/">
+              <NavLink to="posts">
                 <h4>Home</h4>
               </NavLink>
               {!!user && (
@@ -188,15 +201,16 @@ export default function Navbar() {
                 </NavLink>
               )}
               {user ? (
-                <h4 className="logout" onClick={onLogout}>
-                  Logout
-                </h4>
+                <NavLink className={classes.link} to="#">
+                  <h4 className={classes.link} onClick={onLogout}>
+                    Logout
+                  </h4>
+                </NavLink>
               ) : (
                 <NavLink to="login">
                   <h4>Login</h4>
                 </NavLink>
               )}
-              <LightDark />
             </Paper>
           )}
         </Transition>

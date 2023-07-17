@@ -3,7 +3,7 @@ const router = express.Router();
 import { checkAuth } from "../middleware/checkAuth";
 import postControllers from "../controllers/post";
 
-router.get("/", checkAuth, postControllers.getPosts);
+router.get("/", postControllers.getPosts);
 
 router.get("/:id", checkAuth, postControllers.getOnePost);
 

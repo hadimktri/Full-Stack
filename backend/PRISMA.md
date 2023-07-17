@@ -14,3 +14,7 @@ peisma.user.findFirst()
 peisma.user.findMany()
 peisma.user.create({data:{neme:"hadi"}})
 prisma.$disconnect
+
+
+
+   

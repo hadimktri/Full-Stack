@@ -27,6 +27,7 @@ export interface IAuthStore {
     profilePicture: string
   ) => void;
   loginWithToken: () => void;
+  deleteUser: (id: string) => void;
 }
 export interface IPostStore {
   postsLoading: boolean;

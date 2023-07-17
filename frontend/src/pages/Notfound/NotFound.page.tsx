@@ -9,7 +9,7 @@ const NotFound = () => {
       <h1>Page not found</h1>
       {error && <p>{error.message}</p>}
       <p className="backToHome">
-        Go To The <Link to="/">Home Page</Link>
+        Go To The <Link to="posts">Home Page</Link>
       </p>
     </div>
   );
