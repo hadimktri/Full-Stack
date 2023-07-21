@@ -6,6 +6,7 @@ import {
   rem,
   Container,
   Textarea,
+  FileInput,
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { useNavigate } from "react-router-dom";
@@ -29,7 +30,7 @@ function CreatePostPage() {
   const navigate = useNavigate();
   const form = useForm();
   const { user, addPost } = useBoundStore((state) => state);
-  
+
   const handelAddPost = (values: any) => {
     addPost(values, (user as IUser).id);
     navigate("/posts");
@@ -45,7 +46,6 @@ function CreatePostPage() {
             {...form.getInputProps("title")}
             withAsterisk
           />
-
           <TextInput
             label="category"
             placeholder="Enter a Category"
@@ -58,14 +58,17 @@ function CreatePostPage() {
             {...form.getInputProps("image")}
             withAsterisk
           />
-
           <Textarea
             label="Content"
             placeholder="Enter some content"
             {...form.getInputProps("content")}
             withAsterisk
           />
-
+          <FileInput
+            label="Upload files"
+            placeholder="Upload files"
+            accept="image/png,image/jpeg"
+          />
           <Group position="right" mt="md">
             <Button type="submit">Create</Button>
           </Group>

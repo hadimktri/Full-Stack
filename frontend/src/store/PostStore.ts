@@ -15,7 +15,10 @@ const PostStore: StateCreator<IAuthStore & IPostStore, [], [], IPostStore> = (
 
   addPost: async (values, id) => {
     try {
-      const res = await axios.post(`${DOMAIN}/api/posts/${id}`, values);
+      const res = await axios.post(
+        `${DOMAIN as string}/api/posts/${id}`,
+        values
+      );
       if (res?.data.success) {
         set({ postsLoading: true });
       }
@@ -28,12 +31,11 @@ const PostStore: StateCreator<IAuthStore & IPostStore, [], [], IPostStore> = (
   updatePost: async (values, postId) => {
     try {
       const res = await axios.post(
-        `${DOMAIN}/api/posts/update/${postId}`,
+        `${DOMAIN as string}/api/posts/update/${postId}`,
         values
       );
       if (res?.data.success) {
         set({ postsLoading: true });
-        
       }
     } catch (error) {
       console.log(error);
@@ -43,7 +45,9 @@ const PostStore: StateCreator<IAuthStore & IPostStore, [], [], IPostStore> = (
 
   deletePost: async (id) => {
     try {
-      const res = await axios.post(`${DOMAIN}/api/posts/delete/${id}`);
+      const res = await axios.post(
+        `${DOMAIN as string}/api/posts/delete/${id}`
+      );
       if (res?.data.success) {
         set({ postsLoading: true });
       }
@@ -54,9 +58,52 @@ const PostStore: StateCreator<IAuthStore & IPostStore, [], [], IPostStore> = (
   },
   userFavorate: async (postId, userId) => {
     try {
-      const res = await axios.post(`${DOMAIN}/api/posts/favorate/${postId}`, {
-        userId,
-      });
+      const res = await axios.post(
+        `${DOMAIN as string}/api/posts/favorate/${postId}`,
+        {
+          userId,
+        }
+      );
+      if (res?.data.success) {
+        set({ postsLoading: true });
+      }
+    } catch (error) {
+      console.log(error);
+      set({ postsLoading: false });
+    }
+  },
+  postIncreaselikes: async (postId) => {
+    try {
+      const res = await axios.post(
+        `${DOMAIN as string}/api/posts/likeUp/${postId}`
+      );
+      if (res?.data.success) {
+        set({ postsLoading: true });
+      }
+    } catch (error) {
+      console.log(error);
+      set({ postsLoading: false });
+    }
+  },
+  postDecreaselikes: async (postId) => {
+    try {
+      const res = await axios.post(
+        `${DOMAIN as string}/api/posts/likeDown/${postId}`
+      );
+      if (res?.data.success) {
+        set({ postsLoading: true });
+      }
+    } catch (error) {
+      console.log(error);
+      set({ postsLoading: false });
+    }
+  },
+  postComment: async (postId, values) => {
+    try {
+      const res = await axios.post(
+        `${DOMAIN as string}/api/posts/comment/${postId}`,
+        values
+      );
       if (res?.data.success) {
         set({ postsLoading: true });
       }

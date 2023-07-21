@@ -87,7 +87,7 @@ export default function PostDetailsPage() {
     content,
     image,
     author,
-    averageRating,
+    likes,
     createdAt,
     updatedAt,
   }: any = useLoaderData();
@@ -107,7 +107,7 @@ export default function PostDetailsPage() {
             {category}
           </Text>
           <Text fw={500} fz="lg" mb={5}>
-            {averageRating}
+            {likes}
           </Text>
           <Text fw={500} fz="lg" mb={5}>
             {author}

@@ -8,6 +8,7 @@ import {
   Button,
   Anchor,
   createStyles,
+  FileInput,
 } from "@mantine/core";
 import { useForm, isEmail, hasLength } from "@mantine/form";
 import { useEffect } from "react";
@@ -84,10 +85,9 @@ export default function RegisterPage() {
       marginTop: "20px",
       backgroundColor: "transparent",
     },
-    
   }));
 
-  const from = ((location.state as any)?.from.pathname as string) || "/profile";
+  const from = (location.state?.from.pathname as string) || "/profile";
   const { classes } = useStyles();
   return (
     <Container size={420} my={40}>
@@ -134,9 +134,14 @@ export default function RegisterPage() {
             {...form.getInputProps("confirmPassword")}
           />
           <TextInput
-            label="Profile Picture"
-            placeholder="Profile Picture"
+            label="Profile Picture url"
+            placeholder="Profile Picture url"
             {...form.getInputProps("profilePicture")}
+          />
+          <FileInput
+            label="Profile Picture File"
+            placeholder="Upload Profile Picture File"
+            accept="image/png,image/jpeg"
           />
           <Button fullWidth mt="xl" type="submit">
             Sign UpProfilePicture

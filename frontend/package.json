@@ -16,6 +16,7 @@
     "@mantine/ds": "^6.0.16",
     "@mantine/form": "^6.0.16",
     "@mantine/hooks": "^6.0.16",
+    "@remix-run/react": "^1.19.0",
     "axios": "^1.4.0",
     "framer-motion": "^10.12.18",
     "jwt-decode": "^3.1.2",

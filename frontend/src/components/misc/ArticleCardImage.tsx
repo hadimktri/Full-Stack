@@ -1,9 +1,22 @@
-import { createStyles, Paper, Text, Title, Button, rem } from "@mantine/core";
+import {
+  createStyles,
+  Paper,
+  Text,
+  Title,
+  Button,
+  rem,
+  Avatar,
+} from "@mantine/core";
+import {
+  TbArrowBadgeDownFilled,
+  TbArrowBadgeUpFilled,
+  TbHeartFilled,
+} from "react-icons/tb";
 import { Link } from "react-router-dom";
-import { TbHeartFilled } from "react-icons/tb";
 import useBoundStore from "../../store/Store";
-import { IUser } from "../../types/types";
+import { IComment, IUser } from "../../types/types";
 import { useEffect, useState } from "react";
+import CommentModal from "./CommentModal";
 
 const useStyles = createStyles((theme) => ({
   card: {
@@ -32,6 +45,9 @@ const useStyles = createStyles((theme) => ({
     fontWeight: 700,
     textTransform: "uppercase",
   },
+  navUser: {
+    borderRadius: "50%",
+  },
 }));
 interface IProps {
   title: string;
@@ -39,6 +55,11 @@ interface IProps {
   image: string;
   id: string;
   favoratedBy: IUser[];
+  likes: number;
+  author: IUser;
+  comments: IComment;
+  setChanges: (val: boolean) => void;
+  changes: boolean;
 }
 
 export function ArticleCardImage({
@@ -47,11 +68,16 @@ export function ArticleCardImage({
   image,
   id,
   favoratedBy,
+  likes,
+  author,
+  comments,
+  setChanges,
+  changes,
 }: IProps) {
-  const { userFavorate, user } = useBoundStore((state) => state);
+  const { user, userFavorate, postIncreaselikes, postDecreaselikes } =
+    useBoundStore((state) => state);
   const { classes } = useStyles();
-
-  const [faved, setFaved] = useState<boolean>();
+  const [faved, setFaved] = useState<boolean>(false);
 
   useEffect(() => {
     setFaved(
@@ -61,6 +87,15 @@ export function ArticleCardImage({
 
   const handleFavorate = () => {
     userFavorate(id, user?.id as string);
+    setChanges(!changes);
+  };
+  const handleLikeUp = () => {
+    postIncreaselikes(id);
+    setChanges(!changes);
+  };
+  const handleLikeDown = () => {
+    setChanges(!changes);
+    postDecreaselikes(id);
   };
 
   return (
@@ -81,13 +116,32 @@ export function ArticleCardImage({
         <Text className={classes.category} size="sm">
           {faved ? "faved" : "not"}
         </Text>
+        <Text className={classes.category} size="sm">
+          {comments[2]?.content}
+        </Text>
+        <Text className={classes.category} size="sm">
+          {likes}
+        </Text>
       </div>
+
       <Button variant="white" color="dark">
         <Link to={id}>View</Link>
       </Button>
       <Button onClick={handleFavorate} variant="white" color="dark">
         <TbHeartFilled size={30} />
       </Button>
+      <Button onClick={handleLikeUp} variant="white" color="dark">
+        <TbArrowBadgeUpFilled size={30} />
+      </Button>
+      <Button onClick={handleLikeDown} variant="white" color="dark">
+        <TbArrowBadgeDownFilled size={30} />
+      </Button>
+      <CommentModal postId={id} />
+      <Avatar
+        className={classes.navUser}
+        src={author?.profilePicture}
+        alt="it's me"
+      />
     </Paper>
   );
 }

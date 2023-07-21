@@ -36,6 +36,12 @@ export interface IPostStore {
   updatePost: (value: any, id: string) => void;
   deletePost: (id: string) => void;
   userFavorate: (postId: string, userId: string) => void;
+  postIncreaselikes: (postId: string) => void;
+  postDecreaselikes: (postId: string) => void;
+  postComment: (
+    postId: string,
+    values: { userId: string; content: string }
+  ) => void;
 }
 export interface IToken {
   name: string;
@@ -46,7 +52,7 @@ export interface IPost {
   id: string;
   title: string;
   content: string;
-  averageRating: number;
+  likes: number;
   image: string;
   createdAt: string;
   updatedAt: string;
@@ -55,4 +61,12 @@ export interface IPost {
   authorId: string;
   favoratedBy?: IUser;
   favoratedById?: string;
+}
+export interface IComment {
+  id: string;
+  content: string;
+  author: IUser;
+  postId: string;
+  createdAt: string;
+  updatedAt: string;
 }

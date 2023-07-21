@@ -27,12 +27,12 @@ const createAuthStore: StateCreator<
     set({ authLoading: true });
     // while waiting for result from backend, loading is running
     try {
-      const res = await axios.post(`${DOMAIN}/api/auth/login`, {
+      const res = await axios.post(`${DOMAIN as string}/api/auth/login`, {
         email,
         password,
       });
       //if we have truthy result with user and token
-      if (res.data.result?.user && res.data.result?.token) {
+      if ((res).data.result?.user && res.data.result?.token) {
         // saving token in the local storage as cookie
         setSession(res.data.result?.token);
         //finally set the stor's user from null to result user
@@ -50,15 +50,14 @@ const createAuthStore: StateCreator<
   signUpService: async (name, email, password, profilePicture) => {
     set({ authLoading: true });
     try {
-      const res = await axios.post(`${DOMAIN}/api/auth/signup`, {
+      const res = await axios.post(`${DOMAIN as string}/api/auth/signup`, {
         name,
         email,
         password,
         profilePicture,
       });
       if (res.data.success) {
-        console.log("first");
-      } else {
+             } else {
         set({ authLoading: false, user: null });
       }
     } catch (error) {
@@ -69,7 +68,7 @@ const createAuthStore: StateCreator<
 
   loginWithToken: async () => {
     try {
-      const res = await axios.post(`${DOMAIN}/api/auth/validation`);
+      const res = await axios.post(`${DOMAIN as string}/api/auth/validation`);
       // if result contains user and token, sets session and user loading false
       if (res.data.result?.user && res.data.result?.token) {
         setSession(res.data.result?.token);
@@ -86,10 +85,9 @@ const createAuthStore: StateCreator<
 
   deleteUser: async (id) => {
     try {
-      const res = await axios.post(`${DOMAIN}/api/auth/delete/${id}`);
+      const res = await axios.post(`${DOMAIN as string}/api/auth/delete/${id}`);
       if (res?.data.success) {
-        console.log("deleted")
-        get().logoutService();
+               get().logoutService();
       }
     } catch (error) {
       console.log(error);

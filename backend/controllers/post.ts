@@ -5,11 +5,14 @@ import { sleep } from "../utils/utils";
 
 export const postControllers = {
   getPosts: async (req: Request, res: Response) => {
-    await sleep(2500);
+    // await sleep(500);
     const posts = await prisma.post.findMany({
       include: {
         favoratedBy: true,
+        author: true,
+        comments: true,
       },
+      orderBy: { createdAt: "asc" },
     });
     return res.json(posts);
   },
@@ -123,7 +126,47 @@ export const postControllers = {
       res.status(401).json({ error });
     }
   },
+
+  postLikeUpPost: async (req: Request, res: Response) => {
+    try {
+      await prisma.post.update({
+        where: {
+          id: req.params.id,
+        },
+        data: { likes: { increment: 1 } },
+      });
+      res.status(200).json({ success: true });
+    } catch (error) {
+      res.status(401).json({ error });
+    }
+  },
+  postLikeDownPost: async (req: Request, res: Response) => {
+    try {
+      await prisma.post.update({
+        where: {
+          id: req.params.id,
+        },
+        data: { likes: { decrement: 1 } },
+      });
+      res.status(200).json({ success: true });
+    } catch (error) {
+      res.status(401).json({ error });
+    }
+  },
+  postCommentPost: async (req: Request, res: Response) => {
+    try {
+      await prisma.comment.create({
+        data: {
+          content: req.body.content,
+          authorId: req.body.userId,
+          postId: req.params.id,
+        },
+      });
+      res.status(200).json({ success: true });
+    } catch (error) {
+      res.status(401).json({ error });
+    }
+  },
 };
 
 export default postControllers;
-

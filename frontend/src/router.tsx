@@ -29,15 +29,7 @@ export const Router = () => {
       <Route element={<Layout />} errorElement={<NotFound />}>
         <Route path="login" element={<LoginPage />} />
         <Route path="signup" element={<RegisterPage />} />
-        <Route
-          path="posts"
-          element={
-            // <ProtectedRoute isAllowed={!!authCheck}>
-            <PostPage />
-            // </ProtectedRoute>
-          }
-          loader={postsLoader}
-        />
+        <Route path="posts" element={<PostPage />} loader={postsLoader} />
         <Route
           path="/user/profile"
           element={

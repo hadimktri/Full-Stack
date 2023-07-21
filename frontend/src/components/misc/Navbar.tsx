@@ -156,7 +156,6 @@ export default function Navbar() {
         <Group spacing={5} className={classes.links}>
           {user ? (
             <>
-              {" "}
               <NavLink className={classes.link} to="#">
                 <h4 className={classes.links} onClick={onLogout}>
                   Logout
@@ -165,7 +164,7 @@ export default function Navbar() {
               <NavLink className={classes.link} to="/user/profile">
                 <Avatar
                   className={classes.navUser}
-                  src={user.profilePicture}
+                  src={user?.profilePicture}
                   alt="it's me"
                 />
               </NavLink>

@@ -11,7 +11,6 @@ const ProviderLayout = ({ children }: { children: React.ReactNode }) => {
   useHotkeys([["mod+J", () => toggleColorScheme()]]);
 
   const toggleColorScheme = (value) => {
-    
     setColorScheme(value || (colorScheme === "dark" ? "light" : "dark"));
   };
 
