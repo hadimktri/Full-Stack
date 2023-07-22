@@ -1,6 +1,7 @@
 import "dotenv/config";
 import express from "express";
 import cors from "cors";
+import multer from "multer";
 import adminRouter from "./routes/adminRoutes";
 import authRouter from "./routes/authRoutes";
 import postRouter from "./routes/postRoutes";

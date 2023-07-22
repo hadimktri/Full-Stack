@@ -1,32 +1,37 @@
 import { Suspense, useEffect, useState } from "react";
-import { ArticleCardImage } from "../../components/misc/ArticleCardImage";
 import { SimpleGrid, Container } from "@mantine/core";
 import { useLoaderData, Await, useRevalidator } from "react-router-dom";
 import { Loader } from "@mantine/core";
+import SinglePost from "../../components/misc/Single.Post";
+import { IPost } from "../../types/types";
 
+interface IPromise {
+  posts: Promise<IPost>;
+}
 const PostPage = () => {
   const [changes, setChanges] = useState(false);
-
   const dataPromise = useLoaderData();
   const revalidator = useRevalidator();
 
   useEffect(() => {
     revalidator.revalidate();
-  }, [changes, revalidator]);
+  }, [changes]);
+
   return (
     <Container>
       <SimpleGrid cols={3}>
         <Suspense fallback={<Loader color="teal" variant="dots" />}>
-          <Await resolve={dataPromise.posts}>
+          <Await resolve={(dataPromise as IPromise).posts}>
             {(posts) =>
-              posts.data.map((post) => (
+              // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+              (posts.data as IPost[]).map((post) => (
                 <div key={post.id}>
-                  <ArticleCardImage
+                  <SinglePost
                     key={post.title}
                     {...post}
                     setChanges={setChanges}
                     changes={changes}
-                  />
+                                      />
                 </div>
               ))
             }

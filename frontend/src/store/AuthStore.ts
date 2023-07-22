@@ -1,7 +1,7 @@
 import DOMAIN from "../services/endpoint";
 import axios from "axios";
 import { setSession } from "../services/jwt.service";
-import { IAuthStore } from "../types/types";
+import { IAuthStore, ISuccess } from "../types/types";
 import { IPostStore } from "../types/types";
 import { StateCreator } from "zustand";
 
@@ -32,7 +32,7 @@ const createAuthStore: StateCreator<
         password,
       });
       //if we have truthy result with user and token
-      if ((res).data.result?.user && res.data.result?.token) {
+      if (res.data.result?.user && res.data.result?.token) {
         // saving token in the local storage as cookie
         setSession(res.data.result?.token);
         //finally set the stor's user from null to result user
@@ -56,8 +56,9 @@ const createAuthStore: StateCreator<
         password,
         profilePicture,
       });
-      if (res.data.success) {
-             } else {
+      if ((res?.data as ISuccess).success) {
+        console.log("first");
+      } else {
         set({ authLoading: false, user: null });
       }
     } catch (error) {
@@ -86,8 +87,8 @@ const createAuthStore: StateCreator<
   deleteUser: async (id) => {
     try {
       const res = await axios.post(`${DOMAIN as string}/api/auth/delete/${id}`);
-      if (res?.data.success) {
-               get().logoutService();
+      if ((res?.data as ISuccess).success) {
+        get().logoutService();
       }
     } catch (error) {
       console.log(error);

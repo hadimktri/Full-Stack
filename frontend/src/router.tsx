@@ -16,7 +16,6 @@ import {
 } from "react-router-dom";
 import PostPage from "./pages/Post/Post.page";
 import { postDetailsLoader, postsLoader } from "./services/PostService";
-import PostDetailsPage from "./pages/Post/Post.Details.page";
 
 export const Router = () => {
   //simply checking if any user exist in the store?
@@ -42,7 +41,7 @@ export const Router = () => {
           path="/posts/:id"
           element={
             <ProtectedRoute isAllowed={!!authCheck}>
-              <PostDetailsPage />
+              <UpdatePostPage />
             </ProtectedRoute>
           }
           loader={postDetailsLoader}
@@ -54,15 +53,6 @@ export const Router = () => {
               <CreatePostPage />
             </ProtectedRoute>
           }
-        />
-        <Route
-          path="/post/update/:id"
-          element={
-            <ProtectedRoute isAllowed={!!authCheck}>
-              <UpdatePostPage />
-            </ProtectedRoute>
-          }
-          loader={postDetailsLoader}
         />
         <Route path="/" element={<Landing />} />
         {/* <Route path="*" element={<NotFound />} /> */}

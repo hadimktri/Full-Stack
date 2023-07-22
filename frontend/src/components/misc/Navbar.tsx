@@ -143,7 +143,7 @@ export default function Navbar() {
   ));
 
   return (
-    <Header height={HEADER_HEIGHT} mb={120} className={classes.root}>
+    <Header height={HEADER_HEIGHT} mb={60} className={classes.root}>
       <Container className={classes.header}>
         <NavLink to="posts">
           <GiPlantsAndAnimals size={40} style={{ color: "green" }} />

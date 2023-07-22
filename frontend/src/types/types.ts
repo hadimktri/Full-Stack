@@ -6,11 +6,12 @@ export interface IUser {
   password: string;
   profilePicture: string;
   role: any;
-  favoritePosts?: IPost[];
+  writtenPosts: IPost[];
+  favoritePosts: IPost[];
   verified: boolean;
-  provider: string;
   createdAt: string;
   updatedAt: string;
+  comments: IComment[];
 }
 
 export interface IAuthStore {
@@ -57,16 +58,22 @@ export interface IPost {
   createdAt: string;
   updatedAt: string;
   category: string;
-  author: string;
+  author: IUser;
   authorId: string;
-  favoratedBy?: IUser;
-  favoratedById?: string;
+  favoratedBy: IUser[];
+  favoratedById: string;
+  comments: IComment[];
 }
 export interface IComment {
   id: string;
   content: string;
   author: IUser;
+  authorId: string;
   postId: string;
+  post: IPost;
   createdAt: string;
   updatedAt: string;
+}
+export interface ISuccess {
+  success: true;
 }

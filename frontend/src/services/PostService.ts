@@ -6,7 +6,6 @@ interface props {
   id: string;
 }
 export const postDetailsLoader = async ({ params }) => {
- 
   const res = await axios.get(
     `${DOMAIN as string}/api/posts/${(params as props).id}`
   );

@@ -1,10 +1,45 @@
 import { useDisclosure } from "@mantine/hooks";
-import { Modal, Group, Button, Textarea } from "@mantine/core";
+import {
+  Modal,
+  Group,
+  Text,
+  Textarea,
+  ActionIcon,
+  createStyles,
+  rem,
+} from "@mantine/core";
 import useBoundStore from "../../store/Store";
 import { TbCheck, TbMessage } from "react-icons/tb";
 import { useState } from "react";
+import { IComment } from "../../types/types";
 
-const CommentModal = ({ postId }: any) => {
+interface IProps {
+  postId: string;
+  comments: any;
+  setChanges: (val: boolean) => void;
+  changes: boolean;
+}
+const useStyles = createStyles((theme) => ({
+  card: {
+    backgroundColor:
+      theme.colorScheme === "dark" ? theme.colors.dark[7] : theme.white,
+  },
+
+  title: {
+    // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+    fontFamily: `Greycliff CF, ${theme.fontFamily}`,
+  },
+
+  footer: {
+    padding: `${theme.spacing.xs} ${theme.spacing.lg}`,
+    marginTop: theme.spacing.md,
+    borderTop: `${rem(1)} solid ${
+      theme.colorScheme === "dark" ? theme.colors.dark[5] : theme.colors.gray[2]
+    }`,
+  },
+}));
+const CommentModal = ({ postId, comments, setChanges, changes }: IProps) => {
+  const { classes, theme } = useStyles();
   const [opened, { open, close }] = useDisclosure(false);
   const [value, setValue] = useState("");
   const { user, postComment } = useBoundStore((state) => state);
@@ -14,35 +49,41 @@ const CommentModal = ({ postId }: any) => {
   };
 
   const handleComment = () => {
-    postComment(postId as string, {
+    postComment(postId, {
       userId: user?.id as string,
       content: value,
     });
-    close();
+    setChanges(!changes);
   };
   return (
     <>
-      <Modal opened={opened} onClose={close} title="Comment">
+      <Modal
+        opened={opened}
+        onClose={close}
+        title={
+          <ActionIcon>
+            <TbCheck size={20} onClick={() => handleComment()} />
+          </ActionIcon>
+        }
+      >
         <Textarea
           data-autofocus
           label=""
-          placeholder="It has data-autofocus attribute"
+          placeholder="Commens"
           my="xs"
           minRows={5}
           value={value}
           onChange={(e) => handleValue(e.target.value)}
         />
-
-        <Button onClick={handleComment} variant="white" color="dark">
-          <TbCheck size={30} />
-        </Button>
+        {(comments as []).map((comment: IComment, idx: number) => (
+          <Text key={idx} fw={500} className={classes.title} m="sm">
+            {comment?.content}
+          </Text>
+        ))}
       </Modal>
-
-      <Group position="center">
-        <Button onClick={open}>
-          <TbMessage size={30} />
-        </Button>
-      </Group>
+      <ActionIcon>
+        <TbMessage size={20} onClick={open} />
+      </ActionIcon>
     </>
   );
 };

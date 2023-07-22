@@ -1,6 +1,6 @@
 // This is just an example store with fake data
 import { StateCreator } from "zustand";
-import { IAuthStore } from "../types/types";
+import { IAuthStore, ISuccess } from "../types/types";
 import { IPostStore } from "../types/types";
 import DOMAIN from "../services/endpoint";
 import axios from "axios";
@@ -19,7 +19,7 @@ const PostStore: StateCreator<IAuthStore & IPostStore, [], [], IPostStore> = (
         `${DOMAIN as string}/api/posts/${id}`,
         values
       );
-      if (res?.data.success) {
+      if ((res?.data as ISuccess).success) {
         set({ postsLoading: true });
       }
     } catch (error) {
@@ -34,7 +34,7 @@ const PostStore: StateCreator<IAuthStore & IPostStore, [], [], IPostStore> = (
         `${DOMAIN as string}/api/posts/update/${postId}`,
         values
       );
-      if (res?.data.success) {
+      if ((res?.data as ISuccess).success) {
         set({ postsLoading: true });
       }
     } catch (error) {
@@ -48,7 +48,7 @@ const PostStore: StateCreator<IAuthStore & IPostStore, [], [], IPostStore> = (
       const res = await axios.post(
         `${DOMAIN as string}/api/posts/delete/${id}`
       );
-      if (res?.data.success) {
+      if ((res?.data as ISuccess).success) {
         set({ postsLoading: true });
       }
     } catch (error) {
@@ -64,7 +64,7 @@ const PostStore: StateCreator<IAuthStore & IPostStore, [], [], IPostStore> = (
           userId,
         }
       );
-      if (res?.data.success) {
+      if ((res?.data as ISuccess).success) {
         set({ postsLoading: true });
       }
     } catch (error) {
@@ -77,7 +77,7 @@ const PostStore: StateCreator<IAuthStore & IPostStore, [], [], IPostStore> = (
       const res = await axios.post(
         `${DOMAIN as string}/api/posts/likeUp/${postId}`
       );
-      if (res?.data.success) {
+      if ((res?.data as ISuccess).success) {
         set({ postsLoading: true });
       }
     } catch (error) {
@@ -90,7 +90,7 @@ const PostStore: StateCreator<IAuthStore & IPostStore, [], [], IPostStore> = (
       const res = await axios.post(
         `${DOMAIN as string}/api/posts/likeDown/${postId}`
       );
-      if (res?.data.success) {
+      if ((res?.data as ISuccess).success) {
         set({ postsLoading: true });
       }
     } catch (error) {
@@ -104,7 +104,7 @@ const PostStore: StateCreator<IAuthStore & IPostStore, [], [], IPostStore> = (
         `${DOMAIN as string}/api/posts/comment/${postId}`,
         values
       );
-      if (res?.data.success) {
+      if ((res?.data as ISuccess).success) {
         set({ postsLoading: true });
       }
     } catch (error) {
