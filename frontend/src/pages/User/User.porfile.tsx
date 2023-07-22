@@ -2,13 +2,15 @@ import {
   createStyles,
   Text,
   Title,
-  Button,
   Image,
   rem,
   Container,
+  Group,
+  ActionIcon,
 } from "@mantine/core";
 import { Link } from "react-router-dom";
 import useBoundStore from "../../store/Store";
+import { TbChecks, TbTrashFilled } from "react-icons/tb";
 
 const useStyles = createStyles((theme) => ({
   wrapper: {
@@ -30,7 +32,6 @@ const useStyles = createStyles((theme) => ({
 
   image: {
     maxWidth: "35%",
-
     [theme.fn.smallerThan("sm")]: {
       maxWidth: "100%",
     },
@@ -74,12 +75,15 @@ const useStyles = createStyles((theme) => ({
     borderTopLeftRadius: 0,
     borderBottomLeftRadius: 0,
   },
+  form: { width: "50vw", marginLeft: `calc(${theme.spacing.xl} )` },
+  done: { padding: "0", border: "none" },
+  buttons: { display: "flex", justifyContent: "space-evenly" },
 }));
 
 export default function UserProfile() {
   const { user, deleteUser } = useBoundStore((state) => state);
 
-  const { classes } = useStyles();
+  const { classes, theme } = useStyles();
 
   const handleDelete = () => {
     deleteUser(user?.id as string);
@@ -93,14 +97,27 @@ export default function UserProfile() {
           <Text fw={500} fz="lg" mb={5}>
             {user?.email}
           </Text>
-          <div className={classes.controls}>
-            <Button radius="sm">
-              <Link to={`/user/update/${user?.id as string}`}>Edit</Link>
-            </Button>
-            <Button onClick={handleDelete}>Delete</Button>
-          </div>
+          <Group className={classes.buttons} mt="lg">
+            <ActionIcon>
+              {/* <Button variant="outline" type="submit" className={classes.done}> */}
+              <Link
+                to={`/user/update/${user?.id as string}`}
+                className={classes.done}
+              >
+                <TbChecks size={30} color={theme.colors.green[9]} />
+              </Link>
+              {/* </Button> */}
+            </ActionIcon>
+            <ActionIcon>
+              <TbTrashFilled
+                size={30}
+                color={theme.colors.red[9]}
+                onClick={handleDelete}
+              />
+            </ActionIcon>
+          </Group>
         </div>
-        <Image src={user?.profilePicture as string} className={classes.image} />
+        <Image src={user?.profilePicture} className={classes.image} radius={50}/>
       </div>
     </Container>
   );

@@ -102,7 +102,7 @@ export default function SinglePost({
       <Card.Section mb="xs">
         <Image src={image} alt={title} height={180} />
       </Card.Section>
-      <Text fw={700} className={classes.title} >
+      <Text fw={700} className={classes.title}>
         {title}
       </Text>
       <Badge my="xs">{category}</Badge>

@@ -75,5 +75,8 @@ export interface IComment {
   updatedAt: string;
 }
 export interface ISuccess {
-  success: true;
+  success: boolean;
+}
+export interface IResponse {
+  result: { user: IUser | null; token: string | null };
 }
