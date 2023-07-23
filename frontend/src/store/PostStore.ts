@@ -8,6 +8,8 @@ import axios from "axios";
 const PostStore: StateCreator<IAuthStore & IPostStore, [], [], IPostStore> = (
   set
 ) => ({
+  posts: [],
+  setPosts: (args) => set({ posts: args }),
   postsLoading: true,
   setPostLoading: (value) => {
     set(() => ({ postsLoading: value }));
@@ -72,10 +74,13 @@ const PostStore: StateCreator<IAuthStore & IPostStore, [], [], IPostStore> = (
       set({ postsLoading: false });
     }
   },
-  postIncreaselikes: async (postId) => {
+  postlikes: async (postId, flag) => {
     try {
       const res = await axios.post(
-        `${DOMAIN as string}/api/posts/likeUp/${postId}`
+        `${DOMAIN as string}/api/posts/likeUp/${postId}`,
+        {
+          flag,
+        }
       );
       if ((res?.data as ISuccess).success) {
         set({ postsLoading: true });
@@ -85,19 +90,7 @@ const PostStore: StateCreator<IAuthStore & IPostStore, [], [], IPostStore> = (
       set({ postsLoading: false });
     }
   },
-  postDecreaselikes: async (postId) => {
-    try {
-      const res = await axios.post(
-        `${DOMAIN as string}/api/posts/likeDown/${postId}`
-      );
-      if ((res?.data as ISuccess).success) {
-        set({ postsLoading: true });
-      }
-    } catch (error) {
-      console.log(error);
-      set({ postsLoading: false });
-    }
-  },
+
   postComment: async (postId, values) => {
     try {
       const res = await axios.post(

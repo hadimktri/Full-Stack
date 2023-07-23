@@ -75,8 +75,7 @@ export default function SinglePost({
   changes,
 }: IProps) {
   const { classes, theme } = useStyles();
-  const { user, userFavorate, postIncreaselikes, postDecreaselikes } =
-    useBoundStore((state) => state);
+  const { user, userFavorate, postlikes } = useBoundStore((state) => state);
   const [faved, setFaved] = useState<boolean>(false);
   useEffect(() => {
     setFaved(
@@ -88,13 +87,9 @@ export default function SinglePost({
     userFavorate(id, user?.id as string);
     setChanges(!changes);
   };
-  const handleLikeUp = () => {
-    postIncreaselikes(id);
+  const handleLike = (id: string, flag: boolean) => {
+    postlikes(id, flag);
     setChanges(!changes);
-  };
-  const handleLikeDown = () => {
-    setChanges(!changes);
-    postDecreaselikes(id);
   };
 
   return (
@@ -123,14 +118,14 @@ export default function SinglePost({
               <TbArrowBadgeUp
                 size="1.5rem"
                 color={theme.colors.blue[3]}
-                onClick={handleLikeUp}
+                onClick={() => handleLike(id, true)}
               />
             </ActionIcon>
             <ActionIcon>
               <TbArrowBadgeDown
                 size="1.5rem"
                 color={theme.colors.blue[3]}
-                onClick={handleLikeDown}
+                onClick={() => handleLike(id, false)}
               />
             </ActionIcon>
             <Text fz="sm" c="dimmed">

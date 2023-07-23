@@ -1,7 +1,6 @@
 import { useDisclosure } from "@mantine/hooks";
 import {
   Modal,
-  Group,
   Text,
   Textarea,
   ActionIcon,
@@ -39,7 +38,7 @@ const useStyles = createStyles((theme) => ({
   },
 }));
 const CommentModal = ({ postId, comments, setChanges, changes }: IProps) => {
-  const { classes, theme } = useStyles();
+  const { classes } = useStyles();
   const [opened, { open, close }] = useDisclosure(false);
   const [value, setValue] = useState("");
   const { user, postComment } = useBoundStore((state) => state);

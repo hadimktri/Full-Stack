@@ -1,44 +1,43 @@
 import { Suspense, useEffect, useState } from "react";
-import { SimpleGrid, Container } from "@mantine/core";
+import { Container } from "@mantine/core";
 import { useLoaderData, Await, useRevalidator } from "react-router-dom";
 import { Loader } from "@mantine/core";
-import SinglePost from "../../components/misc/Single.Post";
 import { IPost } from "../../types/types";
+import PaginatePosts from "../../components/misc/PaginatePosts";
 
 interface IPromise {
   posts: Promise<IPost>;
 }
 const PostPage = () => {
-  const [changes, setChanges] = useState(false);
   const dataPromise = useLoaderData();
   const revalidator = useRevalidator();
-
+  const [changes, setChanges] = useState(true);
   useEffect(() => {
     revalidator.revalidate();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [changes]);
 
   return (
-    <Container>
-      <SimpleGrid cols={3}>
-        <Suspense fallback={<Loader color="teal" variant="dots" />}>
-          <Await resolve={(dataPromise as IPromise).posts}>
-            {(posts) =>
+    <Suspense
+      fallback={
+        <Container>
+          <Loader color="teal" variant="dots" />
+        </Container>
+      }
+    >
+      <Await resolve={(dataPromise as IPromise).posts}>
+        {(resolvedData) => {
+          return (
+            <PaginatePosts
               // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-              (posts.data as IPost[]).map((post) => (
-                <div key={post.id}>
-                  <SinglePost
-                    key={post.title}
-                    {...post}
-                    setChanges={setChanges}
-                    changes={changes}
-                                      />
-                </div>
-              ))
-            }
-          </Await>
-        </Suspense>
-      </SimpleGrid>
-    </Container>
+              postArray={resolvedData.data as IPost[]}
+              setChanges={setChanges}
+              changes={changes}
+            />
+          );
+        }}
+      </Await>
+    </Suspense>
   );
 };
 

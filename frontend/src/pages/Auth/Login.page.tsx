@@ -47,6 +47,7 @@ export default function LoginPage() {
   const navigate = useNavigate();
   const { loginService, authLoading, user } = useBoundStore((state) => state);
 
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
   const from = (location.state?.from.pathname as string) || "/profile";
 
   // firt of all checks if there is any user already in the system redirects to /posts

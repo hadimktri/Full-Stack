@@ -31,14 +31,15 @@ export interface IAuthStore {
   deleteUser: (id: string) => void;
 }
 export interface IPostStore {
+  posts: IPost[];
+  setPosts: (posts: IPost[]) => void;
   postsLoading: boolean;
   setPostLoading: (value: boolean) => void;
   addPost: (value: any, id: string) => void;
   updatePost: (value: any, id: string) => void;
   deletePost: (id: string) => void;
   userFavorate: (postId: string, userId: string) => void;
-  postIncreaselikes: (postId: string) => void;
-  postDecreaselikes: (postId: string) => void;
+  postlikes: (postId: string, flag: boolean) => void;
   postComment: (
     postId: string,
     values: { userId: string; content: string }
@@ -79,4 +80,11 @@ export interface ISuccess {
 }
 export interface IResponse {
   result: { user: IUser | null; token: string | null };
+}
+
+export interface paginationProps {
+  handlePage: (page: number) => void;
+  pageCount: number;
+  setPage: (n: number) => void;
+  page: number;
 }

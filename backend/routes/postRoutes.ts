@@ -15,9 +15,7 @@ router.post("/delete/:id", checkAuth, postControllers.postDeletePost);
 
 router.post("/favorate/:id", checkAuth, postControllers.postFavoratePost);
 
-router.post("/likeUp/:id", checkAuth, postControllers.postLikeUpPost);
-
-router.post("/likeDown/:id", checkAuth, postControllers.postLikeDownPost);
+router.post("/likeUp/:id", checkAuth, postControllers.postLikePost);
 
 router.post("/comment/:id", checkAuth, postControllers.postCommentPost);
 
