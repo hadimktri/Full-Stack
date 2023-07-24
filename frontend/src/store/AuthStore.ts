@@ -31,9 +31,12 @@ const createAuthStore: StateCreator<
         password,
       });
       //if we have truthy result with user and token
-      if ((res.data as IResponse).result?.user && (res.data as IResponse).result?.token) {
+      if (
+        (res.data as IResponse).result?.user &&
+        (res.data as IResponse).result?.token
+      ) {
         // saving token in the local storage as cookie
-        setSession((res.data as IResponse).result ?.token);
+        setSession((res.data as IResponse).result?.token);
         //finally set the stor's user from null to result user
         set({ user: (res.data as IResponse).result?.user, authLoading: false });
       } else {
@@ -70,9 +73,15 @@ const createAuthStore: StateCreator<
     try {
       const res = await axios.post(`${DOMAIN as string}/api/auth/validation`);
       // if result contains user and token, sets session and user loading false
-      if ((res.data as IResponse).result?.user && (res.data as IResponse).result?.token) {
+      if (
+        (res.data as IResponse).result?.user &&
+        (res.data as IResponse).result?.token
+      ) {
         setSession((res.data as IResponse).result?.token);
-        set({ user: (res.data as IResponse).result?.user, tokenLoading: false });
+        set({
+          user: (res.data as IResponse).result?.user,
+          tokenLoading: false,
+        });
       } else {
         // in falsy result
         set({ tokenLoading: false, user: null });
@@ -86,6 +95,24 @@ const createAuthStore: StateCreator<
   deleteUser: async (id) => {
     try {
       const res = await axios.post(`${DOMAIN as string}/api/auth/delete/${id}`);
+      if ((res?.data as ISuccess).success) {
+        get().logoutService();
+      }
+    } catch (error) {
+      console.log(error);
+      set({ postsLoading: false });
+    }
+  },
+
+  updatePassword: async (id, password) => {
+    try {
+      const res = await axios.post(
+        `${DOMAIN as string}/api/auth/updatePassword`,
+        {
+          id,
+          password,
+        }
+      );
       if ((res?.data as ISuccess).success) {
         get().logoutService();
       }

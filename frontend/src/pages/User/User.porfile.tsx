@@ -11,6 +11,7 @@ import {
 import { Link } from "react-router-dom";
 import useBoundStore from "../../store/Store";
 import { TbChecks, TbTrashFilled } from "react-icons/tb";
+import PasswordChange from "../../components/Auth/Password.change";
 
 const useStyles = createStyles((theme) => ({
   wrapper: {
@@ -99,14 +100,12 @@ export default function UserProfile() {
           </Text>
           <Group className={classes.buttons} mt="lg">
             <ActionIcon>
-              {/* <Button variant="outline" type="submit" className={classes.done}> */}
               <Link
                 to={`/user/update/${user?.id as string}`}
                 className={classes.done}
               >
                 <TbChecks size={30} color={theme.colors.green[9]} />
               </Link>
-              {/* </Button> */}
             </ActionIcon>
             <ActionIcon>
               <TbTrashFilled
@@ -115,9 +114,14 @@ export default function UserProfile() {
                 onClick={handleDelete}
               />
             </ActionIcon>
+            <PasswordChange />
           </Group>
         </div>
-        <Image src={user?.profilePicture} className={classes.image} radius={50}/>
+        <Image
+          src={user?.profilePicture}
+          className={classes.image}
+          radius={50}
+        />
       </div>
     </Container>
   );

@@ -105,6 +105,19 @@ const PostStore: StateCreator<IAuthStore & IPostStore, [], [], IPostStore> = (
       set({ postsLoading: false });
     }
   },
+  deleteComment: async (id) => {
+    try {
+      const res = await axios.post(
+        `${DOMAIN as string}/api/posts/deleteComment/${id}`
+      );
+      if ((res?.data as ISuccess).success) {
+        set({ postsLoading: true });
+      }
+    } catch (error) {
+      console.log(error);
+      set({ postsLoading: false });
+    }
+  },
 });
 
 export default PostStore;

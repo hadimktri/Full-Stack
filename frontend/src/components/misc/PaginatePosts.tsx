@@ -1,16 +1,14 @@
 import { useEffect, useState } from "react";
 import { IPost } from "../../types/types";
 import Paginate from "./Pagination";
-import SinglePost from "./Single.Post";
+import SinglePost from "./Single.Post.Card";
 import { Container, SimpleGrid } from "@mantine/core";
 
 interface IProps {
   postArray: IPost[];
-  setChanges: (val: boolean) => void;
-  changes: boolean;
 }
 
-const PaginatePosts = ({ postArray, setChanges, changes }: IProps) => {
+const PaginatePosts = ({ postArray}: IProps) => {
   const [initialData] = useState<IPost[]>(postArray);
   const [tableData, setTableData] = useState<IPost[]>([]);
   const [pageCount, setPageCount] = useState<number>(1);
@@ -32,9 +30,7 @@ const PaginatePosts = ({ postArray, setChanges, changes }: IProps) => {
             <SinglePost
               key={post.title}
               {...post}
-              setChanges={setChanges}
-              changes={changes}
-            />
+                        />
           </div>
         ))}
       </SimpleGrid>

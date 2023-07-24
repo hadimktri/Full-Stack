@@ -1,4 +1,4 @@
-import { NextFunction, Request, Response } from "express";
+import { Request, Response } from "express";
 import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 import { sleep } from "../utils/utils";
@@ -12,7 +12,7 @@ export const postControllers = {
         author: true,
         comments: true,
       },
-      orderBy: { createdAt: "asc" },
+      orderBy: { createdAt: "desc" },
     });
     return res.json(posts);
   },
@@ -160,6 +160,19 @@ export const postControllers = {
           content: req.body.content,
           authorId: req.body.userId,
           postId: req.params.id,
+        },
+      });
+      res.status(200).json({ success: true });
+    } catch (error) {
+      res.status(401).json({ error });
+    }
+  },
+
+  postDeleteComment: async (req: Request, res: Response) => {
+    try {
+      await prisma.comment.delete({
+        where: {
+          id: req.params.id,
         },
       });
       res.status(200).json({ success: true });

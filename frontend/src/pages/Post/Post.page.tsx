@@ -1,4 +1,4 @@
-import { Suspense, useEffect, useState } from "react";
+import { Suspense, useEffect } from "react";
 import { Container } from "@mantine/core";
 import { useLoaderData, Await, useRevalidator } from "react-router-dom";
 import { Loader } from "@mantine/core";
@@ -10,12 +10,15 @@ interface IPromise {
 }
 const PostPage = () => {
   const dataPromise = useLoaderData();
-  const revalidator = useRevalidator();
-  const [changes, setChanges] = useState(true);
-  useEffect(() => {
-    revalidator.revalidate();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [changes]);
+  // const revalidator = useRevalidator();
+
+  // useEffect(() => {
+  //   setTimeout(() => {
+  //     revalidator.revalidate();
+  //     console.log("first");
+  //   }, 1000);
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [revalidator]);
 
   return (
     <Suspense
@@ -31,8 +34,6 @@ const PostPage = () => {
             <PaginatePosts
               // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
               postArray={resolvedData.data as IPost[]}
-              setChanges={setChanges}
-              changes={changes}
             />
           );
         }}

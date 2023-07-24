@@ -50,7 +50,7 @@ export default function RegisterPage() {
       email: isEmail("Invalid email"),
       password: hasLength(
         { min: 8, max: 20 },
-        "Name must be 8-20 characters long"
+        "Password must be 8-20 characters long"
       ),
       confirmPassword: (value: string, values: Ivalues) =>
         value !== values.password ? "Passwords did not match" : false,

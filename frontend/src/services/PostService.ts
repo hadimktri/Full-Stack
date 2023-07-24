@@ -3,12 +3,11 @@ import DOMAIN from "../services/endpoint";
 import { defer } from "react-router-dom";
 import { IPost } from "../types/types";
 interface props {
-  id: string;
+  params: { id: string };
 }
-export const postDetailsLoader = async ({ params }) => {
-  const res = await axios.get(
-    `${DOMAIN as string}/api/posts/${(params as props).id}`
-  );
+
+export const postDetailsLoader = async ({ params }: props) => {
+  const res = await axios.get(`${DOMAIN as string}/api/posts/${params.id}`);
   if (res.status != 200) {
     throw Error("Could not find the data");
   }

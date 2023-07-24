@@ -20,7 +20,7 @@ import {
   TbEdit,
   TbHeartFilled,
 } from "react-icons/tb";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 interface IProps {
   id: string;
@@ -32,8 +32,6 @@ interface IProps {
   likes: number;
   author: IUser;
   comments: IComment[];
-  setChanges: (val: boolean) => void;
-  changes: boolean;
 }
 
 const useStyles = createStyles((theme) => ({
@@ -71,9 +69,8 @@ export default function SinglePost({
   author,
   comments,
   content,
-  setChanges,
-  changes,
 }: IProps) {
+  const navigate = useNavigate();
   const { classes, theme } = useStyles();
   const { user, userFavorate, postlikes } = useBoundStore((state) => state);
   const [faved, setFaved] = useState<boolean>(false);
@@ -84,12 +81,10 @@ export default function SinglePost({
   }, [favoratedBy, user?.id]);
 
   const handleFavorate = () => {
-    userFavorate(id, user?.id as string);
-    setChanges(!changes);
+    !user ? navigate("/login") : userFavorate(id, user?.id);
   };
   const handleLike = (id: string, flag: boolean) => {
-    postlikes(id, flag);
-    setChanges(!changes);
+    !user ? navigate("/login") : postlikes(id, flag);
   };
 
   return (
@@ -151,7 +146,7 @@ export default function SinglePost({
               )}
             </ActionIcon>
             <ActionIcon>
-              <Link to={id}>
+              <Link to={!user ? "/login" : id}>
                 <TbEdit
                   size="1.2rem"
                   color={theme.colors.yellow[6]}
@@ -159,12 +154,7 @@ export default function SinglePost({
                 />
               </Link>
             </ActionIcon>
-            <CommentModal
-              postId={id}
-              comments={comments}
-              setChanges={setChanges}
-              changes={changes}
-            />
+            <CommentModal postId={id} comments={comments} />
           </Group>
         </Group>
       </Card.Section>

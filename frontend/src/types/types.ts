@@ -29,6 +29,7 @@ export interface IAuthStore {
   ) => void;
   loginWithToken: () => void;
   deleteUser: (id: string) => void;
+  updatePassword: (id: string, password: string) => void;
 }
 export interface IPostStore {
   posts: IPost[];
@@ -44,6 +45,7 @@ export interface IPostStore {
     postId: string,
     values: { userId: string; content: string }
   ) => void;
+  deleteComment: (id: string) => void;
 }
 export interface IToken {
   name: string;

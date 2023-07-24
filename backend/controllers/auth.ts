@@ -166,6 +166,24 @@ export const authControllers = {
       res.status(401).json({ error });
     }
   },
+
+  postUpdatePassword: async (req: Request, res: Response) => {
+    try {
+      const { id, password } = req.body;
+      const hashedPassword = await bcrypt.hash(password, 12);
+      const update = await prisma.user.update({
+        where: { id: id },
+        data: {
+          password: hashedPassword,
+        },
+      });
+
+      if (update) console.log("Password Updated");
+      res.json({ success: true });
+    } catch (error) {
+      res.status(401).json({ error });
+    }
+  },
 };
 
 export default authControllers;

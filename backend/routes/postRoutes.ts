@@ -19,4 +19,6 @@ router.post("/likeUp/:id", checkAuth, postControllers.postLikePost);
 
 router.post("/comment/:id", checkAuth, postControllers.postCommentPost);
 
+router.post("/deleteComment/:id", checkAuth, postControllers.postDeleteComment);
+
 export default router;

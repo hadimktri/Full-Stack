@@ -6,17 +6,17 @@ import {
   ActionIcon,
   createStyles,
   rem,
+  Group,
 } from "@mantine/core";
 import useBoundStore from "../../store/Store";
-import { TbCheck, TbMessage } from "react-icons/tb";
+import { TbCheck, TbMessage, TbX } from "react-icons/tb";
 import { useState } from "react";
 import { IComment } from "../../types/types";
+import { useNavigate } from "react-router-dom";
 
 interface IProps {
   postId: string;
   comments: any;
-  setChanges: (val: boolean) => void;
-  changes: boolean;
 }
 const useStyles = createStyles((theme) => ({
   card: {
@@ -37,11 +37,13 @@ const useStyles = createStyles((theme) => ({
     }`,
   },
 }));
-const CommentModal = ({ postId, comments, setChanges, changes }: IProps) => {
+
+const CommentModal = ({ postId, comments }: IProps) => {
+  const navigate = useNavigate();
   const { classes } = useStyles();
   const [opened, { open, close }] = useDisclosure(false);
   const [value, setValue] = useState("");
-  const { user, postComment } = useBoundStore((state) => state);
+  const { user, postComment, deleteComment } = useBoundStore((state) => state);
 
   const handleValue = (value: string) => {
     setValue(value);
@@ -52,8 +54,11 @@ const CommentModal = ({ postId, comments, setChanges, changes }: IProps) => {
       userId: user?.id as string,
       content: value,
     });
-    setChanges(!changes);
   };
+  const handleDeleteComment = (id: string) => {
+    deleteComment(id);
+  };
+
   return (
     <>
       <Modal
@@ -75,13 +80,22 @@ const CommentModal = ({ postId, comments, setChanges, changes }: IProps) => {
           onChange={(e) => handleValue(e.target.value)}
         />
         {(comments as []).map((comment: IComment, idx: number) => (
-          <Text key={idx} fw={500} className={classes.title} m="sm">
-            {comment?.content}
-          </Text>
+          <Group key={idx} position="apart" mx={10}>
+            <Text fw={500} className={classes.title} m="sm">
+              {comment?.content}
+            </Text>
+            <ActionIcon>
+              <TbX size={15} onClick={() => handleDeleteComment(comment?.id)} />
+            </ActionIcon>
+          </Group>
         ))}
       </Modal>
+
       <ActionIcon>
-        <TbMessage size={20} onClick={open} />
+        <TbMessage
+          size={20}
+          onClick={!user ? () => navigate("/login") : open}
+        />
       </ActionIcon>
     </>
   );

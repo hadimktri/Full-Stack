@@ -12,7 +12,6 @@ import { useForm } from "@mantine/form";
 import { useNavigate } from "react-router-dom";
 import useBoundStore from "../../store/Store";
 import { IUser } from "../../types/types";
-import Paginate from "../../components/misc/Pagination";
 
 const useStyles = createStyles((theme) => ({
   wrapper: {
