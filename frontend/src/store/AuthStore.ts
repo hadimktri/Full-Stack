@@ -59,7 +59,7 @@ const createAuthStore: StateCreator<
         profilePicture,
       });
       if ((res?.data as ISuccess).success) {
-        console.log("first");
+        console.log("User Signed up");
       } else {
         set({ authLoading: false, user: null });
       }
@@ -104,17 +104,35 @@ const createAuthStore: StateCreator<
     }
   },
 
-  updatePassword: async (id, password) => {
+  updatePassword: async (email, password) => {
     try {
       const res = await axios.post(
         `${DOMAIN as string}/api/auth/updatePassword`,
         {
-          id,
+          email,
           password,
         }
       );
       if ((res?.data as ISuccess).success) {
         get().logoutService();
+      }
+    } catch (error) {
+      console.log(error);
+      set({ postsLoading: false });
+    }
+  },
+
+  emailRecoveryNumber: async (email, OTP) => {
+    try {
+      const res = await axios.post(
+        `${DOMAIN as string}/api/auth/emailRecoveryNumber`,
+        {
+          email,
+          OTP,
+        }
+      );
+      if ((res?.data as ISuccess).success) {
+        console.log("recovery number has sent");
       }
     } catch (error) {
       console.log(error);

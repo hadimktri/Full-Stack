@@ -1,9 +1,9 @@
-import { Suspense, useEffect } from "react";
+import { Suspense } from "react";
 import { Container } from "@mantine/core";
-import { useLoaderData, Await, useRevalidator } from "react-router-dom";
+import { useLoaderData, Await } from "react-router-dom";
 import { Loader } from "@mantine/core";
 import { IPost } from "../../types/types";
-import PaginatePosts from "../../components/misc/PaginatePosts";
+import PaginatePosts from "../../components/Posts/PaginatePosts";
 
 interface IPromise {
   posts: Promise<IPost>;

@@ -29,7 +29,8 @@ export interface IAuthStore {
   ) => void;
   loginWithToken: () => void;
   deleteUser: (id: string) => void;
-  updatePassword: (id: string, password: string) => void;
+  updatePassword: (email: string, password: string) => void;
+  emailRecoveryNumber: (email: string, number: number) => void;
 }
 export interface IPostStore {
   posts: IPost[];

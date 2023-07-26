@@ -1,42 +1,8 @@
-$ npm init
-
-$ npm i --save-dev typescript ts-node @types/node
-
-# tsconfig.json needs to be changed for prisma
-
-https://www.prisma.io/docs/guides/upgrade-guides/upgrade-from-prisma-1/upgrading-prisma-binding-to-nexus#12-configure-typescript
-{
-"compilerOptions": {
-"skipLibCheck": true,
-"strict": true,
-"rootDir": "src",
-"noEmit": true
-},
-"include": ["src/**/*"]
-}
-
-
-
-# nodemon
-
-$ npn i --save-dev nodemon
-$ "dev": "nodemon app.ts"
-$ npm run dev
-
-
-
-import "dotenv/config";
 import nodemailer from "nodemailer";
 
-export function sendEmail(email: string, OTP: string) {
-console.log(email)
-console.log(OTP)
-console.log(process.env.NODEMAILER_EMAIL)
-console.log(process.env.NODEMAILER_USER)
-console.log(process.env.NODEMAILER_PASSWORD)
-
+export const sendEmail = (email: string, OTP: string) => {
   const mail_configs = {
-    from: process.env.NODEMAILER_EMAIL,
+    from: process.env.NODEMAILER_USER,
     to: email,
     subject: "PASSWORD RECOVERY",
     html: `<!DOCTYPE html>
@@ -81,7 +47,7 @@ console.log(process.env.NODEMAILER_PASSWORD)
         console.log(error);
         return reject({ message: `An error has occured` });
       }
-      return resolve({ message: "Email sent succesfuly" });
+      return resolve({ message: "Email sent succesfuly"+ info.response });
     });
   });
-}
+};

@@ -1,5 +1,5 @@
 import { useDisclosure } from "@mantine/hooks";
-import { Modal, Group, Button, TextInput, PasswordInput } from "@mantine/core";
+import { Modal, Button, TextInput, PasswordInput } from "@mantine/core";
 import { hasLength, useForm } from "@mantine/form";
 import useBoundStore from "../../store/Store";
 interface Ivalues {
@@ -28,7 +28,7 @@ export default function PasswordChange() {
       values.password !== values.confirmPassword
     )
       return;
-    updatePassword(user?.id as string, values.password);
+    updatePassword(user?.email as string, values.password);
   };
   return (
     <>
@@ -52,15 +52,14 @@ export default function PasswordChange() {
             required
             {...form.getInputProps("confirmPassword")}
           />
-          <Button fullWidth mt="xl" type="submit">
-           Submit
+          <Button fullWidth mt="xl" type="submit" variant="outline">
+            Submit
           </Button>
         </form>
       </Modal>
-
-      <Group position="center">
-        <Button onClick={open}>Open modal</Button>
-      </Group>
+      <Button variant="outline" onClick={open}>
+        Define new/Change your password
+      </Button>
     </>
   );
 }

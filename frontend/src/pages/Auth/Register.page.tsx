@@ -9,10 +9,11 @@ import {
   Anchor,
   createStyles,
   FileInput,
+  Loader,
 } from "@mantine/core";
 import { useForm, isEmail, hasLength } from "@mantine/form";
 import { useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import useBoundStore from "../../store/Store";
 import { getGoogleUrl } from "../../utils/getGoogleUrl";
 import { FcGoogle } from "react-icons/fc";
@@ -26,6 +27,7 @@ interface Ivalues {
 }
 
 export default function RegisterPage() {
+  const location = useLocation();
   const navigate = useNavigate();
   const { signUpService, authLoading, user } = useBoundStore((state) => state);
 
@@ -38,21 +40,13 @@ export default function RegisterPage() {
 
   //sets the inital values
   const form = useForm({
-    initialValues: {
-      email: "",
-      name: "",
-      password: "",
-      terms: true,
-      profilePicture: "",
-    },
-    // cheks the validity of entry in the useForm hook
     validate: {
       email: isEmail("Invalid email"),
       password: hasLength(
         { min: 8, max: 20 },
         "Password must be 8-20 characters long"
       ),
-      confirmPassword: (value: string, values: Ivalues) =>
+      confirmPassword: (value, values) =>
         value !== values.password ? "Passwords did not match" : false,
     },
   });
@@ -75,18 +69,28 @@ export default function RegisterPage() {
     );
   };
 
-  const useStyles = createStyles(() => ({
+  const useStyles = createStyles((theme) => ({
     button: {
       display: "flex",
       color: "lightgray",
-      borderBottom: "2px solid gray",
+      borderBottom: "1px solid gray",
       paddingBottom: "5px",
       paddingTop: "5px",
+      paddingLeft: "15px",
       marginTop: "20px",
       backgroundColor: "transparent",
+      borderRadius: "5px",
+      "&:hover": {
+        borderColor: theme.colors.violet[4],
+        borderWidth: "1px",
+        textDecoration: "none",
+        border: `1px solid ${theme.colors.violet[4]}`,
+        color: theme.colors.violet[2],
+      },
     },
   }));
 
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
   const from = (location.state?.from.pathname as string) || "/profile";
   const { classes } = useStyles();
   return (
@@ -107,7 +111,7 @@ export default function RegisterPage() {
       </Text>
 
       <Paper withBorder shadow="md" p={30} mt={30} radius="md">
-        <form onSubmit={form.onSubmit((values) => onSignUp(values))}>
+        <form onSubmit={form.onSubmit((values) => onSignUp(values as Ivalues))}>
           <TextInput
             label="Name"
             placeholder="Your Name"
@@ -143,14 +147,20 @@ export default function RegisterPage() {
             placeholder="Upload Profile Picture File"
             accept="image/png,image/jpeg"
           />
-          <Button fullWidth mt="xl" type="submit">
-            Sign UpProfilePicture
+          <Button
+            fullWidth
+            mt="xl"
+            type="submit"
+            variant="outline"
+            color="violet"
+          >
+            Sign Up
           </Button>
           <Anchor href={getGoogleUrl(from)} className={classes.button}>
             <FcGoogle size={25} />
-            <Text ml="sm">or Sign Up with Google</Text>
+            <Text ml="sm">Sign Up with Google</Text>
           </Anchor>
-          {authLoading ? <h2>Loading...</h2> : null}
+          {authLoading ? <Loader color="teal" variant="dots" /> : null}
         </form>
       </Paper>
     </Container>

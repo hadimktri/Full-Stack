@@ -6,12 +6,10 @@ import {
   rem,
   Container,
   Group,
-  ActionIcon,
+  Button,
 } from "@mantine/core";
-import { Link } from "react-router-dom";
 import useBoundStore from "../../store/Store";
-import { TbChecks, TbTrashFilled } from "react-icons/tb";
-import PasswordChange from "../../components/Auth/Password.change";
+import PasswordChange from "../../components/Auth/Password.Change";
 
 const useStyles = createStyles((theme) => ({
   wrapper: {
@@ -84,7 +82,7 @@ const useStyles = createStyles((theme) => ({
 export default function UserProfile() {
   const { user, deleteUser } = useBoundStore((state) => state);
 
-  const { classes, theme } = useStyles();
+  const { classes } = useStyles();
 
   const handleDelete = () => {
     deleteUser(user?.id as string);
@@ -98,23 +96,13 @@ export default function UserProfile() {
           <Text fw={500} fz="lg" mb={5}>
             {user?.email}
           </Text>
-          <Group className={classes.buttons} mt="lg">
-            <ActionIcon>
-              <Link
-                to={`/user/update/${user?.id as string}`}
-                className={classes.done}
-              >
-                <TbChecks size={30} color={theme.colors.green[9]} />
-              </Link>
-            </ActionIcon>
-            <ActionIcon>
-              <TbTrashFilled
-                size={30}
-                color={theme.colors.red[9]}
-                onClick={handleDelete}
-              />
-            </ActionIcon>
+          <Group mt="lg">
+            {/* <ActionIcon> */}
             <PasswordChange />
+            <Button variant="outline" onClick={handleDelete} color="red">
+              Delete your account
+            </Button>
+            {/* </ActionIcon> */}
           </Group>
         </div>
         <Image

@@ -8,6 +8,7 @@ const JWT_TOKEN_SECRET = process.env.JWT_TOKEN_SECRET as Secret;
 import { parseToken } from "../services/auth.Service";
 import { IDecodedUser } from "../utils/types";
 import { PrismaClient } from "@prisma/client";
+import { sendEmail } from "../config/Password.Reset.Mailer";
 const prisma = new PrismaClient();
 
 export const authControllers = {
@@ -168,17 +169,29 @@ export const authControllers = {
   },
 
   postUpdatePassword: async (req: Request, res: Response) => {
+   
     try {
-      const { id, password } = req.body;
+      const { email, password } = req.body;
       const hashedPassword = await bcrypt.hash(password, 12);
       const update = await prisma.user.update({
-        where: { id: id },
+        where: { email: email },
         data: {
           password: hashedPassword,
         },
       });
-
       if (update) console.log("Password Updated");
+      res.json({ success: true });
+    } catch (error) {
+      res.status(401).json({ error });
+    }
+  },
+
+  emailRecoveryNumber: async (req: Request, res: Response) => {
+    const email = req.body.email;
+    const OTP = req.body.OTP;
+    try {
+      const result: any = await sendEmail(email, OTP);
+      if (res) console.log(result.message);
       res.json({ success: true });
     } catch (error) {
       res.status(401).json({ error });

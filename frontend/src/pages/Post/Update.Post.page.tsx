@@ -60,7 +60,7 @@ function UpdatePostPage() {
   };
 
   return (
-    <Container className={classes.wrapper} size="90%">
+    <Container className={classes.wrapper} size="md">
       <Image src={image} className={classes.image} />
       <form onSubmit={form.onSubmit(handleSubmit)} className={classes.form}>
         <TextInput

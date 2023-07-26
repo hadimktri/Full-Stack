@@ -7,6 +7,7 @@ interface props {
 }
 
 export const postDetailsLoader = async ({ params }: props) => {
+  console.log(params)
   const res = await axios.get(`${DOMAIN as string}/api/posts/${params.id}`);
   if (res.status != 200) {
     throw Error("Could not find the data");
