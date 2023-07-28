@@ -1,19 +1,19 @@
 import express from "express";
 const router = express.Router();
 import { checkAuth } from "../middleware/checkAuth";
-import authControllers from "../controllers/auth";
+import authControllers from "../controllers/authControllers";
 
-router.post("/login", authControllers.postUserLogin);
+router.post("/login", authControllers.userLogin);
 
-router.post("/validation", authControllers.postUservalidation);
+router.post("/validation", authControllers.userValidation);
 
-router.post("/signup", authControllers.postUserSignUp);
+router.post("/signup", authControllers.userSignUp);
 
-router.post("/delete/:id", checkAuth, authControllers.postUserDelete);
+router.post("/delete/:id", checkAuth, authControllers.userDelete);
 
-router.get("/google", authControllers.getGoogleLogin);
+router.get("/google", authControllers.googleLogin);
 
-router.post("/updatePassword",  authControllers.postUpdatePassword);
+router.post("/updatePassword",  authControllers.updatePassword);
 
 router.post("/emailRecoveryNumber", authControllers.emailRecoveryNumber);
 

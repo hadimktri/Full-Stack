@@ -31,6 +31,7 @@ interface IProps {
   favoratedBy: IUser[];
   likes: number;
   author: IUser;
+  authorId: string;
   comments: IComment[];
 }
 
@@ -67,6 +68,7 @@ export default function SinglePost({
   favoratedBy,
   likes,
   author,
+  authorId,
   comments,
   content,
 }: IProps) {
@@ -145,15 +147,14 @@ export default function SinglePost({
                 />
               )}
             </ActionIcon>
-            <ActionIcon>
-              <Link to={!user ? "/login" : id}>
-                <TbEdit
-                  size="1.2rem"
-                  color={theme.colors.yellow[6]}
-                  onClick={handleFavorate}
-                />
-              </Link>
-            </ActionIcon>
+            {authorId === user?.id && (
+              <ActionIcon>
+                <Link to={!user ? "/login" : id}>
+                  <TbEdit size="1.2rem" color={theme.colors.yellow[6]} />
+                </Link>
+              </ActionIcon>
+            )}
+
             <CommentModal postId={id} comments={comments} />
           </Group>
         </Group>

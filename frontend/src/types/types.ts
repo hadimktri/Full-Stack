@@ -37,15 +37,16 @@ export interface IPostStore {
   setPosts: (posts: IPost[]) => void;
   postsLoading: boolean;
   setPostLoading: (value: boolean) => void;
-  addPost: (value: any, id: string) => void;
+  addPost: (value: any) => void;
   updatePost: (value: any, id: string) => void;
   deletePost: (id: string) => void;
   userFavorate: (postId: string, userId: string) => void;
   postlikes: (postId: string, flag: boolean) => void;
-  postComment: (
-    postId: string,
-    values: { userId: string; content: string }
-  ) => void;
+  postComment: (values: {
+    authorId: string;
+    content: string;
+    postId: string;
+  }) => void;
   deleteComment: (id: string) => void;
 }
 export interface IToken {

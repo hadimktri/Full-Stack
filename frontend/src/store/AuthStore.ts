@@ -16,7 +16,6 @@ const createAuthStore: StateCreator<
   tokenLoading: true,
 
   setUser: (args) => set({ user: args }),
-  // reset everything set session, user, authloading, tokenloadig to false
   logoutService: () => {
     setSession(null);
     set({ user: null, authLoading: false, tokenLoading: false });
@@ -24,23 +23,18 @@ const createAuthStore: StateCreator<
 
   loginService: async (email, password) => {
     set({ authLoading: true });
-    // while waiting for result from backend, loading is running
     try {
       const res = await axios.post(`${DOMAIN as string}/api/auth/login`, {
         email,
         password,
       });
-      //if we have truthy result with user and token
       if (
         (res.data as IResponse).result?.user &&
         (res.data as IResponse).result?.token
       ) {
-        // saving token in the local storage as cookie
         setSession((res.data as IResponse).result?.token);
-        //finally set the stor's user from null to result user
         set({ user: (res.data as IResponse).result?.user, authLoading: false });
       } else {
-        //if we don't have truthy result with user and token
         set({ authLoading: false, user: null });
       }
     } catch (error) {
@@ -72,7 +66,6 @@ const createAuthStore: StateCreator<
   loginWithToken: async () => {
     try {
       const res = await axios.post(`${DOMAIN as string}/api/auth/validation`);
-      // if result contains user and token, sets session and user loading false
       if (
         (res.data as IResponse).result?.user &&
         (res.data as IResponse).result?.token
@@ -83,7 +76,6 @@ const createAuthStore: StateCreator<
           tokenLoading: false,
         });
       } else {
-        // in falsy result
         set({ tokenLoading: false, user: null });
       }
     } catch (error) {

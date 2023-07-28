@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import { Suspense } from "react";
 import { Container } from "@mantine/core";
 import { useLoaderData, Await } from "react-router-dom";
@@ -6,10 +7,10 @@ import { IPost } from "../../types/types";
 import PaginatePosts from "../../components/Posts/PaginatePosts";
 
 interface IPromise {
-  posts: Promise<IPost>;
+  diferedData: Promise<IPost>;
 }
 const PostPage = () => {
-  const dataPromise = useLoaderData();
+  const promise = useLoaderData();
   // const revalidator = useRevalidator();
 
   // useEffect(() => {
@@ -28,14 +29,19 @@ const PostPage = () => {
         </Container>
       }
     >
-      <Await resolve={(dataPromise as IPromise).posts}>
-        {(resolvedData) => {
-          return (
-            <PaginatePosts
-              // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-              postArray={resolvedData.data as IPost[]}
-            />
-          );
+      <Await resolve={(promise as IPromise).diferedData}>
+        {(resolvedPromise) => {
+          if (resolvedPromise.data.status === "success") {
+            if (resolvedPromise.data.length === 0) {
+              return <h5>Nothing to see here</h5>;
+            } else {
+              return (
+                <PaginatePosts
+                  postArray={resolvedPromise.data.data.posts as IPost[]}
+                />
+              );
+            }
+          }
         }}
       </Await>
     </Suspense>

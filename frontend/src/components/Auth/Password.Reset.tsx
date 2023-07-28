@@ -60,6 +60,7 @@ export default function PasswordReset() {
     )
       return;
     updatePassword(email, values.password);
+    setPage("recovered");
   };
   console.log(page);
   return (

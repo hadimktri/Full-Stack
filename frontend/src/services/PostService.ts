@@ -5,18 +5,22 @@ import { IPost } from "../types/types";
 interface props {
   params: { id: string };
 }
+interface ISuccess {
+  status: string;
+  data: { post: IPost };
+}
 
 export const postDetailsLoader = async ({ params }: props) => {
-  console.log(params)
   const res = await axios.get(`${DOMAIN as string}/api/posts/${params.id}`);
-  if (res.status != 200) {
-    throw Error("Could not find the data");
+  if ((res?.data as ISuccess).status !== "success") {
+    throw Error("Could not find the Post");
+  } else {
+    return (res.data as ISuccess).data.post;
   }
-  return res.data as IPost;
 };
 
 //removed await from axios to get the imidiate promise
 export const postsLoader = () => {
   const res = axios.get(`${DOMAIN as string}/api/posts`);
-  return defer({ posts: res });
+  return defer({ diferedData: res });
 };

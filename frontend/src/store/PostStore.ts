@@ -15,10 +15,10 @@ const PostStore: StateCreator<IAuthStore & IPostStore, [], [], IPostStore> = (
     set(() => ({ postsLoading: value }));
   },
 
-  addPost: async (values, id) => {
+  addPost: async (values) => {
     try {
       const res = await axios.post(
-        `${DOMAIN as string}/api/posts/${id}`,
+        `${DOMAIN as string}/api/posts`,
         values
       );
       if ((res?.data as ISuccess).success) {
@@ -32,8 +32,8 @@ const PostStore: StateCreator<IAuthStore & IPostStore, [], [], IPostStore> = (
 
   updatePost: async (values, postId) => {
     try {
-      const res = await axios.post(
-        `${DOMAIN as string}/api/posts/update/${postId}`,
+      const res = await axios.patch(
+        `${DOMAIN as string}/api/posts/${postId}`,
         values
       );
       if ((res?.data as ISuccess).success) {
@@ -47,9 +47,7 @@ const PostStore: StateCreator<IAuthStore & IPostStore, [], [], IPostStore> = (
 
   deletePost: async (id) => {
     try {
-      const res = await axios.post(
-        `${DOMAIN as string}/api/posts/delete/${id}`
-      );
+      const res = await axios.delete(`${DOMAIN as string}/api/posts/${id}`);
       if ((res?.data as ISuccess).success) {
         set({ postsLoading: true });
       }
@@ -91,10 +89,10 @@ const PostStore: StateCreator<IAuthStore & IPostStore, [], [], IPostStore> = (
     }
   },
 
-  postComment: async (postId, values) => {
+  postComment: async (values) => {
     try {
       const res = await axios.post(
-        `${DOMAIN as string}/api/posts/comment/${postId}`,
+        `${DOMAIN as string}/api/posts/comment`,
         values
       );
       if ((res?.data as ISuccess).success) {
@@ -105,10 +103,11 @@ const PostStore: StateCreator<IAuthStore & IPostStore, [], [], IPostStore> = (
       set({ postsLoading: false });
     }
   },
+
   deleteComment: async (id) => {
     try {
-      const res = await axios.post(
-        `${DOMAIN as string}/api/posts/deleteComment/${id}`
+      const res = await axios.delete(
+        `${DOMAIN as string}/api/posts/comment/${id}`
       );
       if ((res?.data as ISuccess).success) {
         set({ postsLoading: true });

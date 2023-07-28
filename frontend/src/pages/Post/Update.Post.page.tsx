@@ -33,14 +33,14 @@ const useStyles = createStyles((theme) => ({
   image: { maxWidth: "50%" },
   form: { width: "50vw", marginLeft: `calc(${theme.spacing.xl} )` },
   done: { padding: "0", border: "none" },
-  buttons:{ display:"flex", justifyContent:"space-evenly"}
+  buttons: { display: "flex", justifyContent: "space-evenly" },
 }));
 
 function UpdatePostPage() {
-  const { updatePost, deletePost } = useBoundStore((state) => state);
+  const { updatePost, deletePost, user } = useBoundStore((state) => state);
   const { classes, theme } = useStyles();
   const navigate = useNavigate();
-  const { id, title, category, content, image } = useLoaderData() as IPost;
+  const { id, title, category, content, image, authorId} = useLoaderData() as IPost;
   const form = useForm({
     initialValues: {
       title: title,
@@ -51,11 +51,15 @@ function UpdatePostPage() {
   });
 
   const handleSubmit = (values: any) => {
-    updatePost(values, id);
+    if (authorId === user?.id) {
+      updatePost(values, id);
+    }
     navigate(`/posts`);
   };
   const handleDelete = () => {
-    deletePost(id);
+    if (authorId === user?.id) {
+      deletePost(id);
+    }
     navigate("/posts");
   };
 
@@ -90,11 +94,9 @@ function UpdatePostPage() {
           minRows={5}
         />
         <Group className={classes.buttons} mt="lg">
-          <ActionIcon>
-            <Button variant="outline" type="submit" className={classes.done}>
-              <TbChecks size={30} color={theme.colors.green[9]} />
-            </Button>
-          </ActionIcon>
+          <Button variant="outline" type="submit" className={classes.done}>
+            <TbChecks size={30} color={theme.colors.green[9]} />
+          </Button>
           <ActionIcon>
             <TbTrashFilled
               size={30}

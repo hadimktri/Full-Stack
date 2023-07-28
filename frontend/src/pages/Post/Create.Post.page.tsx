@@ -32,7 +32,7 @@ function CreatePostPage() {
   const { user, addPost } = useBoundStore((state) => state);
 
   const handelAddPost = (values: any) => {
-    addPost(values, (user as IUser).id);
+    addPost({ ...values, authorId: (user as IUser).id });
     navigate("/posts");
   };
 

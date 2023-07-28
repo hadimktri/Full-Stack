@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { getGoogleOauthToken, getGoogleUser } from "../services/google.service";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
@@ -6,14 +6,19 @@ import { Secret } from "jsonwebtoken";
 const JWT_TOKEN_EXPIRES_IN = process.env.JWT_TOKEN_EXPIRES_IN;
 const JWT_TOKEN_SECRET = process.env.JWT_TOKEN_SECRET as Secret;
 import { parseToken } from "../services/auth.Service";
-import { IDecodedUser } from "../utils/types";
 import { PrismaClient } from "@prisma/client";
-import { sendEmail } from "../config/Password.Reset.Mailer";
+import sendEmail from "../config/mailer";
+import asyncErrorHandler from "../utils/asyncErrorHandler";
+import CustomError from "../config/CustomError";
 const prisma = new PrismaClient();
 
-export const authControllers = {
-  postUserLogin: async (req: Request, res: Response) => {
-    try {
+interface IDecodedUser {
+  id: number;
+}
+
+export default {
+  userLogin: asyncErrorHandler(
+    async (req: Request, res: Response, next: NextFunction) => {
       const { email, password } = req.body;
       const user = await prisma.user.findFirst({
         where: {
@@ -23,14 +28,9 @@ export const authControllers = {
           favoritePosts: true,
         },
       });
-      if (!user) {
-        return res.status(401).json({
-          result: {
-            status: "fail",
-            message: "Invalid email or password",
-          },
-        });
-      }
+
+      !user && next(new CustomError("Invalid email or password!", 401));
+
       if (user) {
         const verifyPassword = await bcrypt.compare(password, user?.password);
         if (verifyPassword) {
@@ -40,13 +40,11 @@ export const authControllers = {
           res.json({ result: { user, token } });
         }
       }
-    } catch (error) {
-      res.status(401).json({ error });
     }
-  },
+  ),
 
-  postUservalidation: async (req: Request, res: Response) => {
-    try {
+  userValidation: asyncErrorHandler(
+    async (req: Request, res: Response, next: NextFunction) => {
       const authHeader = req.headers.authorization;
       const token = parseToken(authHeader, res);
       const decodedUser = jwt.verify(token, JWT_TOKEN_SECRET);
@@ -59,16 +57,14 @@ export const authControllers = {
         .then((user) => {
           res.json({ result: { user, token } });
         });
-    } catch (error) {
-      res.status(401).json({ error });
     }
-  },
+  ),
 
-  postUserSignUp: async (req: Request, res: Response) => {
-    try {
+  userSignUp: asyncErrorHandler(
+    async (req: Request, res: Response, next: NextFunction) => {
       const { name, email, password, profilePicture } = req.body;
       const hashedPassword = await bcrypt.hash(password, 12);
-      const signup = await prisma.user.upsert({
+      const user = await prisma.user.upsert({
         where: { email, NOT: { googleId: null } },
         create: {
           name,
@@ -82,27 +78,24 @@ export const authControllers = {
         },
       });
 
-      if (signup) console.log("User Signed Up");
-      res.json({ success: true });
-    } catch (error) {
-      res.status(401).json({ error });
+      !user && next(new CustomError(`Registering the User is Failed!`, 404));
+
+      res.status(201).json({
+        status: "success",
+        data: {
+          user,
+        },
+      });
     }
-  },
+  ),
 
-  getGoogleLogin: async (req: Request, res: Response) => {
-    const FRONTEND_ORIGIN = process.env.FRONTEND_ORIGIN as unknown as string;
-    try {
+  googleLogin: asyncErrorHandler(
+    async (req: Request, res: Response, next: NextFunction) => {
+      const FRONTEND_ORIGIN = process.env.FRONTEND_ORIGIN as unknown as string;
+
       const code = req.query.code as string;
-      const pathUrl = (req.query.state as string) || "/";
 
-      if (!code) {
-        return res.status(401).json({
-          result: {
-            status: "fail",
-            message: "Authorization code not provided!",
-          },
-        });
-      }
+      !code && next(new CustomError(`Authorization code not provided!`, 401));
 
       const { id_token, access_token } = await getGoogleOauthToken({ code });
 
@@ -111,16 +104,8 @@ export const authControllers = {
         access_token,
       });
 
-      if (!verified_email) {
-        return res.status(403).json({
-          result: {
-            result: {
-              status: "fail",
-              message: "Google account not verifie",
-            },
-          },
-        });
-      }
+      !verified_email &&
+        next(new CustomError(`Google account is not verified!`, 403));
 
       const user = await prisma.user.upsert({
         where: { email },
@@ -143,60 +128,55 @@ export const authControllers = {
         },
       });
 
-      if (!user) return res.redirect(`${FRONTEND_ORIGIN}`);
+      !user && res.redirect(`${FRONTEND_ORIGIN}`);
 
       const token = jwt.sign({ id: user?.id }, JWT_TOKEN_SECRET, {
         expiresIn: JWT_TOKEN_EXPIRES_IN,
       });
-      res.redirect(`http://localhost:3000/posts?token=${token}`);
-    } catch (error) {
-      console.log("Failed to authorize Google User", error);
-      return res.redirect(`${FRONTEND_ORIGIN}/oauth/error`);
+      res.redirect(`${FRONTEND_ORIGIN}posts?token=${token}`);
     }
-  },
+  ),
 
-  postUserDelete: async (req: Request, res: Response) => {
-    try {
-      await prisma.user.delete({
+  userDelete: asyncErrorHandler(
+    async (req: Request, res: Response, next: NextFunction) => {
+      const user = await prisma.user.delete({
         where: {
           id: req.params.id,
         },
       });
-      res.status(200).json({ success: true });
-    } catch (error) {
-      res.status(401).json({ error });
-    }
-  },
 
-  postUpdatePassword: async (req: Request, res: Response) => {
-   
-    try {
+      !user && next(new CustomError(`Deleting User Failed!`, 404));
+
+      res.status(200).json({ success: true });
+    }
+  ),
+
+  updatePassword: asyncErrorHandler(
+    async (req: Request, res: Response, next: NextFunction) => {
       const { email, password } = req.body;
       const hashedPassword = await bcrypt.hash(password, 12);
-      const update = await prisma.user.update({
+      const user = await prisma.user.update({
         where: { email: email },
         data: {
           password: hashedPassword,
         },
       });
-      if (update) console.log("Password Updated");
-      res.json({ success: true });
-    } catch (error) {
-      res.status(401).json({ error });
-    }
-  },
+      !user && next(new CustomError(`Updating User Failed!`, 404));
 
-  emailRecoveryNumber: async (req: Request, res: Response) => {
-    const email = req.body.email;
-    const OTP = req.body.OTP;
-    try {
+      res.json({ success: true });
+    }
+  ),
+
+  emailRecoveryNumber: asyncErrorHandler(
+    async (req: Request, res: Response, next: NextFunction) => {
+      const email = req.body.email;
+      const OTP = req.body.OTP;
+
       const result: any = await sendEmail(email, OTP);
-      if (res) console.log(result.message);
-      res.json({ success: true });
-    } catch (error) {
-      res.status(401).json({ error });
-    }
-  },
-};
 
-export default authControllers;
+      !result && next(new CustomError(`Recovery Email is not sent!`, 404));
+
+      res.json({ success: true });
+    }
+  ),
+};

@@ -14,7 +14,7 @@ import { useDisclosure } from "@mantine/hooks";
 import { GiPlantsAndAnimals } from "react-icons/gi";
 import { NavLink, useNavigate } from "react-router-dom";
 import useBoundStore from "../../store/Store";
-import LightDark from "./LightDark";
+import LightDark from "./../misc/LightDark";
 const HEADER_HEIGHT = rem(60);
 
 const useStyles = createStyles((theme) => ({

@@ -58,7 +58,7 @@ export default function PasswordChange() {
         </form>
       </Modal>
       <Button variant="outline" onClick={open}>
-        Define new/Change your password
+        Set a new or Change your password
       </Button>
     </>
   );

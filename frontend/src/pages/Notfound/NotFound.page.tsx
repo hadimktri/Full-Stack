@@ -4,6 +4,7 @@ const NotFound = () => {
   // use (errorElement={<NotFound />}) in parent router and use (useRouteError()) to get the thrown error generated in fetching data in NotFound page
   // this also will load the NotFound page in the wrong Url entry
   const error = useRouteError() as Error;
+  console.log(error)
   return (
     <div>
       <h1>Page not found</h1>

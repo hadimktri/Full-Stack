@@ -1,6 +1,6 @@
 import nodemailer from "nodemailer";
 
-export const sendEmail = (email: string, OTP: string) => {
+const sendEmail = (email: string, OTP: string) => {
   const mail_configs = {
     from: process.env.NODEMAILER_USER,
     to: email,
@@ -47,7 +47,9 @@ export const sendEmail = (email: string, OTP: string) => {
         console.log(error);
         return reject({ message: `An error has occured` });
       }
-      return resolve({ message: "Email sent succesfuly"+ info.response });
+      return resolve({ message: "Email sent succesfuly" + info.response });
     });
   });
 };
+
+export default sendEmail;

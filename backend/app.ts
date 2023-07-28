@@ -1,16 +1,27 @@
-import "dotenv/config";
 import express from "express";
 import cors from "cors";
-import nodemailer from "nodemailer";
-import multer from "multer";
 import adminRouter from "./routes/adminRoutes";
 import authRouter from "./routes/authRoutes";
 import postRouter from "./routes/postRoutes";
-const port = 8085;
+import CustomError from "./config/CustomError";
+import globalErrorHandler from "./controllers/errorController";
+
 const app = express();
+
 app.use(express.json());
 app.use(cors());
 app.use("/admin", adminRouter);
 app.use("/api/auth", authRouter);
 app.use("/api/posts", postRouter);
-app.listen(port, () => console.log("Server is running"));
+
+app.all("*", (req, res, next) => {
+  const error: any = new CustomError(
+    `Can't find ${req.originalUrl} on the server!`,
+    404
+  );
+  next(error);
+});
+
+app.use(globalErrorHandler);
+
+export default app;

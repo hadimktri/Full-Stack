@@ -1,24 +1,24 @@
 import express from "express";
 const router = express.Router();
 import { checkAuth } from "../middleware/checkAuth";
-import postControllers from "../controllers/post";
+import postControllers from "../controllers/postControllers";
 
-router.get("/", postControllers.getPosts);
+router.get("/", postControllers.getAllPosts);
+//
+router.post("/", checkAuth, postControllers.createPost);
 
-router.get("/:id", checkAuth, postControllers.getOnePost);
+router
+  .route("/:id")
+  .get(checkAuth, postControllers.getOnePost)
+  .patch(checkAuth, postControllers.updatePost)
+  .delete(checkAuth, postControllers.deletePost);
 
-router.post("/:id", checkAuth, postControllers.postCreatePost);
+router.post("/favorate/:id", checkAuth, postControllers.favoratePost);
 
-router.post("/update/:id", checkAuth, postControllers.postUpdatePost);
+router.post("/likeUp/:id", checkAuth, postControllers.likePost);
 
-router.post("/delete/:id", checkAuth, postControllers.postDeletePost);
+router.post("/comment", checkAuth, postControllers.commentPost);
 
-router.post("/favorate/:id", checkAuth, postControllers.postFavoratePost);
-
-router.post("/likeUp/:id", checkAuth, postControllers.postLikePost);
-
-router.post("/comment/:id", checkAuth, postControllers.postCommentPost);
-
-router.post("/deleteComment/:id", checkAuth, postControllers.postDeleteComment);
+router.delete("/comment/:id", checkAuth, postControllers.deleteComment);
 
 export default router;

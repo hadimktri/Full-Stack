@@ -50,9 +50,10 @@ const CommentModal = ({ postId, comments }: IProps) => {
   };
 
   const handleComment = () => {
-    postComment(postId, {
-      userId: user?.id as string,
+    postComment({
       content: value,
+      authorId: user?.id as string,
+      postId: postId,
     });
   };
   const handleDeleteComment = (id: string) => {
