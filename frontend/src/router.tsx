@@ -54,7 +54,6 @@ export const Router = () => {
           }
         />
         <Route path="/" element={<Landing />} />
-        {/* <Route path="*" element={<NotFound />} /> */}
       </Route>
     )
   );

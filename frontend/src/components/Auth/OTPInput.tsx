@@ -11,8 +11,9 @@ import {
 import { IconArrowRight } from "@tabler/icons-react";
 import useBoundStore from "../../store/Store";
 import { useContext, useState } from "react";
-import { IContext, RecoveryContext } from "../../pages/Auth/Login.page";
+import { RecoveryContext } from "../../pages/Auth/Login.page";
 import { TbX } from "react-icons/tb";
+import { IRecoveryContext } from "../../types/types";
 
 const useStyles = createStyles((theme) => ({
   container: {
@@ -37,7 +38,9 @@ const useStyles = createStyles((theme) => ({
 const OTPInput = () => {
   const { classes, theme } = useStyles();
 
-  const { setEmail, setPage, email } = useContext(RecoveryContext) as IContext;
+  const { setEmail, setPage, email } = useContext(
+    RecoveryContext
+  ) as IRecoveryContext;
   const { emailRecoveryNumber } = useBoundStore((state) => state);
 
   const [inputEmail, setInputEmail] = useState(email);

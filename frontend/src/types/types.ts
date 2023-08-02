@@ -92,3 +92,23 @@ export interface paginationProps {
   setPage: (n: number) => void;
   page: number;
 }
+
+export interface IRegisterValues {
+  email: string;
+  password: string;
+  name: string;
+  confirmPassword?: string;
+  profilePicture: string;
+  terms: true;
+}
+
+export interface IRecoveryContext {
+  page: string;
+  setPage: (val: string) => void;
+  email: string;
+  setEmail: (val: string) => void;
+}
+export interface ILayoutContext {
+  searchValue: string;
+  setSearchValue: (value: string) => void;
+}

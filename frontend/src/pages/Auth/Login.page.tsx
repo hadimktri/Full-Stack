@@ -3,15 +3,9 @@ import Login from "../../components/Auth/Login";
 import OTPInput from "../../components/Auth/OTPInput";
 import Recovered from "../../components/Auth/Recovered";
 import PasswordReset from "../../components/Auth/Password.Reset";
+import { IRecoveryContext } from "../../types/types";
 
-export interface IContext {
-  page: string;
-  setPage: (val: string) => void;
-  email: string;
-  setEmail: (val: string) => void;
-}
-
-export const RecoveryContext = createContext<IContext | null>(null);
+export const RecoveryContext = createContext<IRecoveryContext | null>(null);
 
 function LoginPage() {
   const [page, setPage] = useState("login");

@@ -4,7 +4,7 @@ import { Container } from "@mantine/core";
 import { useLoaderData, Await } from "react-router-dom";
 import { Loader } from "@mantine/core";
 import { IPost } from "../../types/types";
-import PaginatePosts from "../../components/Posts/PaginatePosts";
+import PostsCard from "../../components/Posts/PostsCard";
 
 interface IPromise {
   diferedData: Promise<IPost>;
@@ -36,7 +36,7 @@ const PostPage = () => {
               return <h5>Nothing to see here</h5>;
             } else {
               return (
-                <PaginatePosts
+                <PostsCard
                   postArray={resolvedPromise.data.data.posts as IPost[]}
                 />
               );

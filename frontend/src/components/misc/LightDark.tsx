@@ -1,21 +1,35 @@
-import { ActionIcon, useMantineColorScheme } from "@mantine/core";
+import {
+  ActionIcon,
+  Group,
+  Text,
+  createStyles,
+  useMantineColorScheme,
+} from "@mantine/core";
 import { IconSun, IconMoonStars } from "@tabler/icons-react";
+const useStyles = createStyles(() => ({
+  link: {
+    "&:hover": {
+      cursor: "pointer",
+    },
+  },
+}));
 
-const LightDark = () => {
+export default function LightDark({ IconSize }: { IconSize: string | number }) {
+  const { classes } = useStyles();
   // eslint-disable-next-line @typescript-eslint/unbound-method
   const { colorScheme, toggleColorScheme } = useMantineColorScheme();
   const dark = colorScheme === "dark";
   return (
-    <ActionIcon
-      variant="outline"
-      color={dark ? "yellow" : "blue"}
-      onClick={() => toggleColorScheme()}
-      title="Toggle color scheme"
-      style={{ marginLeft: 20 }}
-    >
-      {dark ? <IconSun size="1.1rem" /> : <IconMoonStars size="1.1rem" />}
-    </ActionIcon>
+    <Group onClick={() => toggleColorScheme()} className={classes.link}>
+      <ActionIcon
+        variant="outline"
+        color={dark ? "yellow" : "blue"}
+        title="Toggle color scheme"
+        size={IconSize}
+      >
+        {dark ? <IconSun size={18} /> : <IconMoonStars size={15} />}
+      </ActionIcon>
+      <Text>{dark ? "Light Mode" : "Dark Mode"}</Text>
+    </Group>
   );
-};
-
-export default LightDark;
+}

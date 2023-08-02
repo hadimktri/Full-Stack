@@ -8,10 +8,11 @@ import {
   Avatar,
   Badge,
   rem,
+  em,
 } from "@mantine/core";
 import { IconHeart } from "@tabler/icons-react";
 import useBoundStore from "../../store/Store";
-import { IComment, IUser } from "../../types/types";
+import { IPost } from "../../types/types";
 import { useEffect, useState } from "react";
 import CommentModal from "./CommentModal";
 import {
@@ -22,31 +23,19 @@ import {
 } from "react-icons/tb";
 import { Link, useNavigate } from "react-router-dom";
 
-interface IProps {
-  id: string;
-  title: string;
-  content: string;
-  category: string;
-  image: string;
-  favoratedBy: IUser[];
-  likes: number;
-  author: IUser;
-  authorId: string;
-  comments: IComment[];
-}
-
 const useStyles = createStyles((theme) => ({
   card: {
+    display: "flex",
+    flexDirection: "column",
+    height: "550px",
     backgroundColor:
       theme.colorScheme === "dark" ? theme.colors.dark[7] : theme.white,
-    height: "450px",
+    [`@media (max-width: ${em(550)})`]: {
+      maxWidth:"500px",
+      minWidth: "500px",
+      height: "auto",
+    },
   },
-
-  title: {
-    // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-    fontFamily: `Greycliff CF, ${theme.fontFamily}`,
-  },
-
   footer: {
     padding: `${theme.spacing.xs} ${theme.spacing.lg}`,
     marginTop: theme.spacing.md,
@@ -55,8 +44,12 @@ const useStyles = createStyles((theme) => ({
     }`,
   },
   content: {
-    overflow: "auto",
-    height: "85px",
+    overflow: "hidden",
+    minHeight: "100px",
+    flex: 1,
+  },
+  category: {
+    width: "40%",
   },
 }));
 
@@ -71,7 +64,7 @@ export default function SinglePost({
   authorId,
   comments,
   content,
-}: IProps) {
+}: IPost) {
   const navigate = useNavigate();
   const { classes, theme } = useStyles();
   const { user, userFavorate, postlikes } = useBoundStore((state) => state);
@@ -90,19 +83,21 @@ export default function SinglePost({
   };
 
   return (
-    <Card withBorder padding="lg" radius="md" className={classes.card}>
-      <Card.Section mb="xs">
-        <Image src={image} alt={title} height={180} />
+    <Card withBorder padding="xs" radius="md" className={classes.card}>
+      <Card.Section mb="sm">
+        <Image src={image} alt={title} height={250} />
       </Card.Section>
-      <Text fw={700} className={classes.title}>
+      <Text fw={700} my="xs">
         {title}
       </Text>
-      <Badge my="xs">{category}</Badge>
+      <Badge my="xs" className={classes.category}>
+        {category}
+      </Badge>
       <Text className={classes.content} color={theme.colors.gray[6]} size="sm">
         {content}
       </Text>
-      <Group mt="md">
-        <Avatar size="sm" src={author?.profilePicture} radius="xl" />
+      <Group mt="md" spacing={10}>
+        <Avatar size={20} src={author?.profilePicture} radius="xl" />
         <Text fz="xs" fw={400}>
           {author?.name}
         </Text>
@@ -154,7 +149,6 @@ export default function SinglePost({
                 </Link>
               </ActionIcon>
             )}
-
             <CommentModal postId={id} comments={comments} />
           </Group>
         </Group>

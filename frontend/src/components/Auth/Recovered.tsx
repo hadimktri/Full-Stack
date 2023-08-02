@@ -8,7 +8,8 @@ import {
 } from "@mantine/core";
 import { useContext } from "react";
 import { TbX } from "react-icons/tb";
-import { IContext, RecoveryContext } from "../../pages/Auth/Login.page";
+import { RecoveryContext } from "../../pages/Auth/Login.page";
+import { IRecoveryContext } from "../../types/types";
 const useStyles = createStyles((theme) => ({
   container: {
     padding: rem(20),
@@ -28,7 +29,7 @@ const useStyles = createStyles((theme) => ({
   },
 }));
 const Recovered = () => {
-  const { setPage } = useContext(RecoveryContext) as IContext;
+  const { setPage } = useContext(RecoveryContext) as IRecoveryContext;
   const { classes } = useStyles();
   return (
     <Container size="xs" className={classes.container}>

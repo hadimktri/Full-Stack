@@ -18,7 +18,8 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import useBoundStore from "../../store/Store";
 import { FcGoogle } from "react-icons/fc";
 import { getGoogleUrl } from "../../utils/getGoogleUrl";
-import { IContext, RecoveryContext } from "../../pages/Auth/Login.page";
+import { RecoveryContext } from "../../pages/Auth/Login.page";
+import { IRecoveryContext } from "../../types/types";
 const useStyles = createStyles((theme) => ({
   button: {
     display: "flex",
@@ -56,7 +57,7 @@ export default function Login() {
   const location = useLocation();
   const navigate = useNavigate();
   const { loginService, authLoading, user } = useBoundStore((state) => state);
-  const { setEmail, setPage } = useContext(RecoveryContext) as IContext;
+  const { setEmail, setPage } = useContext(RecoveryContext) as IRecoveryContext;
   // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
   const from: string = (location.state?.from.pathname as string) || "/profile";
 
@@ -69,7 +70,6 @@ export default function Login() {
   const form = useForm({
     initialValues: {
       email: "",
-      name: "",
       password: "",
       terms: true,
     },

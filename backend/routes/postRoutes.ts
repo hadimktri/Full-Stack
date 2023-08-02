@@ -5,7 +5,7 @@ import postControllers from "../controllers/postControllers";
 
 router.get("/", postControllers.getAllPosts);
 //
-router.post("/", checkAuth, postControllers.createPost);
+router.post("/",  postControllers.createPost);
 
 router
   .route("/:id")

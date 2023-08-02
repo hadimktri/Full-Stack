@@ -1,14 +1,14 @@
 import { RouterProvider } from "react-router-dom";
-import ProviderLayout from "./ProviderLayout";
+import StyleProvider from "./StyleProvider";
 import { Router } from "./router";
-import "./App.css";
+
 function App() {
   const router = Router();
 
   return (
-    <ProviderLayout>
+    <StyleProvider>
       <RouterProvider router={router} />
-    </ProviderLayout>
+    </StyleProvider>
   );
 }
 

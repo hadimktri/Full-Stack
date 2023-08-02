@@ -11,8 +11,9 @@ import {
 import { hasLength, useForm } from "@mantine/form";
 import useBoundStore from "../../store/Store";
 import { useContext } from "react";
-import { IContext, RecoveryContext } from "../../pages/Auth/Login.page";
+import {  RecoveryContext } from "../../pages/Auth/Login.page";
 import { TbX } from "react-icons/tb";
+import { IRecoveryContext } from "../../types/types";
 interface Ivalues {
   password: string;
   confirmPassword?: string;
@@ -40,7 +41,7 @@ const useStyles = createStyles((theme) => ({
 export default function PasswordReset() {
   const { classes } = useStyles();
   const { updatePassword } = useBoundStore((state) => state);
-  const { email, page, setPage } = useContext(RecoveryContext) as IContext;
+  const { email, page, setPage } = useContext(RecoveryContext) as IRecoveryContext;
   const form = useForm({
     validate: {
       password: hasLength(

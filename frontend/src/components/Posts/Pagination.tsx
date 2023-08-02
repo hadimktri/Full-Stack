@@ -1,4 +1,4 @@
-import { Container, Pagination } from "@mantine/core";
+import { Pagination } from "@mantine/core";
 import {
   IconArrowBarToLeft,
   IconArrowBarToRight,
@@ -21,20 +21,19 @@ const Paginate = ({
   }, [page]);
 
   return (
-    <Container mt="20px">
-      <Pagination
-        value={page}
-        onChange={setPage}
-        total={pageCount}
-        position="center"
-        withEdges
-        nextIcon={IconArrowRight}
-        previousIcon={IconArrowLeft}
-        firstIcon={IconArrowBarToLeft}
-        lastIcon={IconArrowBarToRight}
-        dotsIcon={IconGripHorizontal}
-      />
-    </Container>
+    <Pagination
+      value={page}
+      onChange={setPage}
+      total={pageCount}
+      position="center"
+      withEdges
+      nextIcon={IconArrowRight}
+      previousIcon={IconArrowLeft}
+      firstIcon={IconArrowBarToLeft}
+      lastIcon={IconArrowBarToRight}
+      dotsIcon={IconGripHorizontal}
+      size="sm"
+    />
   );
 };
 export default Paginate;

@@ -1,7 +1,11 @@
 import { ColorSchemeProvider, MantineProvider } from "@mantine/core";
 import { useHotkeys, useLocalStorage } from "@mantine/hooks";
 
-const ProviderLayout = ({ children }: { children: React.ReactNode }) => {
+export default function StyleProvider({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   const [colorScheme, setColorScheme] = useLocalStorage({
     key: "mantine-color-scheme",
     defaultValue: "light",
@@ -30,5 +34,4 @@ const ProviderLayout = ({ children }: { children: React.ReactNode }) => {
       </ColorSchemeProvider>
     </>
   );
-};
-export default ProviderLayout;
+}

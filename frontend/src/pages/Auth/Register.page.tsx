@@ -17,14 +17,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import useBoundStore from "../../store/Store";
 import { getGoogleUrl } from "../../utils/getGoogleUrl";
 import { FcGoogle } from "react-icons/fc";
-
-interface Ivalues {
-  email: string;
-  password: string;
-  name: string;
-  confirmPassword?: string;
-  profilePicture: string;
-}
+import { IRegisterValues } from "../../types/types";
 
 export default function RegisterPage() {
   const location = useLocation();
@@ -40,6 +33,13 @@ export default function RegisterPage() {
 
   //sets the inital values
   const form = useForm({
+    initialValues: {
+      email: "",
+      name: "",
+      password: "",
+      confirmPassword: "",
+      terms: true,
+    },
     validate: {
       email: isEmail("Invalid email"),
       password: hasLength(
@@ -52,7 +52,7 @@ export default function RegisterPage() {
   });
 
   //check the exsistance of both entry if no stops with return if yes fires the (loginService())
-  const onSignUp = (values: Ivalues) => {
+  const onSignUp = (values: IRegisterValues) => {
     if (
       !values.email ||
       !values.password ||
@@ -111,7 +111,7 @@ export default function RegisterPage() {
       </Text>
 
       <Paper withBorder shadow="md" p={30} mt={30} radius="md">
-        <form onSubmit={form.onSubmit((values) => onSignUp(values as Ivalues))}>
+        <form onSubmit={form.onSubmit((values) => onSignUp(values as IRegisterValues))}>
           <TextInput
             label="Name"
             placeholder="Your Name"

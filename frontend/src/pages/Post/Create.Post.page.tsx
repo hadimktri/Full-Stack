@@ -6,7 +6,6 @@ import {
   rem,
   Container,
   Textarea,
-  FileInput,
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { useNavigate } from "react-router-dom";
@@ -28,8 +27,9 @@ const useStyles = createStyles((theme) => ({
 function CreatePostPage() {
   const { classes } = useStyles();
   const navigate = useNavigate();
-  const form = useForm();
   const { user, addPost } = useBoundStore((state) => state);
+
+  const form = useForm();
 
   const handelAddPost = (values: any) => {
     addPost({ ...values, authorId: (user as IUser).id });
@@ -38,42 +38,40 @@ function CreatePostPage() {
 
   return (
     <Container size="50%" my={40}>
-      <div className={classes.wrapper}>
-        <form onSubmit={form.onSubmit(handelAddPost)}>
-          <TextInput
-            label="Title"
-            placeholder="Enter a Title"
-            {...form.getInputProps("title")}
-            withAsterisk
-          />
-          <TextInput
-            label="category"
-            placeholder="Enter a Category"
-            {...form.getInputProps("category")}
-            withAsterisk
-          />
-          <TextInput
-            label="Image"
-            placeholder="Enter an Image"
-            {...form.getInputProps("image")}
-            withAsterisk
-          />
-          <Textarea
-            label="Content"
-            placeholder="Enter some content"
-            {...form.getInputProps("content")}
-            withAsterisk
-          />
-          <FileInput
-            label="Upload files"
-            placeholder="Upload files"
-            accept="image/png,image/jpeg"
-          />
-          <Group position="right" mt="md">
-            <Button type="submit">Create</Button>
-          </Group>
-        </form>
-      </div>
+      <form onSubmit={form.onSubmit(handelAddPost)} className={classes.wrapper}>
+        <TextInput
+          label="Title"
+          placeholder="Enter a Title"
+          {...form.getInputProps("title")}
+          withAsterisk
+        />
+        <TextInput
+          label="category"
+          placeholder="Enter a Category"
+          {...form.getInputProps("category")}
+          withAsterisk
+        />
+        <TextInput
+          label="Image"
+          placeholder="Enter an Image"
+          {...form.getInputProps("image")}
+          withAsterisk
+        />
+        <Textarea
+          label="Content"
+          placeholder="Enter some content"
+          {...form.getInputProps("content")}
+          withAsterisk
+        />
+        {/* <FileInput
+          label="Upload files"
+          placeholder="Upload files"
+          accept="image/png,image/jpeg"
+        /> */}
+        <Group position="right" mt="md">
+          <Button type="submit">Create</Button>
+        </Group>
+      </form>
     </Container>
   );
 }

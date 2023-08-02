@@ -16,19 +16,31 @@ const PostStore: StateCreator<IAuthStore & IPostStore, [], [], IPostStore> = (
   },
 
   addPost: async (values) => {
-    try {
-      const res = await axios.post(
-        `${DOMAIN as string}/api/posts`,
-        values
-      );
-      if ((res?.data as ISuccess).success) {
+    await axios
+      .post(`${DOMAIN as string}/api/posts`, values)
+      .then(() => {
         set({ postsLoading: true });
-      }
-    } catch (error) {
-      console.log(error);
-      set({ postsLoading: false });
-    }
+      })
+      .catch((error) => {
+        console.log(error.response.data.message, error.response.data.status);
+        set({ postsLoading: false });
+      });
   },
+
+  // addPost: async (values) => {
+  //   try {
+  //     const res = await axios.post(
+  //       `${DOMAIN as string}/api/posts`,
+  //       values
+  //     );
+  //     if ((res?.data as ISuccess).success) {
+  //       set({ postsLoading: true });
+  //     }
+  //   } catch (error) {
+  //     console.log(error.message as string);
+  //     set({ postsLoading: false });
+  //   }
+  // },
 
   updatePost: async (values, postId) => {
     try {
