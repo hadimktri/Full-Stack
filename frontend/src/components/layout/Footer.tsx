@@ -14,9 +14,10 @@ import {
 
 const useStyles = createStyles((theme) => ({
   footer: {
+    margin: "auto",
     display: "flex",
     justifyContent: "center",
-    width: "100%",
+    width: "90%",
     marginTop: rem(20),
     borderTop: `${rem(1)} solid ${
       theme.colorScheme === "dark" ? theme.colors.dark[5] : theme.colors.gray[2]
@@ -25,15 +26,12 @@ const useStyles = createStyles((theme) => ({
   },
 
   inner: {
-    width: "90%",
     display: "flex",
+    width: "90%",
     justifyContent: "space-between",
     [`@media (max-width: ${em(550)})`]: {
       flexDirection: "column",
     },
-    // [`@media (min-width: ${em(1200)})`]: {
-    //   backgroundColor: theme.colors.orange[6],
-    // },
   },
 
   links: {

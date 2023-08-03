@@ -27,11 +27,11 @@ const useStyles = createStyles((theme) => ({
   card: {
     display: "flex",
     flexDirection: "column",
-    height: "550px",
+    height: "520px",
     backgroundColor:
       theme.colorScheme === "dark" ? theme.colors.dark[7] : theme.white,
     [`@media (max-width: ${em(550)})`]: {
-      maxWidth:"500px",
+      maxWidth: "500px",
       minWidth: "500px",
       height: "auto",
     },
@@ -45,7 +45,7 @@ const useStyles = createStyles((theme) => ({
   },
   content: {
     overflow: "hidden",
-    minHeight: "100px",
+    height: "80px",
     flex: 1,
   },
   category: {
@@ -85,18 +85,23 @@ export default function SinglePost({
   return (
     <Card withBorder padding="xs" radius="md" className={classes.card}>
       <Card.Section mb="sm">
-        <Image src={image} alt={title} height={250} />
+        <Image src={image} alt={title} height={230} />
       </Card.Section>
       <Text fw={700} my="xs">
         {title}
       </Text>
-      <Badge my="xs" className={classes.category}>
+      <Badge
+        my="xs"
+        className={classes.category}
+        variant="gradient"
+        gradient={{ from: "violet", to: 'cyan', deg: 30 }}
+      >
         {category}
       </Badge>
       <Text className={classes.content} color={theme.colors.gray[6]} size="sm">
         {content}
       </Text>
-      <Group mt="md" spacing={10}>
+      <Group mt="md"ml={10} spacing={10}>
         <Avatar size={20} src={author?.profilePicture} radius="xl" />
         <Text fz="xs" fw={400}>
           {author?.name}

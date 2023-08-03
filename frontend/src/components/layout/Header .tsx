@@ -10,6 +10,7 @@ import {
   rem,
   Header,
   em,
+  Flex,
 } from "@mantine/core";
 import {
   IconLogout,
@@ -25,10 +26,11 @@ import LightDark from "../misc/LightDark";
 import Search from "../misc/Search";
 const useStyles = createStyles((theme) => ({
   header: {
-    width: "100%",
+    margin:"auto",
     position: "sticky",
     display: "flex",
     justifyContent: "center",
+    width: "80%",
     backgroundColor:
       theme.colorScheme === "dark"
         ? theme.colors.dark[8]
@@ -37,14 +39,20 @@ const useStyles = createStyles((theme) => ({
       theme.colorScheme === "dark" ? theme.colors.gray[8] : theme.colors.gray[2]
     }`,
     border: "none",
+    [`@media (max-width: ${em(1200)})`]: {
+      width: "100%",
+    },
   },
 
-  mainSection: {
-    width: "90%",
+  inner: {
     display: "flex",
-    justifyContent: "center",
-    [`@media (max-width: ${em(550)})`]: {
-      width: "100%",
+    justifyContent: "space-between",
+    width: "100%",
+    // [`@media (max-width: ${em(550)})`]: {
+    //   flexDirection: "column",
+    // },
+    [`@media (min-width: ${em(1200)})`]: {
+      width: "80%",
     },
   },
   leftSection: {
@@ -126,7 +134,7 @@ export default function MainHeader() {
   const { logoutService, user } = useBoundStore((state) => state);
   return (
     <Header height={60} className={classes.header}>
-      <Group className={classes.mainSection}>
+      <Group className={classes.inner}>
         <Group className={classes.leftSection}>
           <Group>
             <NavLink to="posts" className={classes.link}>
@@ -195,18 +203,24 @@ export default function MainHeader() {
             <Search />
           </div>
         </Group>
-        <div className={classes.centerSection}>
-          <NavLink to="posts/create" className={classes.link}>
-            <BsPlusSquare size={22} />
-          </NavLink>
-        </div>
+        {user && (
+          <div className={classes.centerSection}>
+            <NavLink to="posts/create" className={classes.link}>
+              <BsPlusSquare size={22} />
+            </NavLink>
+          </div>
+        )}
+
         <Group p={0} className={classes.rightSection}>
           {!user ? (
-            <div className={classes.login}>
+            <Flex className={classes.login}>
               <NavLink to="login" className={classes.link}>
                 <Text>Login</Text>
               </NavLink>
-            </div>
+              <NavLink to="signup" className={classes.link}>
+                <Text>SignUp</Text>
+              </NavLink>
+            </Flex>
           ) : (
             <Group>
               <Avatar

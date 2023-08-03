@@ -1,49 +1,22 @@
 import { useDisclosure } from "@mantine/hooks";
-import {
-  Modal,
-  Text,
-  Textarea,
-  ActionIcon,
-  createStyles,
-  rem,
-  Group,
-} from "@mantine/core";
+import { Modal, Textarea, ActionIcon, Divider, Paper } from "@mantine/core";
 import useBoundStore from "../../store/Store";
-import { TbCheck, TbMessage, TbX } from "react-icons/tb";
+import { TbCheck, TbMessage } from "react-icons/tb";
 import { useState } from "react";
-import { IComment } from "../../types/types";
 import { useNavigate } from "react-router-dom";
+import CommentStack from "./CommentStack";
+import { IComment } from "../../types/types";
 
 interface IProps {
   postId: string;
-  comments: any;
+  comments: IComment[];
 }
-const useStyles = createStyles((theme) => ({
-  card: {
-    backgroundColor:
-      theme.colorScheme === "dark" ? theme.colors.dark[7] : theme.white,
-  },
-
-  title: {
-    // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-    fontFamily: `Greycliff CF, ${theme.fontFamily}`,
-  },
-
-  footer: {
-    padding: `${theme.spacing.xs} ${theme.spacing.lg}`,
-    marginTop: theme.spacing.md,
-    borderTop: `${rem(1)} solid ${
-      theme.colorScheme === "dark" ? theme.colors.dark[5] : theme.colors.gray[2]
-    }`,
-  },
-}));
 
 const CommentModal = ({ postId, comments }: IProps) => {
   const navigate = useNavigate();
-  const { classes } = useStyles();
   const [opened, { open, close }] = useDisclosure(false);
   const [value, setValue] = useState("");
-  const { user, postComment, deleteComment } = useBoundStore((state) => state);
+  const { user, postComment } = useBoundStore((state) => state);
 
   const handleValue = (value: string) => {
     setValue(value);
@@ -56,13 +29,11 @@ const CommentModal = ({ postId, comments }: IProps) => {
       postId: postId,
     });
   };
-  const handleDeleteComment = (id: string) => {
-    deleteComment(id);
-  };
 
   return (
     <>
       <Modal
+        zIndex={1000}
         opened={opened}
         onClose={close}
         title={
@@ -71,27 +42,19 @@ const CommentModal = ({ postId, comments }: IProps) => {
           </ActionIcon>
         }
       >
-        <Textarea
-          data-autofocus
-          label=""
-          placeholder="Commens"
-          my="xs"
-          minRows={5}
-          value={value}
-          onChange={(e) => handleValue(e.target.value)}
-        />
-        {(comments as []).map((comment: IComment, idx: number) => (
-          <Group key={idx} position="apart" mx={10}>
-            <Text fw={500} className={classes.title} m="sm">
-              {comment?.content}
-            </Text>
-            <ActionIcon>
-              <TbX size={15} onClick={() => handleDeleteComment(comment?.id)} />
-            </ActionIcon>
-          </Group>
-        ))}
+        <Paper radius="md" p="xl">
+          <Textarea
+            data-autofocus
+            label=""
+            placeholder="Commens"
+            minRows={4}
+            value={value}
+            onChange={(e) => handleValue(e.target.value)}
+          />
+          <Divider label="Drag Your Comments" labelPosition="center" my={15} />
+          <CommentStack comments={comments} />
+        </Paper>
       </Modal>
-
       <ActionIcon>
         <TbMessage
           size={20}

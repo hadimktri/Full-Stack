@@ -2,16 +2,15 @@ import {
   Button,
   TextInput,
   PasswordInput,
-  Container,
   createStyles,
   rem,
-  ActionIcon,
   Flex,
+  Paper,
 } from "@mantine/core";
 import { hasLength, useForm } from "@mantine/form";
 import useBoundStore from "../../store/Store";
 import { useContext } from "react";
-import {  RecoveryContext } from "../../pages/Auth/Login.page";
+import { RecoveryContext } from "../../pages/Auth/Login.page";
 import { TbX } from "react-icons/tb";
 import { IRecoveryContext } from "../../types/types";
 interface Ivalues {
@@ -20,20 +19,27 @@ interface Ivalues {
 }
 
 const useStyles = createStyles((theme) => ({
-  container: {
-    padding: rem(20),
+  wrapper: {
+    width: "45%",
+    height: "450px",
+    alignItems: "center",
+    backgroundColor:
+      theme.colorScheme === "dark" ? theme.colors.gray[9] : theme.white,
     border: `${rem(1)} solid ${
-      theme.colorScheme === "dark" ? theme.colors.dark[5] : theme.colors.gray[2]
+      theme.colorScheme === "dark" ? theme.colors.dark[8] : theme.colors.gray[3]
     }`,
-  },
 
-  button: {
-    background: "none",
-    padding: 0,
-    color: theme.colors.cyan[5],
-    "&:hover": {
-      textDecoration: "none",
-      background: "none",
+    [theme.fn.smallerThan("xs")]: {
+      flexDirection: "column",
+      width: "100%",
+      margin: 0,
+      padding: theme.spacing.xs,
+    },
+  },
+  inner: {
+    [theme.fn.smallerThan("xs")]: {
+      padding: theme.spacing.sm,
+      margin: 0,
     },
   },
 }));
@@ -41,14 +47,21 @@ const useStyles = createStyles((theme) => ({
 export default function PasswordReset() {
   const { classes } = useStyles();
   const { updatePassword } = useBoundStore((state) => state);
-  const { email, page, setPage } = useContext(RecoveryContext) as IRecoveryContext;
+  const { email, page, setPage } = useContext(
+    RecoveryContext
+  ) as IRecoveryContext;
   const form = useForm({
+    initialValues: {
+      password: "",
+      confirmPassword: "",
+      terms: true,
+    },
     validate: {
       password: hasLength(
         { min: 8, max: 20 },
         "Password must be 8-20 characters long"
       ),
-      confirmPassword: (value: string | unknown, values: Ivalues) =>
+      confirmPassword: (value, values) =>
         value !== values.password ? "Passwords did not match" : false,
     },
   });
@@ -60,44 +73,57 @@ export default function PasswordReset() {
       values.password !== values.confirmPassword
     )
       return;
+
     updatePassword(email, values.password);
     setPage("recovered");
   };
-  console.log(page);
-  return (
-    <Container size="xs" className={classes.container}>
-      <Flex justify="flex-end">
-        <ActionIcon mb="md">
-          <TbX size={20} onClick={() => setPage("login")} />
-        </ActionIcon>
-      </Flex>
 
-      <form
-        onSubmit={form.onSubmit((values) =>
-          handleUpdatePassword(values as Ivalues)
-        )}
+  return (
+    <Paper radius="md" withBorder p="lg" className={classes.wrapper} mt={40}>
+      <Flex justify="flex-end">
+        <Button variant="subtle" color="red" size="xs">
+          <TbX size={20} onClick={() => setPage("login")} />
+        </Button>
+      </Flex>
+      <Paper
+        withBorder
+        shadow="md"
+        p={15}
+        mt={30}
+        radius="md"
+        className={classes.inner}
       >
-        <PasswordInput
-          label="Password"
-          placeholder="Your password"
-          required
-          data-autofocus
-          mt="md"
-          {...form.getInputProps("password")}
-        />
-        <TextInput
-          label="Confirm password"
-          placeholder="Your password"
-          required
-          {...form.getInputProps("confirmPassword")}
-          mt="xl"
-        />
-        {page == "reset" && (
-          <Button fullWidth mt="xl" type="submit" variant="outline">
-            Submit
-          </Button>
-        )}
-      </form>
-    </Container>
+        <form
+          onSubmit={form.onSubmit((values) => handleUpdatePassword(values))}
+        >
+          <PasswordInput
+            label="Password"
+            placeholder="Your password"
+            required
+            data-autofocus
+            mt="md"
+            {...form.getInputProps("password")}
+          />
+          <TextInput
+            label="Confirm password"
+            placeholder="Your password"
+            required
+            {...form.getInputProps("confirmPassword")}
+            mt="xl"
+          />
+          {page == "reset" && (
+            <Button
+              variant="subtle"
+              color="indigo"
+              mt="xl"
+              size="xs"
+              type="submit"
+            >
+              Submit
+            </Button>
+          )}
+        </form>
+      </Paper>
+    </Paper>
   );
 }

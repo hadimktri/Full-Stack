@@ -7,7 +7,7 @@ import NotFound from "./pages/Notfound/NotFound.page";
 import CreatePostPage from "./pages/Post/Create.Post.page";
 import UpdatePostPage from "./pages/Post/Update.Post.page";
 import ProtectedRoute from "./services/ProtectedRoute";
-import UserProfile from "./pages/User/User.porfile";
+import Profile from "./pages/Auth/Profile";
 
 import {
   Route,
@@ -29,10 +29,10 @@ export const Router = () => {
         <Route path="signup" element={<RegisterPage />} />
         <Route path="posts" element={<PostPage />} loader={postsLoader} />
         <Route
-          path="/user/profile"
+          path="profile"
           element={
             <ProtectedRoute isAllowed={!!authCheck}>
-              <UserProfile />
+              <Profile />
             </ProtectedRoute>
           }
         />

@@ -1,13 +1,15 @@
-import { createStyles, Navbar, getStylesRef, Text, rem, em } from "@mantine/core";
+import { createStyles, Navbar, getStylesRef, Text, em } from "@mantine/core";
 import { IconSettings, IconLogout, IconLogin } from "@tabler/icons-react";
 import { NavLink, useNavigate } from "react-router-dom";
 import LightDark from "../misc/LightDark";
 import useBoundStore from "../../store/Store";
+import { TbUserPlus } from "react-icons/tb";
 
 const useStyles = createStyles((theme) => ({
   sideBar: {
+    position:"sticky",
     width: "200px",
-    maxHeight:"60vh",
+    maxHeight: "60vh",
     border: "none",
     [`@media (max-width: ${em(1200)})`]: {
       display: "none",
@@ -70,6 +72,10 @@ export default function RightSideBar() {
             <IconLogin className={classes.linkIcon} stroke={1.5} />
             <Text>Login</Text>
           </NavLink>
+          <NavLink to="signup" className={classes.link}>
+            <TbUserPlus className={classes.linkIcon} size={25} />
+            <Text>Create Account</Text>
+          </NavLink>
         </Navbar.Section>
       ) : (
         <Navbar.Section pt={30} mt={30}>
@@ -78,7 +84,7 @@ export default function RightSideBar() {
             <Text>Logout</Text>
           </NavLink>
 
-          <NavLink to="/user/profile" className={classes.link}>
+          <NavLink to="profile" className={classes.link}>
             <IconSettings className={classes.linkIcon} stroke={1.5} />
             <Text>Account settings</Text>
           </NavLink>

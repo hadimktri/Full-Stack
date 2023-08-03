@@ -20,9 +20,7 @@ function LoginPage() {
 
   return (
     <RecoveryContext.Provider value={{ page, setPage, setEmail, email }}>
-      <div className="flex justify-center items-center">
-        <NavigateComponents />
-      </div>
+      <NavigateComponents />
     </RecoveryContext.Provider>
   );
 }

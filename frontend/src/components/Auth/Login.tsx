@@ -6,11 +6,13 @@ import {
   Paper,
   Title,
   Text,
-  Container,
   Group,
   Button,
   createStyles,
   Loader,
+  rem,
+  Divider,
+  Stack,
 } from "@mantine/core";
 import { useForm, isEmail, hasLength } from "@mantine/form";
 import { useContext, useEffect } from "react";
@@ -20,42 +22,40 @@ import { FcGoogle } from "react-icons/fc";
 import { getGoogleUrl } from "../../utils/getGoogleUrl";
 import { RecoveryContext } from "../../pages/Auth/Login.page";
 import { IRecoveryContext } from "../../types/types";
-const useStyles = createStyles((theme) => ({
-  button: {
-    display: "flex",
-    color: "lightgray",
-    borderBottom: "1px solid gray",
-    paddingBottom: "5px",
-    paddingTop: "5px",
-    paddingLeft: "15px",
-    marginTop: "20px",
-    backgroundColor: "transparent",
-    borderRadius: "5px",
-    "&:hover": {
-      borderColor: theme.colors.violet[4],
-      borderWidth: "1px",
-      textDecoration: "none",
-      border: `1px solid ${theme.colors.violet[4]}`,
-      color: theme.colors.violet[2],
-    },
-  },
-  signUp: {
-    display: "flex",
-    justifyContent: "center",
-    color: "lightgray",
-    gap: "5px",
-    paddingTop: "20px",
-  },
-}));
 
 interface Ivalues {
   email: string;
   password: string;
   terms: boolean;
 }
+
+const useStyles = createStyles((theme) => ({
+  wrapper: {
+    minWidth: "45%",height:"530px",
+    alignItems: "center",
+    backgroundColor:
+      theme.colorScheme === "dark" ? theme.colors.gray[9] : theme.white,
+    border: `${rem(1)} solid ${
+      theme.colorScheme === "dark" ? theme.colors.dark[8] : theme.colors.gray[3]
+    }`,
+
+    [theme.fn.smallerThan("xs")]: {
+      flexDirection: "column",
+      width: "100%",
+      margin: theme.spacing.sm,
+    },
+  },
+  buttons: {
+    [theme.fn.smallerThan("sm")]: {
+      flexDirection: "column",
+      width: "100%",
+    },
+  },
+}));
 export default function Login() {
   const location = useLocation();
   const navigate = useNavigate();
+  const { classes } = useStyles();
   const { loginService, authLoading, user } = useBoundStore((state) => state);
   const { setEmail, setPage } = useContext(RecoveryContext) as IRecoveryContext;
   // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
@@ -88,63 +88,75 @@ export default function Login() {
     setEmail(values.email);
   };
 
-  const { classes } = useStyles();
   return (
-    <Container size={420} my={40}>
+    <Paper radius="md" p="lg" className={classes.wrapper} mt={30}>
       <Title
-        align="center"
-        mr={15}
+        ml={15}
         sx={(theme) => ({
           // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
           fontFamily: `Greycliff CF, ${theme.fontFamily}`,
-          fontWeight: 900,
+          fontWeight: 700,
         })}
       >
         Welcome back!
       </Title>
-      <Text className={classes.signUp}>
-        <Text>Do not have an account yet?</Text>
-        <Link to={"/signup"}>Create account</Link>
-      </Text>
+      <Stack align="center" mt={20}>
+        <Anchor component="button" type="button" color="dimmed" size="xs">
+          "Don't have an account? <Link to={"/signup"}>Create account</Link>"
+        </Anchor>
 
-      <Paper withBorder shadow="md" p={30} mt={20} radius="md">
+        <Button
+          fullWidth
+          className={classes.buttons}
+          href={getGoogleUrl(from)}
+          component="a"
+          type="button"
+          variant="subtle"
+          color="indigo"
+          size="sm"
+        >
+          <FcGoogle size={25} />
+          <Text ml="sm">Login with Google</Text>
+        </Button>
+      </Stack>
+
+      <Divider label="Or continue with email" labelPosition="center" my="lg" />
+
+      <Paper shadow="md" p={30} mt={20} radius="md">
         <form onSubmit={form.onSubmit((values) => onLogin(values))}>
           <TextInput
             label="Email"
-            placeholder="you@mantine.dev"
+            placeholder="you@email.com"
             required
+            data-autofocus
             {...form.getInputProps("email")}
           />
           <PasswordInput
             label="Password"
             placeholder="Your password"
             required
-            mt="md"
             {...form.getInputProps("password")}
           />
           <Group position="apart" mt="lg">
             <Checkbox label="Remember me" />
-            <Anchor component="button" size="sm" onClick={() => setPage("otp")}>
+            <Anchor component="button" size="xs" onClick={() => setPage("otp")}>
               Forgot password?
             </Anchor>
           </Group>
           <Button
             fullWidth
-            mt="xl"
             type="submit"
-            color="violet"
-            variant="outline"
+            variant="subtle"
+            color="indigo"
+            mt="xl"
+            size="sm"
             value="one"
           >
             Sign in
           </Button>
-          <Anchor href={getGoogleUrl(from)} className={classes.button}>
-            <FcGoogle size={25} />
-            <Text ml="sm">Login with Google</Text>
-          </Anchor>
           {authLoading ? <Loader color="teal" variant="dots" /> : null}
         </form>
       </Paper>
-    </Container>
+    </Paper>
   );
 }

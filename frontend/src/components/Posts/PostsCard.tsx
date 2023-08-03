@@ -28,7 +28,7 @@ export default function PostsCard({ postArray }: { postArray: IPost[] }) {
   const [filteredData, setFilteredData] = useState<IPost[]>([]);
   const [tableData, setTableData] = useState<IPost[] | void>([]);
   const [pageCount, setPageCount] = useState<number>(1);
-  const [currentPage, setCurrentPage] = useState(2);
+  const [currentPage, setCurrentPage] = useState(1);
   const [flag, setFlag] = useState(false);
   const [cardNumber, setCardNumber] = useState(3);
   const { width } = useViewportSize();
