@@ -18,6 +18,7 @@ import CommentModal from "./CommentModal";
 import {
   TbArrowBadgeDown,
   TbArrowBadgeUp,
+  TbBookmark,
   TbEdit,
   TbHeartFilled,
 } from "react-icons/tb";
@@ -94,14 +95,14 @@ export default function SinglePost({
         my="xs"
         className={classes.category}
         variant="gradient"
-        gradient={{ from: "violet", to: 'cyan', deg: 30 }}
+        gradient={{ from: "violet", to: "cyan", deg: 30 }}
       >
         {category}
       </Badge>
       <Text className={classes.content} color={theme.colors.gray[6]} size="sm">
         {content}
       </Text>
-      <Group mt="md"ml={10} spacing={10}>
+      <Group mt="md" ml={10} spacing={10}>
         <Avatar size={20} src={author?.profilePicture} radius="xl" />
         <Text fz="xs" fw={400}>
           {author?.name}
@@ -148,11 +149,22 @@ export default function SinglePost({
               )}
             </ActionIcon>
             {authorId === user?.id && (
-              <ActionIcon>
-                <Link to={!user ? "/login" : id}>
-                  <TbEdit size="1.2rem" color={theme.colors.yellow[6]} />
-                </Link>
-              </ActionIcon>
+              <>
+                <ActionIcon>
+                  <Link to={!user ? "/login" : `/posts/${id}`}>
+                    <TbEdit size="1.2rem" color={theme.colors.cyan[6]} />
+                  </Link>
+                </ActionIcon>
+                <ActionIcon>
+                  <Link to={!user ? "/login" : `/posts/${id}`}>
+                    <TbBookmark
+                      size={20}
+                      style={{ ...(user && { color: "#FAB005" }) }}
+                      // stroke={1.5}
+                    />
+                  </Link>
+                </ActionIcon>
+              </>
             )}
             <CommentModal postId={id} comments={comments} />
           </Group>

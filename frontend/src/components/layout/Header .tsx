@@ -21,12 +21,12 @@ import {
   IconChevronDown,
 } from "@tabler/icons-react";
 import useBoundStore from "../../store/Store";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import LightDark from "../misc/LightDark";
 import Search from "../misc/Search";
 const useStyles = createStyles((theme) => ({
   header: {
-    margin:"auto",
+    margin: "auto",
     position: "sticky",
     display: "flex",
     justifyContent: "center",
@@ -132,6 +132,7 @@ export default function MainHeader() {
   const { classes, theme } = useStyles();
   const [, setUserMenuOpened] = useState(false);
   const { logoutService, user } = useBoundStore((state) => state);
+  const navigate = useNavigate();
   return (
     <Header height={60} className={classes.header}>
       <Group className={classes.inner}>
@@ -205,7 +206,7 @@ export default function MainHeader() {
         </Group>
         {user && (
           <div className={classes.centerSection}>
-            <NavLink to="posts/create" className={classes.link}>
+            <NavLink to="/posts/create" className={classes.link}>
               <BsPlusSquare size={22} />
             </NavLink>
           </div>
@@ -271,18 +272,14 @@ export default function MainHeader() {
                     <Menu.Divider />
                     <Menu.Label>Settings</Menu.Label>
                     <Menu.Item
+                      onClick={() => navigate("/profile")}
                       icon={<IconSettings size="0.9rem" stroke={1.5} />}
                     >
-                      Account settings
+                      Profile
                     </Menu.Item>
                     <Menu.Item
-                      icon={
-                        <IconLogout
-                          size="0.9rem"
-                          stroke={1.5}
-                          onClick={logoutService}
-                        />
-                      }
+                      onClick={logoutService}
+                      icon={<IconLogout size="0.9rem" stroke={1.5} />}
                     >
                       Logout
                     </Menu.Item>

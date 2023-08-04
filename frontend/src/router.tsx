@@ -15,7 +15,15 @@ import {
   createBrowserRouter,
 } from "react-router-dom";
 import PostPage from "./pages/Post/Post.page";
-import { postDetailsLoader, postsLoader } from "./services/PostService";
+import {
+  postDetailsLoader,
+  postsLoader,
+  userCommPostsLoader,
+  userLikedPostsLoader,
+  userPostsLoader,
+} from "./services/PostService";
+import CommentsAcordion from "./pages/User/CommentsAcordion";
+import Comments from "./pages/User/Comments";
 
 export const Router = () => {
   const authCheck = useBoundStore((state) => {
@@ -52,6 +60,33 @@ export const Router = () => {
               <CreatePostPage />
             </ProtectedRoute>
           }
+        />
+        <Route
+          path="/posts/user/:id"
+          element={
+            <ProtectedRoute isAllowed={!!authCheck}>
+              <PostPage />
+            </ProtectedRoute>
+          }
+          loader={userPostsLoader}
+        />
+        <Route
+          path="/posts/userLiked/:id"
+          element={
+            <ProtectedRoute isAllowed={!!authCheck}>
+              <PostPage />
+            </ProtectedRoute>
+          }
+          loader={userLikedPostsLoader}
+        />
+        <Route
+          path="/posts/Commented/:id"
+          element={
+            <ProtectedRoute isAllowed={!!authCheck}>
+              <Comments />
+            </ProtectedRoute>
+          }
+          loader={userCommPostsLoader}
         />
         <Route path="/" element={<Landing />} />
       </Route>

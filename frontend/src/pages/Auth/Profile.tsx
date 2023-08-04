@@ -6,12 +6,15 @@ import {
   createStyles,
   rem,
   Group,
+  Flex,
 } from "@mantine/core";
 import useBoundStore from "../../store/Store";
+import { TbX } from "react-icons/tb";
+import { useNavigate } from "react-router-dom";
 const useStyles = createStyles((theme) => ({
   wrapper: {
     width: "50%",
-    height:"500px",
+    height: "500px",
     alignItems: "center",
     backgroundColor:
       theme.colorScheme === "dark" ? theme.colors.gray[9] : theme.white,
@@ -35,7 +38,7 @@ const useStyles = createStyles((theme) => ({
 
 export default function Profile() {
   const { user, deleteUser } = useBoundStore((state) => state);
-
+  const navigate = useNavigate();
   const { classes } = useStyles();
 
   const handleDelete = () => {
@@ -44,6 +47,16 @@ export default function Profile() {
 
   return (
     <Paper radius="md" withBorder p="lg" className={classes.wrapper} mt={30}>
+      <Flex justify="flex-end">
+        <Button
+          variant="subtle"
+          color="red"
+          size="xs"
+          onClick={() => navigate("/posts")}
+        >
+          <TbX size={20} />
+        </Button>
+      </Flex>
       <Avatar
         src={user?.profilePicture}
         size={150}

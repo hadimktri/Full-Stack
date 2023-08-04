@@ -49,7 +49,7 @@ const Recovered = () => {
           variant="subtle"
           color="red"
           size="xs"
-          onClick={() => setPage("login")}
+          onClick={() => setPage("auth")}
         >
           <TbX size={20} />
         </Button>

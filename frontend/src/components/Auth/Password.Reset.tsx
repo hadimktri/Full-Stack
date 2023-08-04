@@ -82,7 +82,7 @@ export default function PasswordReset() {
     <Paper radius="md" withBorder p="lg" className={classes.wrapper} mt={40}>
       <Flex justify="flex-end">
         <Button variant="subtle" color="red" size="xs">
-          <TbX size={20} onClick={() => setPage("login")} />
+          <TbX size={20} onClick={() => setPage("auth")} />
         </Button>
       </Flex>
       <Paper

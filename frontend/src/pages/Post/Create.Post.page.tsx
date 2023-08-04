@@ -8,16 +8,18 @@ import {
   Title,
   Divider,
   Stack,
+  Flex,
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { useNavigate } from "react-router-dom";
 import useBoundStore from "../../store/Store";
 import { IUser } from "../../types/types";
+import { TbX } from "react-icons/tb";
 
 const useStyles = createStyles((theme) => ({
   wrapper: {
     minWidth: "45%",
-    height:"600px",
+    height: "600px",
     alignItems: "center",
     backgroundColor:
       theme.colorScheme === "dark" ? theme.colors.gray[9] : theme.white,
@@ -60,7 +62,18 @@ function CreatePostPage() {
 
   return (
     <Paper radius="md" p="xl" className={classes.wrapper} mt={10}>
-      <Title size={30}>Create Your Post</Title>{" "}
+      <Flex justify="space-between">
+        <Title size={30}>Create Your Post</Title>
+        <Button
+          variant="subtle"
+          color="red"
+          size="xs"
+          onClick={() => navigate("/posts")}
+        >
+          <TbX size={20} />
+        </Button>
+      </Flex>
+
       <Divider
         label="Please fill all 4 fields"
         labelPosition="center"

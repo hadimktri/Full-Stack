@@ -7,7 +7,7 @@ import { TbUserPlus } from "react-icons/tb";
 
 const useStyles = createStyles((theme) => ({
   sideBar: {
-    position:"sticky",
+    position: "sticky",
     width: "200px",
     maxHeight: "60vh",
     border: "none",
@@ -86,7 +86,7 @@ export default function RightSideBar() {
 
           <NavLink to="profile" className={classes.link}>
             <IconSettings className={classes.linkIcon} stroke={1.5} />
-            <Text>Account settings</Text>
+            <Text>Profile</Text>
           </NavLink>
         </Navbar.Section>
       )}

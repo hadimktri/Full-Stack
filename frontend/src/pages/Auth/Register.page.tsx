@@ -11,6 +11,7 @@ import {
   Stack,
   Divider,
   rem,
+  Flex,
 } from "@mantine/core";
 import { useForm, isEmail, hasLength } from "@mantine/form";
 import { useEffect } from "react";
@@ -19,6 +20,7 @@ import useBoundStore from "../../store/Store";
 import { getGoogleUrl } from "../../utils/getGoogleUrl";
 import { FcGoogle } from "react-icons/fc";
 import { IRegisterValues } from "../../types/types";
+import { TbX } from "react-icons/tb";
 
 const useStyles = createStyles((theme) => ({
   wrapper: {
@@ -106,7 +108,17 @@ export default function RegisterPage() {
   const { classes } = useStyles();
   return (
     <Paper radius="md" p="xl" className={classes.wrapper} mt={10}>
-      <Title>Sign Up!</Title>
+      <Flex justify="space-between">
+        <Title>Sign Up!</Title>
+        <Button
+          variant="subtle"
+          color="red"
+          size="xs"
+          onClick={() => navigate("/posts")}
+        >
+          <TbX size={20} />
+        </Button>
+      </Flex>
       <Stack spacing="xs">
         <Anchor
           component="button"

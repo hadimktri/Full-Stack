@@ -13,6 +13,7 @@ import {
   rem,
   Divider,
   Stack,
+  Flex,
 } from "@mantine/core";
 import { useForm, isEmail, hasLength } from "@mantine/form";
 import { useContext, useEffect } from "react";
@@ -22,6 +23,7 @@ import { FcGoogle } from "react-icons/fc";
 import { getGoogleUrl } from "../../utils/getGoogleUrl";
 import { RecoveryContext } from "../../pages/Auth/Login.page";
 import { IRecoveryContext } from "../../types/types";
+import { TbX } from "react-icons/tb";
 
 interface Ivalues {
   email: string;
@@ -31,7 +33,8 @@ interface Ivalues {
 
 const useStyles = createStyles((theme) => ({
   wrapper: {
-    minWidth: "45%",height:"530px",
+    minWidth: "45%",
+    height: "530px",
     alignItems: "center",
     backgroundColor:
       theme.colorScheme === "dark" ? theme.colors.gray[9] : theme.white,
@@ -90,16 +93,26 @@ export default function Login() {
 
   return (
     <Paper radius="md" p="lg" className={classes.wrapper} mt={30}>
-      <Title
-        ml={15}
-        sx={(theme) => ({
-          // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-          fontFamily: `Greycliff CF, ${theme.fontFamily}`,
-          fontWeight: 700,
-        })}
-      >
-        Welcome back!
-      </Title>
+      <Flex justify="space-between">
+        <Title
+          ml={15}
+          sx={(theme) => ({
+            // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+            fontFamily: `Greycliff CF, ${theme.fontFamily}`,
+            fontWeight: 700,
+          })}
+        >
+          Welcome back!
+        </Title>
+        <Button
+          variant="subtle"
+          color="red"
+          size="xs"
+          onClick={() => navigate("/posts")}
+        >
+          <TbX size={20} />
+        </Button>
+      </Flex>
       <Stack align="center" mt={20}>
         <Anchor component="button" type="button" color="dimmed" size="xs">
           "Don't have an account? <Link to={"/signup"}>Create account</Link>"

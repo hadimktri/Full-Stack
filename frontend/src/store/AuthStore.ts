@@ -16,6 +16,7 @@ const createAuthStore: StateCreator<
   tokenLoading: true,
 
   setUser: (args) => set({ user: args }),
+  
   logoutService: () => {
     setSession(null);
     set({ user: null, authLoading: false, tokenLoading: false });
