@@ -1,15 +1,18 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
-import { Suspense } from "react";
+import { Suspense, useEffect } from "react";
 import { Container } from "@mantine/core";
-import { useLoaderData, Await } from "react-router-dom";
+import { useLoaderData, Await, useNavigate } from "react-router-dom";
 import { Loader } from "@mantine/core";
 import { IPost } from "../../types/types";
 import PostsCard from "../../components/Posts/PostsCard";
+import useBoundStore from "../../store/Store";
 
 interface IPromise {
   diferedData: Promise<IPost>;
 }
 const PostPage = () => {
+  const { user } = useBoundStore((state) => state);
+  const navigate = useNavigate();
   const promise = useLoaderData();
   // const revalidator = useRevalidator();
 
@@ -21,6 +24,9 @@ const PostPage = () => {
   //   // eslint-disable-next-line react-hooks/exhaustive-deps
   // }, [revalidator]);
 
+  useEffect(() => {
+    user && navigate("/posts");
+  }, [navigate, user]);
   return (
     <Suspense
       fallback={

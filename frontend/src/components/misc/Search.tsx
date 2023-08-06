@@ -1,13 +1,15 @@
 import { TextInput, ActionIcon } from "@mantine/core";
 import { IconSearch, IconArrowRight } from "@tabler/icons-react";
 import { useContext } from "react";
-import { LayoutContext } from "../layout/Layout";
-import { ILayoutContext } from "../../types/types";
+import { SearchContext } from "../../App";
+import { ISearchContext } from "../../types/types";
+
+
 
 export default function Search() {
   const { searchValue, setSearchValue } = useContext(
-    LayoutContext
-  ) as ILayoutContext;
+    SearchContext
+  ) as ISearchContext;
 
   return (
     <TextInput

@@ -1,29 +1,30 @@
 import useBoundStore from "./store/Store";
-import Layout from "./components/layout/Layout";
+import PrivateLayout from "./components/layout/Private.Layout";
 import LoginPage from "./pages/Auth/Login.page";
 import RegisterPage from "./pages/Auth/Register.page";
-import Landing from "./pages/Landing/Landing.page";
 import NotFound from "./pages/Notfound/NotFound.page";
 import CreatePostPage from "./pages/Post/Create.Post.page";
 import UpdatePostPage from "./pages/Post/Update.Post.page";
 import ProtectedRoute from "./services/ProtectedRoute";
-import Profile from "./pages/Auth/Profile";
-
+import Profile from "./pages/User/User.Profile";
+import Comments from "./pages/Post/Post.Comments.page";
+import UserLikedPosts from "./pages/User/User.Liked.Posts";
+import PostPage from "./pages/Post/Posts.page";
+import PublicLayout from "./components/layout/Public.Layout";
 import {
   Route,
   createRoutesFromElements,
   createBrowserRouter,
 } from "react-router-dom";
-import PostPage from "./pages/Post/Post.page";
 import {
   postDetailsLoader,
   postsLoader,
-  userCommPostsLoader,
+  userCommentedPostsLoader,
   userLikedPostsLoader,
   userPostsLoader,
 } from "./services/PostService";
-import CommentsAcordion from "./pages/User/CommentsAcordion";
-import Comments from "./pages/User/Comments";
+import UserLayout from "./components/layout/Uaer.Layout";
+import UserProfileUpdate from "./pages/User/User.profile.update";
 
 export const Router = () => {
   const authCheck = useBoundStore((state) => {
@@ -32,64 +33,54 @@ export const Router = () => {
 
   const router = createBrowserRouter(
     createRoutesFromElements(
-      <Route element={<Layout />} errorElement={<NotFound />}>
-        <Route path="login" element={<LoginPage />} />
-        <Route path="signup" element={<RegisterPage />} />
-        <Route path="posts" element={<PostPage />} loader={postsLoader} />
+      <>
+        //Public Routing
+        <Route path="/" element={<PublicLayout />} errorElement={<NotFound />}>
+          <Route index element={<PostPage />} loader={postsLoader} />
+          <Route path="login" element={<LoginPage />} />
+          <Route path="signup" element={<RegisterPage />} />
+        </Route>
+        //Private Routing
         <Route
-          path="profile"
+          path="posts"
           element={
             <ProtectedRoute isAllowed={!!authCheck}>
-              <Profile />
+              <PrivateLayout />
             </ProtectedRoute>
           }
-        />
-        <Route
-          path="/posts/:id"
-          element={
-            <ProtectedRoute isAllowed={!!authCheck}>
-              <UpdatePostPage />
-            </ProtectedRoute>
-          }
-          loader={postDetailsLoader}
-        />
-        <Route
-          path="/posts/create"
-          element={
-            <ProtectedRoute isAllowed={!!authCheck}>
-              <CreatePostPage />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/posts/user/:id"
-          element={
-            <ProtectedRoute isAllowed={!!authCheck}>
-              <PostPage />
-            </ProtectedRoute>
-          }
-          loader={userPostsLoader}
-        />
-        <Route
-          path="/posts/userLiked/:id"
-          element={
-            <ProtectedRoute isAllowed={!!authCheck}>
-              <PostPage />
-            </ProtectedRoute>
-          }
-          loader={userLikedPostsLoader}
-        />
-        <Route
-          path="/posts/Commented/:id"
-          element={
-            <ProtectedRoute isAllowed={!!authCheck}>
-              <Comments />
-            </ProtectedRoute>
-          }
-          loader={userCommPostsLoader}
-        />
-        <Route path="/" element={<Landing />} />
-      </Route>
+        >
+          <Route index element={<PostPage />} loader={postsLoader} />
+          <Route path="create" element={<CreatePostPage />} />
+          <Route
+            path=":id"
+            element={<UpdatePostPage />}
+            loader={postDetailsLoader}
+          />
+          // user //
+          <Route
+            path="user"
+            element={
+              <ProtectedRoute isAllowed={!!authCheck}>
+                <UserLayout />
+              </ProtectedRoute>
+            }
+          >
+            <Route path=":id" element={<PostPage />} loader={userPostsLoader} />
+            <Route path="profile" element={<Profile />} />
+            <Route path="profile/:id" element={<UserProfileUpdate />} />
+            <Route
+              path="likes/:id"
+              element={<UserLikedPosts />}
+              loader={userLikedPostsLoader}
+            />
+            <Route
+              path="comments/:id"
+              element={<Comments />}
+              loader={userCommentedPostsLoader}
+            />
+          </Route>
+        </Route>
+      </>
     )
   );
   return router;

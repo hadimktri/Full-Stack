@@ -17,7 +17,7 @@ import {
 } from "@mantine/core";
 import { useForm, isEmail, hasLength } from "@mantine/form";
 import { useContext, useEffect } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import useBoundStore from "../../store/Store";
 import { FcGoogle } from "react-icons/fc";
 import { getGoogleUrl } from "../../utils/getGoogleUrl";
@@ -66,7 +66,7 @@ export default function Login() {
 
   useEffect(() => {
     if (user) {
-      navigate("/posts");
+      navigate("/");
     }
   }, [navigate, user]);
 
@@ -108,16 +108,16 @@ export default function Login() {
           variant="subtle"
           color="red"
           size="xs"
-          onClick={() => navigate("/posts")}
+          onClick={() => navigate("/")}
         >
           <TbX size={20} />
         </Button>
       </Flex>
       <Stack align="center" mt={20}>
         <Anchor component="button" type="button" color="dimmed" size="xs">
-          "Don't have an account? <Link to={"/signup"}>Create account</Link>"
+          "Don't have an account?{" "}
+          <NavLink to={"/signup"}>Create account</NavLink>"
         </Anchor>
-
         <Button
           fullWidth
           className={classes.buttons}

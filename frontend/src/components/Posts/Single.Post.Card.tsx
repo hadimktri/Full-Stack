@@ -18,11 +18,10 @@ import CommentModal from "./CommentModal";
 import {
   TbArrowBadgeDown,
   TbArrowBadgeUp,
-  TbBookmark,
   TbEdit,
   TbHeartFilled,
 } from "react-icons/tb";
-import { Link, useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 
 const useStyles = createStyles((theme) => ({
   card: {
@@ -151,18 +150,9 @@ export default function SinglePost({
             {authorId === user?.id && (
               <>
                 <ActionIcon>
-                  <Link to={!user ? "/login" : `/posts/${id}`}>
-                    <TbEdit size="1.2rem" color={theme.colors.cyan[6]} />
-                  </Link>
-                </ActionIcon>
-                <ActionIcon>
-                  <Link to={!user ? "/login" : `/posts/${id}`}>
-                    <TbBookmark
-                      size={20}
-                      style={{ ...(user && { color: "#FAB005" }) }}
-                      // stroke={1.5}
-                    />
-                  </Link>
+                  <NavLink to={!user ? "/login" : `${id}`}>
+                    <TbEdit size="1.2rem" color={theme.colors.yellow[6]} />
+                  </NavLink>
                 </ActionIcon>
               </>
             )}

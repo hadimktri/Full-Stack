@@ -1,13 +1,9 @@
 import { Outlet as Content } from "react-router-dom";
 import Header from "./Header ";
 import LeftSideBar from "./Left.SideBar";
-import RightSideBar from "./Right.SideBar";
+import PublicRightSideBar from "./Public.Right.SideBar";
 import { createStyles } from "@mantine/core";
 import Footer from "./Footer";
-import { createContext, useState } from "react";
-import { ILayoutContext } from "../../types/types";
-
-export const LayoutContext = createContext<ILayoutContext | null>(null);
 
 const useStyles = createStyles(() => ({
   body: {
@@ -33,12 +29,12 @@ const useStyles = createStyles(() => ({
   },
 }));
 
-export default function Layout() {
-  const [searchValue, setSearchValue] = useState("");
+export default function PublicLayout() {
+
 
   const { classes } = useStyles();
   return (
-    <LayoutContext.Provider value={{ searchValue, setSearchValue }}>
+
       <div className={classes.body}>
         <Header />
         <main className={classes.main}>
@@ -49,11 +45,11 @@ export default function Layout() {
             <Content />
           </div>
           <div className={classes.side}>
-            <RightSideBar />
+            <PublicRightSideBar />
           </div>
         </main>
         <Footer />
       </div>
-    </LayoutContext.Provider>
+
   );
 }

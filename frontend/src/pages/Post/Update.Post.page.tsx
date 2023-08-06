@@ -86,7 +86,7 @@ export default function UpdatePostPage() {
     if (authorId === user?.id) {
       deletePost(id);
     }
-    navigate("/posts");
+    navigate("/");
   };
 
   return (
@@ -96,7 +96,7 @@ export default function UpdatePostPage() {
           variant="subtle"
           color="red"
           size="xs"
-          onClick={() => navigate("/posts")}
+          onClick={() => navigate("/")}
         >
           <TbX size={20} />
         </Button>

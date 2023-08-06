@@ -108,7 +108,7 @@ export interface IRecoveryContext {
   email: string;
   setEmail: (val: string) => void;
 }
-export interface ILayoutContext {
+export interface ISearchContext {
   searchValue: string;
   setSearchValue: (value: string) => void;
 }

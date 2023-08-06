@@ -76,6 +76,7 @@ const createAuthStore: StateCreator<
           user: (res.data as IResponse).result?.user,
           tokenLoading: false,
         });
+        
       } else {
         set({ tokenLoading: false, user: null });
       }

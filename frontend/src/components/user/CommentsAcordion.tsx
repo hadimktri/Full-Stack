@@ -53,7 +53,6 @@ export default function CommentsAcordion({
               {
                 <Group spacing="xl">
                   <Avatar
-                    // className={classes.avatar}
                     src={comment.post.image}
                     alt={comment.post.title}
                     radius="xs"

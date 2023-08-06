@@ -138,7 +138,7 @@ export default function MainHeader() {
       <Group className={classes.inner}>
         <Group className={classes.leftSection}>
           <Group>
-            <NavLink to="posts" className={classes.link}>
+            <NavLink to="/" className={classes.link}>
               <Text weight={600} size="md">
                 Posts
               </Text>
@@ -206,7 +206,7 @@ export default function MainHeader() {
         </Group>
         {user && (
           <div className={classes.centerSection}>
-            <NavLink to="/posts/create" className={classes.link}>
+            <NavLink to="create" className={classes.link}>
               <BsPlusSquare size={22} />
             </NavLink>
           </div>

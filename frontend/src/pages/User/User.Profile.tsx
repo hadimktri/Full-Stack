@@ -10,7 +10,7 @@ import {
 } from "@mantine/core";
 import useBoundStore from "../../store/Store";
 import { TbX } from "react-icons/tb";
-import { useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 const useStyles = createStyles((theme) => ({
   wrapper: {
     width: "50%",
@@ -52,7 +52,7 @@ export default function Profile() {
           variant="subtle"
           color="red"
           size="xs"
-          onClick={() => navigate("/posts")}
+          onClick={() => navigate("/")}
         >
           <TbX size={20} />
         </Button>
@@ -72,8 +72,14 @@ export default function Profile() {
           {user?.email}
         </Text>
         <Group position="center" spacing="xl" className={classes.buttons}>
-          <Button variant="subtle" color="indigo" mt="xl" size="xs">
-            Edit Account ?
+          <Button
+            variant="subtle"
+            color="indigo"
+            mt="xl"
+            size="xs"
+            onClick={() => console.log(user?.id)}
+          >
+            <NavLink to={`${user?.id as string}`}>Edit Account ?</NavLink>
           </Button>
           <Button
             variant="subtle"

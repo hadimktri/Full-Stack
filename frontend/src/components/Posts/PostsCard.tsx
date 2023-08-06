@@ -1,11 +1,11 @@
 import { useContext, useEffect, useState } from "react";
-import { ILayoutContext, IPost } from "../../types/types";
+import { ISearchContext, IPost } from "../../types/types";
 import Paginate from "./Pagination";
 import SinglePost from "./Single.Post.Card";
 import { Group, SimpleGrid, createStyles } from "@mantine/core";
 import Search from "../misc/Search";
 import { useViewportSize } from "@mantine/hooks";
-import { LayoutContext } from "../layout/Layout";
+import { SearchContext } from "../../App";
 
 const useStyles = createStyles((theme) => ({
   main: {
@@ -33,8 +33,8 @@ export default function PostsCard({ postArray }: { postArray: IPost[] }) {
   const [cardNumber, setCardNumber] = useState(3);
   const { width } = useViewportSize();
   const { searchValue, setSearchValue } = useContext(
-    LayoutContext
-  ) as ILayoutContext;
+    SearchContext
+  ) as ISearchContext;
 
   const handleTableData = (currentPage: number, pageNumber: number) => {
     setTableData(

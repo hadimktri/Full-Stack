@@ -1,4 +1,4 @@
-import { Link, useRouteError } from "react-router-dom";
+import { NavLink, useRouteError } from "react-router-dom";
 import {
   createStyles,
   em,
@@ -62,9 +62,9 @@ export default function NotFound() {
               {error.message}
             </Text>
           )}
-          <Link to="posts" className={classes.link}>
+          <NavLink to="/" className={classes.link}>
             Go To The Home Page
-          </Link>
+          </NavLink>
         </Stack>
         <Image radius="xs" src="../src/assets/404.svg" />
       </Paper>

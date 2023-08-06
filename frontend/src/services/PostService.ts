@@ -40,7 +40,7 @@ export const userLikedPostsLoader = async ({ params }: any) => {
   );
   return defer({ diferedData: res });
 };
-export const userCommPostsLoader = async ({ params }: any) => {
+export const userCommentedPostsLoader = async ({ params }: any) => {
   const res = await axios.get(
     // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
     `${DOMAIN as string}/api/user/commented/${params.id as string}`

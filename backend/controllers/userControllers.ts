@@ -6,6 +6,7 @@ import CustomError from "../config/CustomError";
 
 export default {
   getAllUerPosts: async (req: Request, res: Response, next: NextFunction) => {
+    console.log('all')
     const posts = await prisma.post.findMany({
       where: { authorId: req.params.id },
       include: {
@@ -28,7 +29,8 @@ export default {
     req: Request,
     res: Response,
     next: NextFunction
-  ) => {
+    ) => {
+    console.log("liked")
     const posts = await prisma.post.findMany({
       where: {
         favoratedBy: {

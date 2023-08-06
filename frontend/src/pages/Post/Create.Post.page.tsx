@@ -57,7 +57,7 @@ function CreatePostPage() {
 
   const handelAddPost = (values: any) => {
     addPost({ ...values, authorId: (user as IUser).id });
-    navigate("/posts");
+    navigate("/");
   };
 
   return (
@@ -68,7 +68,7 @@ function CreatePostPage() {
           variant="subtle"
           color="red"
           size="xs"
-          onClick={() => navigate("/posts")}
+          onClick={() => navigate("/")}
         >
           <TbX size={20} />
         </Button>

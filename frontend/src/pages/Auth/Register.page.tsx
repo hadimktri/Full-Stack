@@ -15,7 +15,7 @@ import {
 } from "@mantine/core";
 import { useForm, isEmail, hasLength } from "@mantine/form";
 import { useEffect } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import useBoundStore from "../../store/Store";
 import { getGoogleUrl } from "../../utils/getGoogleUrl";
 import { FcGoogle } from "react-icons/fc";
@@ -60,7 +60,7 @@ export default function RegisterPage() {
 
   useEffect(() => {
     if (user) {
-      navigate("/posts");
+      navigate("/");
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
@@ -114,7 +114,7 @@ export default function RegisterPage() {
           variant="subtle"
           color="red"
           size="xs"
-          onClick={() => navigate("/posts")}
+          onClick={() => navigate("/")}
         >
           <TbX size={20} />
         </Button>
@@ -128,7 +128,7 @@ export default function RegisterPage() {
           align="right"
           mr={20}
         >
-          "Have an account? <Link to={"/login"}>Sign In</Link>"
+          "Have an account? <NavLink to={"/login"}>Sign In</NavLink>"
         </Anchor>
 
         <Button
