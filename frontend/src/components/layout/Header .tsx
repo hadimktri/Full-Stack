@@ -23,7 +23,6 @@ import {
 import useBoundStore from "../../store/Store";
 import { NavLink, useNavigate } from "react-router-dom";
 import LightDark from "../misc/LightDark";
-import Search from "../misc/Search";
 const useStyles = createStyles((theme) => ({
   header: {
     margin: "auto",
@@ -39,6 +38,7 @@ const useStyles = createStyles((theme) => ({
       theme.colorScheme === "dark" ? theme.colors.gray[8] : theme.colors.gray[2]
     }`,
     border: "none",
+    borderRadius:"5px",
     [`@media (max-width: ${em(1200)})`]: {
       width: "100%",
     },
@@ -105,12 +105,6 @@ const useStyles = createStyles((theme) => ({
       display: "none",
     },
   },
-  search: {
-    width: "180px",
-    [`@media (max-width: ${em(800)})`]: {
-      display: "none",
-    },
-  },
   hide: {
     [`@media (max-width: ${em(800)})`]: {
       display: "none",
@@ -134,7 +128,7 @@ export default function MainHeader() {
   const { logoutService, user } = useBoundStore((state) => state);
   const navigate = useNavigate();
   return (
-    <Header height={60} className={classes.header}>
+    <Header height={60}  className={classes.header}>
       <Group className={classes.inner}>
         <Group className={classes.leftSection}>
           <Group>
@@ -200,9 +194,6 @@ export default function MainHeader() {
               </Menu>
             )}
           </Group>
-          <div className={classes.search}>
-            <Search />
-          </div>
         </Group>
         {user && (
           <div className={classes.centerSection}>

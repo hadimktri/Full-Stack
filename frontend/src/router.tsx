@@ -1,30 +1,30 @@
-import useBoundStore from "./store/Store";
-import PrivateLayout from "./components/layout/Private.Layout";
-import LoginPage from "./pages/Auth/Login.page";
-import RegisterPage from "./pages/Auth/Register.page";
-import NotFound from "./pages/Notfound/NotFound.page";
-import CreatePostPage from "./pages/Post/Create.Post.page";
-import UpdatePostPage from "./pages/Post/Update.Post.page";
-import ProtectedRoute from "./services/ProtectedRoute";
-import Profile from "./pages/User/User.Profile";
-import Comments from "./pages/Post/Post.Comments.page";
-import UserLikedPosts from "./pages/User/User.Liked.Posts";
-import PostPage from "./pages/Post/Posts.page";
-import PublicLayout from "./components/layout/Public.Layout";
 import {
   Route,
   createRoutesFromElements,
   createBrowserRouter,
 } from "react-router-dom";
 import {
-  postDetailsLoader,
   postsLoader,
-  userCommentedPostsLoader,
-  userLikedPostsLoader,
+  postDetailsLoader,
   userPostsLoader,
-} from "./services/PostService";
-import UserLayout from "./components/layout/Uaer.Layout";
-import UserProfileUpdate from "./pages/User/User.profile.update";
+  userCommentsLoader,
+  userLikedPostsLoader,
+} from "../src/utils/Loaders";
+import useBoundStore from "./store/Store";
+import LoginPage from "./pages/Auth/Loginpage";
+import RegisterPage from "./pages/Auth/Registerpage";
+import CreatePostPage from "./pages/Post/CreatePostpage";
+import UpdatePostPage from "./pages/Post/UpdatePostpage";
+import Profile from "./pages/User/UserProfile";
+import Comments from "./pages/Post/PostCommentspage";
+import UserLikedPosts from "./pages/User/UserLikedPosts";
+import PostPage from "./pages/Post/Postspage";
+import Layout from "./components/layout/Layout";
+import UserProfileUpdate from "./pages/User/UserProfileUpdate";
+import UserPostsPage from "./pages/User/UserPostsPage";
+import ProtectedRoute from "./services/ProtectedRoute";
+import Error from "./pages/Error/Error";
+import PostDetailPage from "./pages/Post/PostDetailpage";
 
 export const Router = () => {
   const authCheck = useBoundStore((state) => {
@@ -33,54 +33,79 @@ export const Router = () => {
 
   const router = createBrowserRouter(
     createRoutesFromElements(
-      <>
-        //Public Routing
-        <Route path="/" element={<PublicLayout />} errorElement={<NotFound />}>
-          <Route index element={<PostPage />} loader={postsLoader} />
-          <Route path="login" element={<LoginPage />} />
-          <Route path="signup" element={<RegisterPage />} />
-        </Route>
-        //Private Routing
+      <Route path="/" element={<Layout />} errorElement={<Error />}>
+        <Route index element={<PostPage />} loader={postsLoader} />
+        <Route path="login" element={<LoginPage />} />
+        <Route path="signup" element={<RegisterPage />} />
         <Route
-          path="posts"
+          path="create"
           element={
             <ProtectedRoute isAllowed={!!authCheck}>
-              <PrivateLayout />
+              <CreatePostPage />
             </ProtectedRoute>
           }
-        >
-          <Route index element={<PostPage />} loader={postsLoader} />
-          <Route path="create" element={<CreatePostPage />} />
-          <Route
-            path=":id"
-            element={<UpdatePostPage />}
-            loader={postDetailsLoader}
-          />
-          // user //
-          <Route
-            path="user"
-            element={
-              <ProtectedRoute isAllowed={!!authCheck}>
-                <UserLayout />
-              </ProtectedRoute>
-            }
-          >
-            <Route path=":id" element={<PostPage />} loader={userPostsLoader} />
-            <Route path="profile" element={<Profile />} />
-            <Route path="profile/:id" element={<UserProfileUpdate />} />
-            <Route
-              path="likes/:id"
-              element={<UserLikedPosts />}
-              loader={userLikedPostsLoader}
-            />
-            <Route
-              path="comments/:id"
-              element={<Comments />}
-              loader={userCommentedPostsLoader}
-            />
-          </Route>
-        </Route>
-      </>
+        />
+        <Route
+          path="detail"
+          element={
+            <ProtectedRoute isAllowed={!!authCheck}>
+              <PostDetailPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="user/:id"
+          element={
+            <ProtectedRoute isAllowed={!!authCheck}>
+              <UserPostsPage />
+            </ProtectedRoute>
+          }
+          loader={userPostsLoader}
+        />
+        <Route
+          path=":id"
+          element={
+            <ProtectedRoute isAllowed={!!authCheck}>
+              <UpdatePostPage />
+            </ProtectedRoute>
+          }
+          loader={postDetailsLoader}
+        />
+        <Route
+          path="profile"
+          element={
+            <ProtectedRoute isAllowed={!!authCheck}>
+              <Profile />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="profile/:id"
+          element={
+            <ProtectedRoute isAllowed={!!authCheck}>
+              <UserProfileUpdate />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="likes/:id"
+          element={
+            <ProtectedRoute isAllowed={!!authCheck}>
+              <UserLikedPosts />
+            </ProtectedRoute>
+          }
+          loader={userLikedPostsLoader}
+        />
+        <Route
+          path="comments/:id"
+          element={
+            <ProtectedRoute isAllowed={!!authCheck}>
+              <Comments />
+            </ProtectedRoute>
+          }
+          loader={userCommentsLoader}
+        />
+      </Route>
     )
   );
   return router;

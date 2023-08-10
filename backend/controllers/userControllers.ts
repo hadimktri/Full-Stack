@@ -6,11 +6,10 @@ import CustomError from "../config/CustomError";
 
 export default {
   getAllUerPosts: async (req: Request, res: Response, next: NextFunction) => {
-    console.log('all')
     const posts = await prisma.post.findMany({
       where: { authorId: req.params.id },
       include: {
-        favoratedBy: true,
+        favoritedBy: true,
         author: true,
         comments: true,
       },
@@ -19,9 +18,7 @@ export default {
     res.status(200).json({
       status: "success",
       length: posts.length,
-      data: {
-        posts,
-      },
+      posts,
     });
   },
 
@@ -29,16 +26,16 @@ export default {
     req: Request,
     res: Response,
     next: NextFunction
-    ) => {
-    console.log("liked")
+  ) => {
+    console.log("liked");
     const posts = await prisma.post.findMany({
       where: {
-        favoratedBy: {
+        favoritedBy: {
           some: { id: req.params.id },
         },
       },
       include: {
-        favoratedBy: true,
+        favoritedBy: true,
         author: true,
         comments: true,
       },
@@ -47,9 +44,7 @@ export default {
     res.status(200).json({
       status: "success",
       length: posts.length,
-      data: {
-        posts,
-      },
+      posts,
     });
   },
   getAllUerSavedPosts: async (
@@ -59,12 +54,12 @@ export default {
   ) => {
     const posts = await prisma.post.findMany({
       where: {
-        favoratedBy: {
+        favoritedBy: {
           some: { id: req.params.id },
         },
       },
       include: {
-        favoratedBy: true,
+        favoritedBy: true,
         author: true,
         comments: true,
       },
@@ -73,9 +68,7 @@ export default {
     res.status(200).json({
       status: "success",
       length: posts.length,
-      data: {
-        posts,
-      },
+      posts,
     });
   },
   getAllUerCommentedPosts: async (
@@ -93,12 +86,10 @@ export default {
       },
       orderBy: { createdAt: "desc" },
     });
-       res.status(200).json({
+    res.status(200).json({
       status: "success",
       length: comments.length,
-      data: {
-        comments,
-      },
+      comments,
     });
   },
 };

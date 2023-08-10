@@ -1,7 +1,7 @@
 import { Button, Flex, Paper, Text, createStyles, rem } from "@mantine/core";
 import { useContext } from "react";
 import { TbX } from "react-icons/tb";
-import { RecoveryContext } from "../../pages/Auth/Login.page";
+import { RecoveryContext } from "../../pages/Auth/Loginpage";
 import { IRecoveryContext } from "../../types/types";
 const useStyles = createStyles((theme) => ({
   wrapper: {

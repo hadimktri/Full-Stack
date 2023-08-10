@@ -7,10 +7,10 @@ import CustomError from "../config/CustomError";
 
 export default {
   getAllPosts: async (req: Request, res: Response, next: NextFunction) => {
-    await sleep(500);
+    // await sleep(500);
     const posts = await prisma.post.findMany({
       include: {
-        favoratedBy: true,
+        favoritedBy: true,
         author: true,
         comments: true,
       },
@@ -20,9 +20,7 @@ export default {
     res.status(200).json({
       status: "success",
       length: posts.length,
-      data: {
-        posts,
-      },
+      posts,
     });
   },
 
@@ -44,9 +42,7 @@ export default {
 
       res.status(200).json({
         status: "success",
-        data: {
-          post,
-        },
+        post,
       });
     }
   ),
@@ -61,9 +57,7 @@ export default {
 
       res.status(201).json({
         status: "success",
-        data: {
-          post,
-        },
+        post,
       });
     }
   ),
@@ -85,11 +79,10 @@ export default {
           )
         );
 
+      console.log(post);
       res.status(202).json({
         status: "success",
-        data: {
-          post,
-        },
+        post,
       });
     }
   ),
@@ -112,14 +105,12 @@ export default {
 
       res.status(204).json({
         status: "success",
-        data: {
-          post,
-        },
+        post,
       });
     }
   ),
 
-  favoratePost: asyncErrorHandler(
+  favoritePost: asyncErrorHandler(
     async (req: Request, res: Response, next: NextFunction) => {
       const postId = req.params.id;
       const userId = req.body.userId;
@@ -129,12 +120,12 @@ export default {
           id: postId,
         },
         select: {
-          favoratedBy: { select: { id: true } },
+          favoritedBy: { select: { id: true } },
         },
       });
 
-      const isFaved = favedId?.favoratedBy
-        .map((faved) => faved.id)
+      const isFaved = favedId?.favoritedBy
+        .map((f:any) => f.id)
         .includes(userId);
 
       const post = isFaved
@@ -143,7 +134,7 @@ export default {
               id: postId,
             },
             data: {
-              favoratedBy: {
+              favoritedBy: {
                 disconnect: { id: userId },
               },
             },
@@ -153,19 +144,17 @@ export default {
               id: postId,
             },
             data: {
-              favoratedBy: {
+              favoritedBy: {
                 connect: { id: userId },
               },
             },
           });
 
-      !post && next(new CustomError("Favorating Post Failed!", 404));
+      !post && next(new CustomError("favoriting Post Failed!", 404));
 
       res.status(200).json({
         status: "success",
-        data: {
-          post,
-        },
+        post,
       });
     }
   ),
@@ -193,9 +182,7 @@ export default {
 
       res.status(200).json({
         status: "success",
-        data: {
-          post,
-        },
+        post,
       });
     }
   ),
@@ -210,9 +197,7 @@ export default {
 
       res.status(200).json({
         status: "success",
-        data: {
-          comment,
-        },
+        comment,
       });
     }
   ),
@@ -229,10 +214,27 @@ export default {
 
       res.status(200).json({
         status: "success",
-        data: {
-          comment,
-        },
+        comment,
       });
     }
   ),
+
+  topLiked: async (req: Request, res: Response, next: NextFunction) => {
+    // await sleep(1000);
+    const posts = await prisma.post.findMany({
+      include: {
+        favoritedBy: true,
+        author: true,
+        comments: true,
+      },
+      orderBy: { likes: "desc" },
+      take: 4,
+    });
+
+    res.status(200).json({
+      status: "success",
+      length: posts.length,
+      posts,
+    });
+  },
 };

@@ -9,6 +9,7 @@ import {
   Divider,
   Stack,
   Flex,
+  Select,
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { useNavigate } from "react-router-dom";
@@ -57,7 +58,7 @@ function CreatePostPage() {
 
   const handelAddPost = (values: any) => {
     addPost({ ...values, authorId: (user as IUser).id });
-    navigate("/");
+    navigate("..");
   };
 
   return (
@@ -94,11 +95,28 @@ function CreatePostPage() {
               {...form.getInputProps("title")}
               withAsterisk
             />
-            <TextInput
-              label="category"
-              placeholder="Enter a Category"
-              {...form.getInputProps("category")}
+            <Select
+              label="Category"
+              placeholder="Select a category"
+              data={[
+                "Tech",
+                "Art",
+                "Nature",
+                "Sport",
+                "Food",
+                "Education",
+                "fashion",
+                "Health",
+                "Business",
+              ]}
+              transitionProps={{
+                transition: "pop-top-left",
+                duration: 80,
+                timingFunction: "ease",
+              }}
+              withinPortal
               withAsterisk
+              {...form.getInputProps("category")}
             />
             <TextInput
               label="Image"

@@ -13,7 +13,7 @@ import {
 import { IconArrowRight } from "@tabler/icons-react";
 import useBoundStore from "../../store/Store";
 import { useContext, useState } from "react";
-import { RecoveryContext } from "../../pages/Auth/Login.page";
+import { RecoveryContext } from "../../pages/Auth/Loginpage";
 import { TbX } from "react-icons/tb";
 import { IRecoveryContext } from "../../types/types";
 import { isEmail, useForm } from "@mantine/form";

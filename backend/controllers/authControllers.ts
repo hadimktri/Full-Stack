@@ -133,7 +133,7 @@ export default {
       const token = jwt.sign({ id: user?.id }, JWT_TOKEN_SECRET, {
         expiresIn: JWT_TOKEN_EXPIRES_IN,
       });
-      res.redirect(`${FRONTEND_ORIGIN}posts/?token=${token}`);
+      res.redirect(`${FRONTEND_ORIGIN}?token=${token}`);
     }
   ),
 

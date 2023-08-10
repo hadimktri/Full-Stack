@@ -2,7 +2,7 @@ import { createContext, useState } from "react";
 import Login from "../../components/Auth/Login";
 import OTPInput from "../../components/Auth/OTPInput";
 import Recovered from "../../components/Auth/Recovered";
-import PasswordReset from "../../components/Auth/Password.Reset";
+import PasswordReset from "../../components/Auth/PasswordReset";
 import { IRecoveryContext } from "../../types/types";
 
 export const RecoveryContext = createContext<IRecoveryContext | null>(null);

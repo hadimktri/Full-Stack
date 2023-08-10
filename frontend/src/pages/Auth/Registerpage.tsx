@@ -60,13 +60,12 @@ export default function RegisterPage() {
 
   useEffect(() => {
     if (user) {
-      navigate("/");
+      navigate("/posts");
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
 
-  //sets the inital values
-  const form = useForm({
+   const form = useForm({
     initialValues: {
       email: "",
       name: "",
@@ -85,7 +84,6 @@ export default function RegisterPage() {
     },
   });
 
-  //check the exsistance of both entry if no stops with return if yes fires the (loginService())
   const onSignUp = (values: IRegisterValues) => {
     if (
       !values.email ||
@@ -101,6 +99,7 @@ export default function RegisterPage() {
       values.password,
       values.profilePicture
     );
+    navigate("/login")
   };
 
   // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access

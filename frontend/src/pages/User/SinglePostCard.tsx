@@ -14,7 +14,6 @@ import { IconHeart } from "@tabler/icons-react";
 import useBoundStore from "../../store/Store";
 import { IPost } from "../../types/types";
 import { useEffect, useState } from "react";
-import CommentModal from "./CommentModal";
 import {
   TbArrowBadgeDown,
   TbArrowBadgeUp,
@@ -22,6 +21,7 @@ import {
   TbHeartFilled,
 } from "react-icons/tb";
 import { NavLink, useNavigate } from "react-router-dom";
+import CommentModal from "../../components/Posts/CommentModal";
 
 const useStyles = createStyles((theme) => ({
   card: {
@@ -58,25 +58,29 @@ export default function SinglePost({
   category,
   image,
   id,
-  favoratedBy,
+  favoritedBy,
   likes,
   author,
   authorId,
   comments,
   content,
-}: IPost) {
+}: any) {
   const navigate = useNavigate();
   const { classes, theme } = useStyles();
-  const { user, userFavorate, postlikes } = useBoundStore((state) => state);
+  const { user, userfavorite, postlikes } = useBoundStore((state) => state);
   const [faved, setFaved] = useState<boolean>(false);
   useEffect(() => {
     setFaved(
-      favoratedBy.map((favUser) => favUser.id).includes(user?.id as string)
+      favoritedBy.map((favUser) => favUser.id).includes(user?.id as string)
     );
-  }, [favoratedBy, user?.id]);
+  }, [favoritedBy, user?.id]);
 
-  const handleFavorate = () => {
-    !user ? navigate("/login") : userFavorate(id, user?.id);
+  const handlefavorite = () => {
+    if (!user) {
+      navigate("/login");
+    } else {
+      userfavorite(id, user?.id);
+    }
   };
   const handleLike = (id: string, flag: boolean) => {
     !user ? navigate("/login") : postlikes(id, flag);
@@ -136,14 +140,14 @@ export default function SinglePost({
                   size="1.2rem"
                   color={theme.colors.red[6]}
                   stroke={1.5}
-                  onClick={handleFavorate}
+                  onClick={handlefavorite}
                 />
               ) : (
                 <IconHeart
                   size="1.2rem"
                   color={theme.colors.red[6]}
                   stroke={1.5}
-                  onClick={handleFavorate}
+                  onClick={handlefavorite}
                 />
               )}
             </ActionIcon>

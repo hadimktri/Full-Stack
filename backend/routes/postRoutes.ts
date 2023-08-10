@@ -4,8 +4,10 @@ import { checkAuth } from "../middleware/checkAuth";
 import postControllers from "../controllers/postControllers";
 
 router.get("/", postControllers.getAllPosts);
+
+router.get("/topliked", postControllers.topLiked);
 //
-router.post("/",  postControllers.createPost);
+router.post("/", postControllers.createPost);
 
 router
   .route("/:id")
@@ -13,7 +15,7 @@ router
   .patch(checkAuth, postControllers.updatePost)
   .delete(checkAuth, postControllers.deletePost);
 
-router.post("/favorate/:id", checkAuth, postControllers.favoratePost);
+router.post("/favorite/:id", checkAuth, postControllers.favoritePost);
 
 router.post("/likeUp/:id", checkAuth, postControllers.likePost);
 

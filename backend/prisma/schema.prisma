@@ -39,7 +39,7 @@ model Post {
   category    String
   author      User      @relation("writtenPosts", fields: [authorId], references: [id], onDelete: Cascade)
   authorId    String
-  favoratedBy User[]
+  favoritedBy User[]
   comments    Comment[]
 }
 

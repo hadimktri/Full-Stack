@@ -17,11 +17,11 @@ import {
 } from "@mantine/core";
 import { useForm, isEmail, hasLength } from "@mantine/form";
 import { useContext, useEffect } from "react";
-import { NavLink, useLocation, useNavigate } from "react-router-dom";
+import { Form, NavLink, useLocation, useNavigate } from "react-router-dom";
 import useBoundStore from "../../store/Store";
 import { FcGoogle } from "react-icons/fc";
 import { getGoogleUrl } from "../../utils/getGoogleUrl";
-import { RecoveryContext } from "../../pages/Auth/Login.page";
+import { RecoveryContext } from "../../pages/Auth/Loginpage";
 import { IRecoveryContext } from "../../types/types";
 import { TbX } from "react-icons/tb";
 
@@ -136,7 +136,7 @@ export default function Login() {
       <Divider label="Or continue with email" labelPosition="center" my="lg" />
 
       <Paper shadow="md" p={30} mt={20} radius="md">
-        <form onSubmit={form.onSubmit((values) => onLogin(values))}>
+        <Form onSubmit={form.onSubmit((values) => onLogin(values))} replace>
           <TextInput
             label="Email"
             placeholder="you@email.com"
@@ -168,7 +168,7 @@ export default function Login() {
             Sign in
           </Button>
           {authLoading ? <Loader color="teal" variant="dots" /> : null}
-        </form>
+        </Form>
       </Paper>
     </Paper>
   );

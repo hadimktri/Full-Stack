@@ -22,7 +22,7 @@ const PostStore: StateCreator<IAuthStore & IPostStore, [], [], IPostStore> = (
         set({ postsLoading: true });
       })
       .catch((error) => {
-        console.log(error.response.data.message, error.response.data.status);
+               console.log(error.response.data.message, error.response.data.status);
         set({ postsLoading: false });
       });
   },
@@ -68,10 +68,10 @@ const PostStore: StateCreator<IAuthStore & IPostStore, [], [], IPostStore> = (
       set({ postsLoading: false });
     }
   },
-  userFavorate: async (postId, userId) => {
+  userfavorite: async (postId, userId) => {
     try {
       const res = await axios.post(
-        `${DOMAIN as string}/api/posts/favorate/${postId}`,
+        `${DOMAIN as string}/api/posts/favorite/${postId}`,
         {
           userId,
         }
@@ -101,7 +101,7 @@ const PostStore: StateCreator<IAuthStore & IPostStore, [], [], IPostStore> = (
     }
   },
 
-  postComment: async (values) => {
+  postComments: async (values) => {
     try {
       const res = await axios.post(
         `${DOMAIN as string}/api/posts/comment`,

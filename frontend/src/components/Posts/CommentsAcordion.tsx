@@ -40,7 +40,6 @@ export default function CommentsAcordion({
   commentsArray: IComment[];
 }) {
   const { classes } = useStyles();
-  console.log(commentsArray[0]);
   return (
     <Container className={classes.wrapper}>
       <Title size={20} className={classes.title}>

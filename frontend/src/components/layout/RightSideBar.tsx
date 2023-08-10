@@ -1,24 +1,21 @@
-import {
-  createStyles,
-  Navbar,
-  getStylesRef,
-  Text,
-  em,
-} from "@mantine/core";
+import { createStyles, Navbar, getStylesRef, Text, em } from "@mantine/core";
 import { IconSettings, IconLogout, IconLogin } from "@tabler/icons-react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { IconHeart, IconMessage } from "@tabler/icons-react";
 import LightDark from "../misc/LightDark";
 import useBoundStore from "../../store/Store";
-import { TbBookmark, TbSlideshow, TbUserPlus } from "react-icons/tb";
+import { TbBookmark, TbFolder, TbUserPlus } from "react-icons/tb";
 
 const useStyles = createStyles((theme) => ({
   sideBar: {
     position: "sticky",
+    display: "flex",
+    justifyContent: "start",
+    flexDirection: "column",
     width: "200px",
     maxHeight: "60vh",
     border: "none",
-    [`@media (max-width: ${em(1200)})`]: {
+    [`@media (max-width: ${em(1300)})`]: {
       display: "none",
     },
   },
@@ -63,16 +60,16 @@ const useStyles = createStyles((theme) => ({
     pointerEvents: "none",
   },
 }));
-export default function PrivateRightSideBar() {
+export default function RightSideBar() {
   const navigate = useNavigate();
   const { logoutService, user } = useBoundStore((state) => state);
-  const { classes } = useStyles();
+  const { classes, cx } = useStyles();
   const onLogout = () => {
     logoutService();
     navigate("/");
   };
   return (
-    <Navbar my="md" pl="30px" className={classes.sideBar}>
+    <Navbar mt={20} pl="30px" className={classes.sideBar}>
       <Navbar.Section mt={30}>
         <NavLink to="#" className={classes.link}>
           <LightDark IconSize={23} />
@@ -81,11 +78,11 @@ export default function PrivateRightSideBar() {
       <Navbar.Section pt={30}>
         {!user ? (
           <>
-            <NavLink to="login" className={classes.link}>
+            <NavLink to="/login" className={classes.link}>
               <IconLogin className={classes.linkIcon} stroke={1.5} />
               <Text>Login</Text>
             </NavLink>
-            <NavLink to="signup" className={classes.link}>
+            <NavLink to="/signup" className={classes.link}>
               <TbUserPlus className={classes.linkIcon} size={25} />
               <Text>Create Account</Text>
             </NavLink>
@@ -97,49 +94,39 @@ export default function PrivateRightSideBar() {
               <Text>Logout</Text>
             </NavLink>
 
-            <NavLink to="user/profile" className={classes.link}>
+            <NavLink to="profile" className={classes.link}>
               <IconSettings className={classes.linkIcon} stroke={1.5} />
               <Text>Profile</Text>
             </NavLink>
           </>
         )}
       </Navbar.Section>
-      <Navbar.Section mt={30}>
-        <NavLink
-          to={`user/${user?.id as string}`}
-          className={classes.link}
-        >
-          <TbSlideshow
-            size={20}
-            style={{ ...(user && { color: "#40C057" }) }}
-          />
+      <Navbar.Section mt={30} className={cx({ [classes.disabled]: !user })}>
+        <NavLink to={`user/${user?.id as string}`} className={classes.link}>
+          <TbFolder size={20} style={{ ...(user && { color: "#40C057" }) }} />
           <Text ml={10}>Your Posts</Text>
         </NavLink>
-        <NavLink to={`user/likes/${user?.id as string}`} className={classes.link}>
+        <NavLink to={`likes/${user?.id as string}`} className={classes.link}>
           <IconHeart
             size={18}
             style={{ ...(user && { color: "#FA5252" }) }}
             stroke={1.5}
           />
-          <Text ml={10}>Liked posts</Text>
+          <Text ml={10}>Favorite posts</Text>
         </NavLink>
 
         <NavLink
-          to={`user/saves/${user?.id as string} `}
+          to={`saves/${user?.id as string} `}
           className={classes.link}
           style={{
             ...{ paddingLeft: "10px" },
           }}
         >
-          <TbBookmark
-            size={22}
-            style={{ ...(user && { color: "#FAB005" }) }}
-            // stroke={1.5}
-          />
+          <TbBookmark size={22} style={{ ...(user && { color: "#FAB005" }) }} />
           <Text ml={10}>Saved posts</Text>
         </NavLink>
         <NavLink
-          to={`user/comments/${user?.id as string} `}
+          to={`comments/${user?.id as string} `}
           className={classes.link}
         >
           <IconMessage

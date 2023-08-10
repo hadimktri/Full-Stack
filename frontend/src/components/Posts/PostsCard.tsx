@@ -1,11 +1,19 @@
-import { useContext, useEffect, useState } from "react";
-import { ISearchContext, IPost } from "../../types/types";
+/* eslint-disable react-hooks/exhaustive-deps */
+import { useEffect, useState } from "react";
 import Paginate from "./Pagination";
-import SinglePost from "./Single.Post.Card";
-import { Group, SimpleGrid, createStyles } from "@mantine/core";
-import Search from "../misc/Search";
+import SinglePost from "./SinglePostCard";
+import {
+  ActionIcon,
+  Button,
+  Group,
+  SimpleGrid,
+  TextInput,
+  createStyles,
+} from "@mantine/core";
 import { useViewportSize } from "@mantine/hooks";
-import { SearchContext } from "../../App";
+import { Link, useRevalidator, useSearchParams } from "react-router-dom";
+import { IconSearch, IconArrowRight } from "@tabler/icons-react";
+import { IPost } from "../../types/types";
 
 const useStyles = createStyles((theme) => ({
   main: {
@@ -15,26 +23,31 @@ const useStyles = createStyles((theme) => ({
       flexDirection: "column",
     },
   },
-  search: {
-    width: "280px",
-    [theme.fn.largerThan("sm")]: {
-      display: "none",
-    },
-  },
 }));
 
 export default function PostsCard({ postArray }: { postArray: IPost[] }) {
-  // const [initialData, setInitialData] = useState<IPost[]>(postArray);
   const [filteredData, setFilteredData] = useState<IPost[]>([]);
   const [tableData, setTableData] = useState<IPost[] | void>([]);
   const [pageCount, setPageCount] = useState<number>(1);
   const [currentPage, setCurrentPage] = useState(1);
-  const [flag, setFlag] = useState(false);
   const [cardNumber, setCardNumber] = useState(3);
   const { width } = useViewportSize();
-  const { searchValue, setSearchValue } = useContext(
-    SearchContext
-  ) as ISearchContext;
+  const [searchValue, setSearchValue] = useState("");
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  function handlefilter(data: IPost[]) {
+    const categorizedData = searchParams.get("category")
+      ? data.filter(
+          (post) =>
+            post.category === searchParams.get("category")?.toLowerCase()
+        )
+      : data;
+
+    const searchedData = categorizedData.filter((post) =>
+      post.title.includes(searchValue)
+    );
+    setFilteredData(searchedData);
+  }
 
   const handleTableData = (currentPage: number, pageNumber: number) => {
     setTableData(
@@ -43,73 +56,125 @@ export default function PostsCard({ postArray }: { postArray: IPost[] }) {
         currentPage * pageNumber
       )
     );
-    if (currentPage === pageCount) setFlag(true);
   };
 
   useEffect(() => {
-    setFilteredData(
-      postArray.filter((post) => post.title.includes(searchValue))
-    );
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    handlefilter(postArray);
+  }, [searchValue, searchParams]);
 
   useEffect(() => {
     setPageCount(Math.ceil(filteredData.length / cardNumber));
 
-    if (width < 555) {
-      setCardNumber(0);
+    if (width < 600) {
+      setCardNumber(1);
       setTableData(filteredData);
     } else if (width > 1200) {
       setCardNumber(3);
       handleTableData(currentPage, 3);
-    } else if (555 < width && width < 1200) {
+    } else if (600 < width && width < 1200) {
       setCardNumber(2);
       handleTableData(currentPage, 2);
     }
+  }, [cardNumber, currentPage, width, searchValue, searchParams]);
 
-    // if (flag && currentPage > pageCount) {
-    //   setCurrentPage(pageCount);
-    // }
-    // if (currentPage > pageCount) {
-    //   setCurrentPage(pageCount);
-    //   setFlag(true);
-    // }
-    // if (flag && currentPage < pageCount) {
-    //   setCurrentPage(pageCount);
-    //   setFlag(false);
-    // }
-  }, [cardNumber, currentPage, filteredData, width]);
+  function genNewSearchParamString(key: string, value: string | null) {
+    const sp = new URLSearchParams(searchParams);
+    if (value === null) {
+      sp.delete("");
+    } else {
+      sp.set(key, value);
+    }
+    return `posts?${sp.toString()}`;
+  }
 
+  function handleFilterChange(key: string, value: string | null) {
+    setSearchParams((prevParams) => {
+      if (value === null) {
+        prevParams.delete(key);
+      } else {
+        prevParams.set(key, value);
+      }
+      return prevParams;
+    });
+  }
+  const categoryFilter = searchParams.get("category");
   const { classes } = useStyles();
+
+  const revalidator = useRevalidator();
+  function reload() {
+    setInterval(() => {
+      revalidator.revalidate();
+      console.log("reload");
+    }, 1000);
+  }
+
+  useEffect(() => {
+    reload();
+  }, []);
+
   return (
     <Group className={classes.main}>
-      <div className={classes.search}>
-        <Search />
-      </div>
-      {cardNumber ? (
-        <>
-          <SimpleGrid cols={cardNumber}>
-            {tableData?.map((post) => (
-              <div key={post.id}>
-                <SinglePost key={post.title} {...post} />
-              </div>
-            ))}
-          </SimpleGrid>
+      <TextInput
+        mt={10}
+        maw={280}
+        icon={<IconSearch size="1.1rem" stroke={1.5} />}
+        radius="sm"
+        size="xs"
+        rightSection={
+          <ActionIcon size={32} radius="sm">
+            <IconArrowRight size="1.1rem" stroke={1.5} />
+          </ActionIcon>
+        }
+        placeholder="Search the title"
+        rightSectionWidth={42}
+        onChange={(e) => setSearchValue(e.target.value)}
+        value={searchValue}
+      />
+      <Link to="posts?category=nature">filter</Link>
+      <Link to="/">clear</Link>
+      <Link to={genNewSearchParamString("category", "nature")}>
+        filter with URL append
+      </Link>
+      <Link to={genNewSearchParamString("category", null)}>clear</Link>
+      <Button onClick={() => setSearchParams({ category: "nature" })}>
+        filter
+      </Button>
+      <Button onClick={() => setSearchParams({})}>clear button filter</Button>
+      <Button onClick={() => handleFilterChange("category", "nature")}>
+        filter with url append
+      </Button>
+      {categoryFilter && (
+        <Button onClick={() => handleFilterChange("category", null)}>
+          filter
+        </Button>
+      )}
 
+      <>
+        <SimpleGrid cols={cardNumber}>
+          {tableData?.map((post) => (
+            <div key={post.id}>
+              <SinglePost key={post.title} {...post} />
+            </div>
+          ))}
+        </SimpleGrid>
+        {/* {cardNumber !== 1 ? (
           <Paginate
             pageCount={pageCount}
             page={currentPage}
             setPage={setCurrentPage}
             handlePage={(page) => handleTableData(page, cardNumber)}
           />
-        </>
-      ) : (
-        tableData?.map((post) => (
-          <div key={post.id}>
-            <SinglePost key={post.title} {...post} />
-          </div>
-        ))
-      )}
+        ) : (
+          ""
+        )} */}
+      </>
     </Group>
   );
 }
+// ) : (
+//      tableData?.map((post) => (
+//         <div key={post.id}>
+//          <SinglePost key={post.title} {...post} />
+//         </div>
+//       ))
+//      )}

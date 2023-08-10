@@ -40,9 +40,9 @@ export interface IPostStore {
   addPost: (value: any) => void;
   updatePost: (value: any, id: string) => void;
   deletePost: (id: string) => void;
-  userFavorate: (postId: string, userId: string) => void;
+  userfavorite: (postId: string, userId: string) => void;
   postlikes: (postId: string, flag: boolean) => void;
-  postComment: (values: {
+  postComments: (values: {
     authorId: string;
     content: string;
     postId: string;
@@ -65,8 +65,8 @@ export interface IPost {
   category: string;
   author: IUser;
   authorId: string;
-  favoratedBy: IUser[];
-  favoratedById: string;
+  favoritedBy: IUser[];
+  favoritedById: string;
   comments: IComment[];
 }
 export interface IComment {
@@ -107,8 +107,4 @@ export interface IRecoveryContext {
   setPage: (val: string) => void;
   email: string;
   setEmail: (val: string) => void;
-}
-export interface ISearchContext {
-  searchValue: string;
-  setSearchValue: (value: string) => void;
 }

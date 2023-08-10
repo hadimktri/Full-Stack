@@ -10,6 +10,7 @@ import {
   Stack,
   Group,
 } from "@mantine/core";
+import imageURL from "/src/assets/404.svg";
 const useStyles = createStyles((theme) => ({
   inner: {
     width: "60%",
@@ -66,7 +67,7 @@ export default function NotFound() {
             Go To The Home Page
           </NavLink>
         </Stack>
-        <Image radius="xs" src="../src/assets/404.svg" />
+        <Image radius="xs" src={imageURL} />
       </Paper>
     </Group>
   );

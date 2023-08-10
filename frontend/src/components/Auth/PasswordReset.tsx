@@ -10,7 +10,7 @@ import {
 import { hasLength, useForm } from "@mantine/form";
 import useBoundStore from "../../store/Store";
 import { useContext } from "react";
-import { RecoveryContext } from "../../pages/Auth/Login.page";
+import { RecoveryContext } from "../../pages/Auth/Loginpage";
 import { TbX } from "react-icons/tb";
 import { IRecoveryContext } from "../../types/types";
 interface Ivalues {

@@ -16,14 +16,14 @@ const CommentModal = ({ postId, comments }: IProps) => {
   const navigate = useNavigate();
   const [opened, { open, close }] = useDisclosure(false);
   const [value, setValue] = useState("");
-  const { user, postComment } = useBoundStore((state) => state);
+  const { user, postComments } = useBoundStore((state) => state);
 
   const handleValue = (value: string) => {
     setValue(value);
   };
 
   const handleComment = () => {
-    postComment({
+    postComments({
       content: value,
       authorId: user?.id as string,
       postId: postId,
