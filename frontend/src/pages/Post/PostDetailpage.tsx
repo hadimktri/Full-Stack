@@ -24,9 +24,9 @@ const useStyles = createStyles((theme) => ({
     }`,
   },
   inner: {
-    // display: "flex",
-    // justifyContent: "space-between",
-    // flexDirection: "column",
+    display: "flex",
+    justifyContent: "space-between",
+    flexDirection: "column",
     backgroundColor:
       theme.colorScheme === "dark" ? theme.colors.dark[8] : theme.white,
     [`@media (max-width: ${em(550)})`]: {

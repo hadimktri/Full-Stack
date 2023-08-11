@@ -9,22 +9,24 @@ import {
   userPostsLoader,
   userCommentsLoader,
   userLikedPostsLoader,
+  postComments,
 } from "../src/utils/Loaders";
 import useBoundStore from "./store/Store";
-import LoginPage from "./pages/Auth/Loginpage";
-import RegisterPage from "./pages/Auth/Registerpage";
-import CreatePostPage from "./pages/Post/CreatePostpage";
-import UpdatePostPage from "./pages/Post/UpdatePostpage";
-import Profile from "./pages/User/UserProfile";
-import Comments from "./pages/Post/PostCommentspage";
-import UserLikedPosts from "./pages/User/UserLikedPosts";
-import PostPage from "./pages/Post/Postspage";
 import Layout from "./components/layout/Layout";
+import Error from "./pages/Error/Error";
+import LoginPage from "./pages/Auth/LoginPage";
+import RegisterPage from "./pages/Auth/RegisterPage";
+import UpdatePostPage from "./pages/Post/UpdatePostPage";
+import CreatePostPage from "./pages/Post/CreatePostPage";
+import PostPage from "./pages/Post/PostsPage";
+import PostCommentsPage from "./pages/Post/PostCommentsPage";
+import PostDetailPage from "./pages/Post/PostDetailPage";
+import ProtectedRoute from "./services/ProtectedRoute";
+import Profile from "./pages/User/UserProfile";
 import UserProfileUpdate from "./pages/User/UserProfileUpdate";
 import UserPostsPage from "./pages/User/UserPostsPage";
-import ProtectedRoute from "./services/ProtectedRoute";
-import Error from "./pages/Error/Error";
-import PostDetailPage from "./pages/Post/PostDetailpage";
+import UserLikedPosts from "./pages/User/UserLikedPosts";
+import UserCommentsPage from "./pages/User/UserCommentsPage";
 
 export const Router = () => {
   const authCheck = useBoundStore((state) => {
@@ -54,15 +56,6 @@ export const Router = () => {
           }
         />
         <Route
-          path="user/:id"
-          element={
-            <ProtectedRoute isAllowed={!!authCheck}>
-              <UserPostsPage />
-            </ProtectedRoute>
-          }
-          loader={userPostsLoader}
-        />
-        <Route
           path=":id"
           element={
             <ProtectedRoute isAllowed={!!authCheck}>
@@ -71,6 +64,24 @@ export const Router = () => {
           }
           loader={postDetailsLoader}
         />
+        <Route
+          path="postcomments/:id"
+          element={
+            <ProtectedRoute isAllowed={!!authCheck}>
+              <PostCommentsPage />
+            </ProtectedRoute>
+          }
+          loader={postComments}
+        />
+          <Route
+            path="user/:id"
+            element={
+              <ProtectedRoute isAllowed={!!authCheck}>
+                <UserPostsPage />
+              </ProtectedRoute>
+            }
+            loader={userPostsLoader}
+          />
         <Route
           path="profile"
           element={
@@ -97,10 +108,10 @@ export const Router = () => {
           loader={userLikedPostsLoader}
         />
         <Route
-          path="comments/:id"
+          path="userComments/:id"
           element={
             <ProtectedRoute isAllowed={!!authCheck}>
-              <Comments />
+              <UserCommentsPage />
             </ProtectedRoute>
           }
           loader={userCommentsLoader}

@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import {
   createStyles,
   Card,
@@ -9,16 +10,17 @@ import {
   Badge,
   rem,
 } from "@mantine/core";
-import { IconHeart } from "@tabler/icons-react";
 import useBoundStore from "../../store/Store";
 import { IPost } from "../../types/types";
 import { useEffect, useState } from "react";
-import CommentModal from "./CommentModal";
+
 import {
   TbArrowBadgeDown,
   TbArrowBadgeUp,
   TbEdit,
+  TbHeart,
   TbHeartFilled,
+  TbMessage,
 } from "react-icons/tb";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 
@@ -62,20 +64,35 @@ export default function SinglePost({
 }: IPost) {
   const navigate = useNavigate();
   const { classes, theme } = useStyles();
+
   const { user, userfavorite, postlikes } = useBoundStore((state) => state);
-  const [faved, setFaved] = useState<boolean>(false);
+  const [favorited, setFavorited] = useState<boolean>(false);
+  const [postLikes, setPostLikes] = useState<number>(0);
+
   useEffect(() => {
-    setFaved(
+    setFavorited(
       favoritedBy.map((favUser) => favUser.id).includes(user?.id as string)
     );
-  }, [favoritedBy, user?.id]);
+    setPostLikes(likes);
+  }, []);
 
-  const handlefavorite = () => {
-    !user ? navigate("/login") : userfavorite(id, user?.id);
-  };
-  const handleLike = (id: string, flag: boolean) => {
-    !user ? navigate("/login") : postlikes(id, flag);
-  };
+  function handlefavorite() {
+    if (!user) {
+      navigate("/login");
+    } else {
+      userfavorite(id, user?.id);
+      setFavorited(!favorited);
+    }
+  }
+
+  function handleLike(id: string, flag: number) {
+    if (!user) {
+      navigate("/login");
+    } else {
+      setPostLikes(postLikes + flag);
+      postlikes(id, postLikes + flag);
+    }
+  }
 
   return (
     <Card withBorder padding="xs" radius="md" className={classes.card}>
@@ -126,23 +143,23 @@ export default function SinglePost({
               <TbArrowBadgeUp
                 size="1.5rem"
                 color={theme.colors.blue[3]}
-                onClick={() => handleLike(id, true)}
+                onClick={() => handleLike(id, 1)}
               />
             </ActionIcon>
             <ActionIcon>
               <TbArrowBadgeDown
                 size="1.5rem"
                 color={theme.colors.blue[3]}
-                onClick={() => handleLike(id, false)}
+                onClick={() => handleLike(id, -1)}
               />
             </ActionIcon>
             <Text fz="sm" c="dimmed">
-              {`${likes} liked`}
+              {`${postLikes} liked`}
             </Text>
           </Group>
           <Group spacing={0}>
             <ActionIcon>
-              {faved ? (
+              {favorited ? (
                 <TbHeartFilled
                   size="1.2rem"
                   color={theme.colors.red[6]}
@@ -150,10 +167,9 @@ export default function SinglePost({
                   onClick={handlefavorite}
                 />
               ) : (
-                <IconHeart
+                <TbHeart
                   size="1.2rem"
                   color={theme.colors.red[6]}
-                  stroke={1.5}
                   onClick={handlefavorite}
                 />
               )}
@@ -167,7 +183,11 @@ export default function SinglePost({
                 </ActionIcon>
               </>
             )}
-            <CommentModal postId={id} comments={comments} />
+            <ActionIcon>
+              <NavLink to={!user ? "/login" : `/postcomments/${id}`}>
+                <TbMessage size={20} />
+              </NavLink>
+            </ActionIcon>
           </Group>
         </Group>
       </Card.Section>

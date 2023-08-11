@@ -23,7 +23,6 @@ const useStyles = createStyles((theme) => ({
 export default function UserPostPage() {
   const { classes } = useStyles();
   const loader = useLoaderData();
-
   const [tableData, setTableData] = useState<IPost[] | void>([]);
 
   function RenderPostsElements(data: Idata) {

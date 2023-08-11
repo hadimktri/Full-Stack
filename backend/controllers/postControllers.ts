@@ -125,7 +125,7 @@ export default {
       });
 
       const isFaved = favedId?.favoritedBy
-        .map((f:any) => f.id)
+        .map((f: any) => f.id)
         .includes(userId);
 
       const post = isFaved
@@ -161,22 +161,15 @@ export default {
 
   likePost: asyncErrorHandler(
     async (req: Request, res: Response, next: NextFunction) => {
-      const flag = req.body.flag;
+      const likes = req.body.likes;
       const id = req.params.id;
 
-      const post = flag
-        ? await prisma.post.update({
-            where: {
-              id: id,
-            },
-            data: { likes: { increment: 1 } },
-          })
-        : await prisma.post.update({
-            where: {
-              id: req.params.id,
-            },
-            data: { likes: { decrement: 1 } },
-          });
+      const post = await prisma.post.update({
+        where: {
+          id: id,
+        },
+        data: { likes },
+      });
 
       !post && next(new CustomError("Like/Dislike Post Failed!", 404));
 
@@ -187,7 +180,7 @@ export default {
     }
   ),
 
-  commentPost: asyncErrorHandler(
+  addComment: asyncErrorHandler(
     async (req: Request, res: Response, next: NextFunction) => {
       const comment = await prisma.comment.create({
         data: req.body,
@@ -237,4 +230,18 @@ export default {
       posts,
     });
   },
+  getComments: asyncErrorHandler(
+    async (req: Request, res: Response, next: NextFunction) => {
+      const comments = await prisma.comment.findMany({
+        where: { postId: req.params.id },
+      });
+
+      !comments && next(new CustomError("Getting comments Failed!", 404));
+
+      res.status(200).json({
+        status: "success",
+        comments,
+      });
+    }
+  ),
 };

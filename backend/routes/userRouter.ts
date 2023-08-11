@@ -8,7 +8,7 @@ router.get("/:id", checkAuth, userControllers.getAllUerPosts);
 router.get("/liked/:id", checkAuth, userControllers.getAllUerLikedPosts);
 
 router.get(
-  "/commented/:id",
+  "/comments/:id",
   checkAuth,
   userControllers.getAllUerCommentedPosts
 );

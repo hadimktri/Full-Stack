@@ -41,8 +41,8 @@ export interface IPostStore {
   updatePost: (value: any, id: string) => void;
   deletePost: (id: string) => void;
   userfavorite: (postId: string, userId: string) => void;
-  postlikes: (postId: string, flag: boolean) => void;
-  postComments: (values: {
+  postlikes: (postId: string, likes: number) => void;
+  addComment: (values: {
     authorId: string;
     content: string;
     postId: string;

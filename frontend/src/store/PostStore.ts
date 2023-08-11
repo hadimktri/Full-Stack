@@ -84,12 +84,12 @@ const PostStore: StateCreator<IAuthStore & IPostStore, [], [], IPostStore> = (
       set({ postsLoading: false });
     }
   },
-  postlikes: async (postId, flag) => {
+  postlikes: async (postId, likes) => {
     try {
       const res = await axios.post(
         `${DOMAIN as string}/api/posts/likeUp/${postId}`,
         {
-          flag,
+          likes,
         }
       );
       if ((res?.data as ISuccess).success) {
@@ -101,7 +101,7 @@ const PostStore: StateCreator<IAuthStore & IPostStore, [], [], IPostStore> = (
     }
   },
 
-  postComments: async (values) => {
+ addComment: async (values) => {
     try {
       const res = await axios.post(
         `${DOMAIN as string}/api/posts/comment`,

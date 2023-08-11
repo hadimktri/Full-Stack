@@ -19,8 +19,10 @@ router.post("/favorite/:id", checkAuth, postControllers.favoritePost);
 
 router.post("/likeUp/:id", checkAuth, postControllers.likePost);
 
-router.post("/comment", checkAuth, postControllers.commentPost);
+router.post("/comment", checkAuth, postControllers.addComment);
 
 router.delete("/comment/:id", checkAuth, postControllers.deleteComment);
+
+router.get("/comment/:id", checkAuth, postControllers.getComments);
 
 export default router;
